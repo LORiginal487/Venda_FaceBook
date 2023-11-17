@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Chatting_App</string>
+    <string name="app_name">My FaceBook</string>
     <string name="welcome_back">Welcome Back!</string>
     <string name="please_sign_in">Please Sign In</string>
     <string name="email">Email</string>
@@ -20,5 +20,14 @@
     <string name="comment">Comment</string>
     <string name="like">Like</string>
     <string name="time">time</string>
-    <string name="poster_name">Poster Name</string>
+    <string name="poster_name">Name</string>
+    <string name="friends">Friends</string>
+    <string name="suggestions">suggestions</string>
+    <string name="your_friends">Your friends</string>
+    <string name="friend_request">Friend Request</string>
+    <string name="confirm">Confirm</string>
+    <string name="delete">Delete</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="unfriend">Unfriend</string>
+    <string name="inbox">Inbox</string>
 </resources>

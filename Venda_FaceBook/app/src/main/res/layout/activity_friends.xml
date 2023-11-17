@@ -7,72 +7,87 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/headerHome"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/c1"
-        android:gravity="center_vertical|end"
-        android:orientation="horizontal"
         app:layout_constraintBottom_toTopOf="@+id/recycleVposts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.10"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+
 
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
-            android:text="@string/app_name"
+            android:text="@string/friends"
             android:textColor="@color/white"
-            android:textSize="30sp" />
-
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/addPost"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/circleback"
-            android:src="@drawable/plussmall"
-            android:tint="@color/white"
-            android:layout_marginEnd="10dp"
-            android:clickable="true"
-            android:onClick="addPost"
+            android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:riv_oval="true" />
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/search"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:padding="10dp"
-            android:background="@drawable/circleback"
-            android:src="@drawable/search"
-            android:tint="@color/white"
             android:layout_marginEnd="10dp"
+            android:background="@drawable/circleback"
             android:clickable="true"
             android:onClick="search"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:riv_oval="true" />
-        <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/textPpl"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
             android:padding="10dp"
-            android:background="@drawable/circleback"
-            android:src="@drawable/paperplanez"
+            android:src="@drawable/search"
             android:tint="@color/white"
-            android:layout_marginEnd="5dp"
-            android:clickable="true"
-            android:onClick="inbox"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />
 
+        <TextView
+            android:id="@+id/Friend_Request"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/friend_request"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:padding="3dp"
+            android:background="@drawable/pressed_btn_"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+        <TextView
+            android:id="@+id/suggestionsBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/buttom_shape"
+            android:padding="3dp"
+            android:text="@string/suggestions"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@id/Friend_Request"
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    </LinearLayout>
+        <TextView
+            android:id="@+id/friendsBtn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/your_friends"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:layout_margin="5dp"
+            android:padding="3dp"
+            android:background="@drawable/buttom_shape"
+            app:layout_constraintTop_toBottomOf="@+id/textView"
+            app:layout_constraintStart_toEndOf="@id/suggestionsBtn"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleVposts"
@@ -102,7 +117,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:background="@drawable/pressedicon"
+            android:background="@drawable/circleback"
             android:src="@drawable/home"
             android:padding="10dp"
             android:tint="@color/white"
@@ -115,7 +130,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:background="@drawable/circleback"
+            android:background="@drawable/pressedicon"
             android:src="@drawable/users"
             android:padding="10dp"
             android:tint="@color/white"

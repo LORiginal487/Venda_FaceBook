@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".MainActivity">
+    tools:context=".Notification">
 
     <LinearLayout
         android:id="@+id/headerHome"
@@ -38,7 +38,7 @@
             android:tint="@color/white"
             android:layout_marginEnd="10dp"
             android:clickable="true"
-            android:onClick="addPost"
+            android:onClick="addPostPage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />
@@ -102,10 +102,12 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:background="@drawable/pressedicon"
+            android:background="@drawable/circleback"
             android:src="@drawable/home"
             android:padding="10dp"
             android:tint="@color/white"
+            android:clickable="true"
+            android:onClick="openHome"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />
@@ -145,7 +147,7 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:background="@drawable/circleback"
+            android:background="@drawable/pressedicon"
             android:src="@drawable/bell"
             android:padding="10dp"
             android:tint="@color/white"

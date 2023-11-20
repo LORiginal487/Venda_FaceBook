@@ -4,6 +4,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/c2"
     tools:context=".AddaPost">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addPostBack"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/circleback"
+        android:src="@drawable/angleleft"
+        android:padding="10dp"
+        android:tint="@color/white"
+        android:layout_marginEnd="10dp"
+        android:clickable="true"
+        android:onClick="goHome"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_oval="true" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/create_a_post"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/addPostBack"
+        app:layout_constraintStart_toEndOf="@+id/addPostBack"
+        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addPost"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/circleback"
+        android:src="@drawable/angleright"
+        android:padding="10dp"
+        android:tint="@color/white"
+        android:clickable="true"
+        android:onClick="addPostNow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_oval="true" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border4post"
+        app:layout_constraintTop_toBottomOf="@id/addPostBack">
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/posterPP"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circleback"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+
+        <TextView
+            android:id="@+id/posterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/poster_name"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintStart_toEndOf="@+id/posterPP"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/confirm_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/text_backgr"
+            android:gravity="center"
+            android:padding="3dp"
+            android:text="@string/add_pictures"
+            android:textColor="@color/white"
+            android:textSize="15sp"
+            android:clickable="true"
+            android:onClick="addPictures"
+            app:layout_constraintBottom_toTopOf="@+id/inPostText"
+            app:layout_constraintStart_toEndOf="@+id/posterPP"
+            app:layout_constraintTop_toBottomOf="@+id/posterName"
+            app:layout_constraintVertical_bias="0.492"
+            app:layout_constraintWidth_percent="0.3" />
+
+        <EditText
+            android:id="@+id/inPostText"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="top"
+            android:hint="@string/what_do_you_wanna_post"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/posterPP"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

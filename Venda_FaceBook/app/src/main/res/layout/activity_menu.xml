@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".MainActivity">
+    tools:context=".Menu">
 
     <LinearLayout
         android:id="@+id/headerHome"
@@ -14,7 +14,6 @@
         android:background="@color/c1"
         android:gravity="center_vertical|end"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/recycleVposts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.10"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,10 +21,10 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="30dp"
-            android:text="@string/app_name"
+            android:text="@string/menu"
             android:textColor="@color/white"
             android:textSize="30sp" />
 
@@ -38,7 +37,7 @@
             android:tint="@color/white"
             android:layout_marginEnd="10dp"
             android:clickable="true"
-            android:onClick="addPost"
+            android:onClick="addPostPage"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />
@@ -74,15 +73,38 @@
 
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycleVposts"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintHeight_percent="0.8"
-        app:layout_constraintBottom_toTopOf="@+id/homeBottom"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerHome" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/headerHome">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@drawable/buttom_shape"
+            android:clickable="true"
+            android:onClick="openSettings"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/settingBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:background="@drawable/text_backgr"
+                android:src="@drawable/settings"
+                android:tint="@color/white"
+                android:layout_marginEnd="5dp"
+                app:riv_oval="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/settings"
+                android:textColor="@color/white"
+                android:textSize="35sp"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/homeBottom"
@@ -91,21 +113,23 @@
         android:background="@color/c1"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/recycleVposts"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.10"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycleVposts">
+        >
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/homeBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:background="@drawable/pressedicon"
-            android:src="@drawable/home"
+            android:background="@drawable/circleback"
             android:padding="10dp"
+            android:src="@drawable/home"
             android:tint="@color/white"
+            android:clickable="true"
+            android:onClick="openHome"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />
@@ -116,11 +140,12 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:background="@drawable/circleback"
-            android:src="@drawable/users"
-            android:padding="10dp"
-            android:tint="@color/white"
             android:clickable="true"
             android:onClick="friendsList"
+            android:padding="10dp"
+            android:src="@drawable/users"
+            android:tint="@color/white"
+
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />
@@ -131,11 +156,11 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:background="@drawable/circleback"
+            android:clickable="true"
+            android:onClick="profile"
             android:padding="10dp"
             android:src="@drawable/user"
             android:tint="@color/white"
-            android:clickable="true"
-            android:onClick="profile"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />
@@ -146,11 +171,11 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:background="@drawable/circleback"
-            android:src="@drawable/bell"
-            android:padding="10dp"
-            android:tint="@color/white"
             android:clickable="true"
             android:onClick="notifications"
+            android:padding="10dp"
+            android:src="@drawable/bell"
+            android:tint="@color/white"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />
@@ -160,14 +185,14 @@
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_margin="10dp"
-            android:background="@drawable/circleback"
+            android:background="@drawable/pressedicon"
+
             android:padding="10dp"
             android:src="@drawable/menuburger"
             android:tint="@color/white"
-            android:clickable="true"
-            android:onClick="menu"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
-    tools:context=".MainActivity">
+    tools:context=".Friends">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/headerHome"
@@ -122,6 +122,8 @@
             android:src="@drawable/home"
             android:padding="10dp"
             android:tint="@color/white"
+            android:clickable="true"
+            android:onClick="openHome"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:riv_oval="true" />

@@ -1,11 +1,5 @@
 package com.example.venda_fb.activityContexs.activityContexs;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,12 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -37,8 +38,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
 
 public class AddaPost extends AppCompatActivity {
     String fullName, image,imagePosted = "", postText;
@@ -142,7 +143,7 @@ public class AddaPost extends AppCompatActivity {
         // Add a new document with a generated ID
         CollectionReference usersCol = db.collection(Constants.Key_Collection_Posts);
 
-        String docName = managePreferences.getString(Constants.Key_Email)+""+1;
+        String docName = managePreferences.getString(Constants.Key_Email)+""+countDocuments();
         usersCol.document(docName).set(post).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -160,45 +161,25 @@ public class AddaPost extends AppCompatActivity {
         });
 
     }
-    private long countDocuments()
-            throws InterruptedException{
-        // Reference to the collection
-        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Posts);
+    private int countDocuments() {
+        final int[] num = {0};
+        db.collection(Constants.Key_Collection_Posts)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                for (int i=0; i<document.getData().size();i++){
+                                    num[0]++;
+                                }
+                            }
+                        } else {
 
-        // Initialize a CountDownLatch with a count of 1
-        CountDownLatch latch = new CountDownLatch(1);
-
-        // Variable to store the document count
-        long[] documentCount = {0};
-
-        // Get the documents in the collection
-        collectionRef.get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                QuerySnapshot querySnapshot = task.getResult();
-
-                if (querySnapshot != null) {
-                    // Count the number of documents
-                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
-                        documentCount[0]++;
-                        Log.d("12345566777", "_________________"+documentCount[0]);
-                        // You can also access data from each document if needed
-                        // For example: String documentId = document.getId();
-                        //             Map<String, Object> data = document.getData();
+                        }
                     }
-                }
-            } else {
-                // Handle the case when the operation is not successful
-                task.getException().printStackTrace();
-            }
-
-            // Release the latch, signaling that the operation is complete
-            latch.countDown();
-        });
-
-        // Wait for the asynchronous operation to complete
-        latch.await();
-
-        return documentCount[0];
+                });
+        return num[0];
     }
 
     private void showToast(String mssg){

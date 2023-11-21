@@ -38,62 +38,32 @@ public class Profile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        managePreferences = new ManagePreferences(getApplicationContext());
+
 
         //---------------------
         callViews();
         db = FirebaseFirestore.getInstance();
+        managePreferences = new ManagePreferences(getApplicationContext());
+        //getFromDB();
         setEverything();
 
     }
     private void setEverything(){
-        getFromDB();
-        nameV.setText(fullName);
-
+        fullName = managePreferences.getString(Constants.Key_Name )+" "+managePreferences.getString(Constants.Key_Surname);
+        nameV.setText(fullName.toUpperCase());
+        image = managePreferences.getString(Constants.Key_Image);
         byte[] bytes = Base64.decode(image, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
         imageViewPP.setImageBitmap(bitmap);
     }
     private void callViews(){
-        userDt = new User();
+
         imageViewPP = findViewById(R.id.myPP);
         nameV = findViewById(R.id.nameDis);
         bioV = findViewById(R.id.Bio);
     }
     private void getFromDB(){
-        docRef = db.collection(Constants.Key_Collection_Users).document(managePreferences.getString(Constants.Key_Email));
-        Log.d("1234565432345676", "eretyuioiuytfrdfhjhgc");
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    Log.d("1234565432345676", "_______------___");
-                    if (document.exists()) {
-                        Log.d("1234565432345676", "--------------------");
-                        String name = document.getString(Constants.Key_Name);
-                        Log.d("1234565432345676", ""+name);
-                        String surname = document.getString(Constants.Key_Surname);
-                        Log.d("1234565432345676", ""+surname);
 
-                        assert name != null;
-                        assert surname != null;
-                        fullName= name.toUpperCase()+" "+surname.toUpperCase();
-                        Log.d("1234565432345676", ""+fullName);
-
-                        image = document.getString(Constants.Key_Image);
-
-                    }
-                }else {
-                    Log.d("1234565432345676", ""+task.getException());
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d("1234565432345676", ""+e);
-            }
-        });
     }
 
 

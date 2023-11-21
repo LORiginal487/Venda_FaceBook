@@ -40,8 +40,8 @@ public class Sign_In extends AppCompatActivity {
         //-----------------
         db = FirebaseFirestore.getInstance();
         managePreferences = new ManagePreferences(getApplicationContext());
-
         callViews();
+
     }
 
     private void callViews() {
@@ -52,19 +52,19 @@ public class Sign_In extends AppCompatActivity {
     }
 
     public void singIn(View view) {
-
-        validate();
+        email = emailInBox.getText().toString();
+        password = passwordInBox.getText().toString();
+        validate(email);
     }
 
     public void singUp(View view) {
         Intent intent = new Intent(getApplicationContext(), Sign_Up.class);
         startActivity(intent);
     }
-    private void validate(){
+    private void validate( String emailStr){
         loading(true);
-        email = emailInBox.getText().toString();
-        password = passwordInBox.getText().toString();
-        docRef = db.collection(Constants.Key_Collection_Users).document(email);
+
+        docRef = db.collection(Constants.Key_Collection_Users).document(emailStr);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -74,12 +74,17 @@ public class Sign_In extends AppCompatActivity {
                         String passwordDB = document.getString(Constants.Key_Password);
                         if (password.equals(passwordDB)){
                             name = document.getString(Constants.Key_Name);
+                            Log.d("1234565432345676", ""+name);
+
                             surname = document.getString(Constants.Key_Surname);
+                            Log.d("1234565432345676", ""+surname);
+
                             image = document.getString(Constants.Key_Image);
                             managePreferences.putBoolean(Constants.Key_Is_Signed_In, true);
                             managePreferences.putString(Constants.Key_Users_Id, docRef.getId());
                             managePreferences.putString(Constants.Key_Name, name);
-                            managePreferences.putString(Constants.Key_Email, email);
+                            managePreferences.putString(Constants.Key_Surname, surname);
+                            managePreferences.putString(Constants.Key_Email, emailStr);
                             managePreferences.putString(Constants.Key_Image, image);
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -115,6 +120,9 @@ public class Sign_In extends AppCompatActivity {
 
     private void showToast(String mssg){
         Toast.makeText(this, mssg, Toast.LENGTH_SHORT).show();
+    }
+    private void setPrefsss(){
+
     }
 
 }

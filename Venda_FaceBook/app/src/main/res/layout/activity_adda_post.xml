@@ -46,14 +46,17 @@
         app:riv_oval="true" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/border4post"
         app:layout_constraintTop_toBottomOf="@id/addPostBack">
+
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/posterPP"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:layout_margin="2dp"
             android:background="@drawable/circleback"
             android:scaleType="centerCrop"
             app:layout_constraintStart_toStartOf="parent"
@@ -68,23 +71,22 @@
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintStart_toEndOf="@+id/posterPP"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/confirm_button"
+            android:id="@+id/addPict"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/text_backgr"
+            android:clickable="true"
             android:gravity="center"
+            android:onClick="addPictures"
             android:padding="3dp"
             android:text="@string/add_pictures"
             android:textColor="@color/white"
             android:textSize="15sp"
-            android:clickable="true"
-            android:onClick="addPictures"
             app:layout_constraintBottom_toTopOf="@+id/inPostText"
             app:layout_constraintStart_toEndOf="@+id/posterPP"
             app:layout_constraintTop_toBottomOf="@+id/posterName"
@@ -100,7 +102,28 @@
             android:inputType="text"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
-            app:layout_constraintTop_toBottomOf="@id/posterPP"/>
+            app:layout_constraintTop_toBottomOf="@id/posterPP" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constrPict"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border4post"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/circleback"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 

@@ -6,6 +6,17 @@ public class Constants {
     public static final String Key_Surname = "surname";
     public static final String Key_Email = "email";
     public static final String Key_Password = "password";
+
+
+    public static final String Key_Collection_Posts = "posts";
+    public static final String Key_P_Names = "names";
+    public static final String Key_P_Text = "post_Text";
+    public static final String Key_Image_pp = "poster_pp";
+    public static final String Key_Picture = "posted_pic";
+    public static final String Key_Post_Time = "post_time";
+    public static final String Key_Likes = "likes";
+    public static final String Key_Comments = "comments";
+
     public static final String Key_Preference_Name= "VfbPreference";
     public static final String Key_Is_Signed_In = "isSignedIn";
     public static final String Key_Users_Id = "userID";

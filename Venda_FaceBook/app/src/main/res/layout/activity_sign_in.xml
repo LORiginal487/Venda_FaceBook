@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c2"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    tools:context=".activityContexs.activityContexs.Sign_In">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/addPostBack"
+            android:layout_width="300dp"
+            android:layout_height="200dp"
+            android:background="@drawable/circleback"
+            android:src="@drawable/hello"
+            android:padding="10dp"
+            android:tint="@color/white"
+            android:layout_marginEnd="10dp"
+            app:riv_oval="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:fontFamily="@font/abril_fatface"
+            android:gravity="center"
+            android:onClick="singUp"
+            android:text="@string/welcome"
+            android:textColor="@color/white"
+            android:textSize="50sp" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/shape_2"
+        android:paddingTop="30dp"
+        android:orientation="vertical"
+        >
+
+        <EditText
+            android:id="@+id/emailIn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/buttom_shape"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/email"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+
+        <EditText
+            android:id="@+id/passwordIn"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/buttom_shape"
+            android:ems="10"
+            android:gravity="center"
+            android:hint="@string/password"
+            android:inputType="text|textPassword"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white" />
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:animateLayoutChanges="true">
+
+            <Button
+                android:id="@+id/buttonSignIn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttom_shape2"
+                android:text="@string/sign_in"
+                android:layout_margin="10dp"
+                android:onClick="singIn"
+                android:textColor="@color/white" />
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:visibility="invisible"/>
+        </FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:text="@string/don_t_have_an_account_sign_up"
+            android:layout_marginBottom="20dp"
+            android:textSize="20sp"
+            android:clickable="true"
+            android:onClick="singUp"/>
+    </LinearLayout>
+
+</LinearLayout>

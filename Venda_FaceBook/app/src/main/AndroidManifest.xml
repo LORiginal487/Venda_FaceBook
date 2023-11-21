@@ -15,28 +15,10 @@
         android:theme="@style/Theme.Venda_FB"
         tools:targetApi="31">
         <activity
-            android:name=".Menu"
+            android:name=".activityContexs.activityContexs.Sign_Up"
             android:exported="false" />
         <activity
-            android:name=".Notification"
-            android:exported="false" />
-        <activity
-            android:name=".Friends"
-            android:exported="false" />
-        <activity
-            android:name=".Profile"
-            android:exported="false" />
-        <activity
-            android:name=".Inbox"
-            android:exported="false" />
-        <activity
-            android:name=".Searching"
-            android:exported="false" />
-        <activity
-            android:name=".AddaPost"
-            android:exported="false" />
-        <activity
-            android:name=".MainActivity"
+            android:name=".activityContexs.activityContexs.Sign_In"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -44,6 +26,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activityContexs.activityContexs.Menu"
+            android:exported="false" />
+        <activity
+            android:name=".activityContexs.activityContexs.Notification"
+            android:exported="false" />
+        <activity
+            android:name=".activityContexs.activityContexs.Friends"
+            android:exported="false" />
+        <activity
+            android:name=".activityContexs.activityContexs.Profile"
+            android:exported="false" />
+        <activity
+            android:name=".activityContexs.activityContexs.Inbox"
+            android:exported="false" />
+        <activity
+            android:name=".activityContexs.activityContexs.Searching"
+            android:exported="false" />
+        <activity
+            android:name=".activityContexs.activityContexs.AddaPost"
+            android:exported="false" />
+        <activity
+            android:name=".activityContexs.activityContexs.MainActivity"
+            android:exported="false"/>
 
         <meta-data
             android:name="preloaded_fonts"

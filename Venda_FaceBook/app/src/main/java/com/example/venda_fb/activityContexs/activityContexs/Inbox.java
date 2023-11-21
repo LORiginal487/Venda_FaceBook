@@ -1,8 +1,10 @@
-package com.example.venda_fb;
+package com.example.venda_fb.activityContexs.activityContexs;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.venda_fb.R;
 
 public class Inbox extends AppCompatActivity {
 

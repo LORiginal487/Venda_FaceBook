@@ -1,10 +1,12 @@
-package com.example.venda_fb;
+package com.example.venda_fb.activityContexs.activityContexs;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.example.venda_fb.R;
 
 public class AddaPost extends AppCompatActivity {
 

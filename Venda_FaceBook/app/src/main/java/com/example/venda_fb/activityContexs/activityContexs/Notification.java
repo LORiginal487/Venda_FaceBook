@@ -1,4 +1,4 @@
-package com.example.venda_fb;
+package com.example.venda_fb.activityContexs.activityContexs;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class Friends extends AppCompatActivity {
+import com.example.venda_fb.R;
+
+public class Notification extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friends);
+        setContentView(R.layout.activity_notification);
     }
     public void addPostPage(View view) {
         Intent intent = new Intent(getApplicationContext(), AddaPost.class);

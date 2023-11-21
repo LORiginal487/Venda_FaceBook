@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1016718182427",
+    "project_id": "venda-facebook",
+    "storage_bucket": "venda-facebook.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1016718182427:android:5ad6227a2eea1b68c890be",
+        "android_client_info": {
+          "package_name": "com.example.venda_fb"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMv2g6pBD787EPUPoRBg6intz7-p4smXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

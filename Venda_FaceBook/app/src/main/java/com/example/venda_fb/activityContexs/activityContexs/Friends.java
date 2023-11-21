@@ -1,4 +1,4 @@
-package com.example.venda_fb;
+package com.example.venda_fb.activityContexs.activityContexs;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,15 +6,15 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-public class MainActivity extends AppCompatActivity {
+import com.example.venda_fb.R;
+
+public class Friends extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_friends);
     }
-
-
     public void addPostPage(View view) {
         Intent intent = new Intent(getApplicationContext(), AddaPost.class);
         startActivity(intent);
@@ -39,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), Notification.class);
         startActivity(intent);
     }
+    public void profile(View view) {
+        Intent intent = new Intent(getApplicationContext(), Profile.class);
+        startActivity(intent);
+    }
 
     public void menu(View view) {
         Intent intent = new Intent(getApplicationContext(), Menu.class);
@@ -46,8 +50,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void profile(View view) {
-        Intent intent = new Intent(getApplicationContext(), Profile.class);
+    public void openHome(View view) {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
     }
 }

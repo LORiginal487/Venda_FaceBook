@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/c2"
-    tools:context=".AddaPost">
+    tools:context=".activityContexs.activityContexs.AddaPost">
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/addPostBack"
         android:layout_width="50dp"

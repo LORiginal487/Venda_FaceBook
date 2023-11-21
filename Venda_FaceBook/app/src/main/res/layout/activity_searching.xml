@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/c2"
-    tools:context=".Searching">
+    tools:context=".activityContexs.activityContexs.Searching">
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/searchBack"
         android:layout_width="50dp"

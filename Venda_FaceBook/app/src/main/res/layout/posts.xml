@@ -38,7 +38,7 @@
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintStart_toEndOf="@+id/posterPP"
-        
+
         app:layout_constraintTop_toTopOf="parent"
         />
 

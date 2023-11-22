@@ -57,4 +57,10 @@ public class Menu extends AppCompatActivity {
     public void openSettings(View view) {
 
     }
+
+    public void openHelp(View view) {
+    }
+
+    public void open_Sign_In(View view) {
+    }
 }

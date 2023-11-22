@@ -21,9 +21,9 @@
 
         <TextView
             android:id="@+id/textView"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="30dp"
+            android:layout_marginEnd="100dp"
             android:text="@string/menu"
             android:textColor="@color/white"
             android:textSize="30sp" />
@@ -82,7 +82,34 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+
+            android:layout_margin="10dp"
+            android:background="@drawable/buttom_shape"
+            android:clickable="true"
+            android:onClick="openHelp"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/helpBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:background="@drawable/text_backgr"
+                android:src="@drawable/interrogation"
+                android:tint="@color/white"
+                android:layout_marginEnd="5dp"
+                app:riv_oval="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/help_support"
+                android:textColor="@color/white"
+                android:textSize="35sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="10dp"
             android:background="@drawable/buttom_shape"
             android:clickable="true"
             android:onClick="openSettings"
@@ -101,6 +128,32 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/settings"
+                android:textColor="@color/white"
+                android:textSize="35sp"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_margin="10dp"
+            android:background="@drawable/buttom_shape"
+            android:clickable="true"
+            android:onClick="open_Sign_In"
+            android:orientation="horizontal">
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/logOutBtn"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:padding="10dp"
+                android:background="@drawable/text_backgr"
+                android:src="@drawable/exit"
+                android:tint="@color/white"
+                android:layout_marginEnd="5dp"
+                app:riv_oval="true" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign out"
                 android:textColor="@color/white"
                 android:textSize="35sp"/>
         </LinearLayout>

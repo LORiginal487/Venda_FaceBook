@@ -37,18 +37,20 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class AddaPost extends AppCompatActivity {
-    String fullName, image,imagePosted = "", postText;
+    String fullName, image,imagePosted = "", postText,docName;
     Boolean addImage = false;
     RoundedImageView imageViewPP;
     TextView nameV, addPict;
     EditText inpost;
     ConstraintLayout constrPict;
     ImageView pic2post;
+    int postnum = 1;
      FirebaseFirestore db;
     ManagePreferences managePreferences;
     @Override
@@ -60,6 +62,8 @@ public class AddaPost extends AppCompatActivity {
         //_________________--------------
         db = FirebaseFirestore.getInstance();
         managePreferences = new ManagePreferences(getApplicationContext());
+        getAllDocumentNames();
+
         callviews();
         setUp();
 
@@ -88,6 +92,7 @@ public class AddaPost extends AppCompatActivity {
     public void addPostNow(View view) throws InterruptedException {
         postText =inpost.getText().toString();
         if(!postText.isEmpty()){
+
             postAndSave();
         }
     }
@@ -125,7 +130,7 @@ public class AddaPost extends AppCompatActivity {
         byte[] bytes= byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
-    private void postAndSave() throws InterruptedException {
+    private void postAndSave() {
         showToast("Checking");
 
         // Reference to the Firebase database
@@ -143,7 +148,8 @@ public class AddaPost extends AppCompatActivity {
         // Add a new document with a generated ID
         CollectionReference usersCol = db.collection(Constants.Key_Collection_Posts);
 
-        String docName = managePreferences.getString(Constants.Key_Email)+""+countDocuments();
+        Log.d("12345566777", "123456789-0---"+postnum);
+        Log.d("12345566777", "123456789---000---"+docName);
         usersCol.document(docName).set(post).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -161,25 +167,45 @@ public class AddaPost extends AppCompatActivity {
         });
 
     }
-    private int countDocuments() {
-        final int[] num = {0};
-        db.collection(Constants.Key_Collection_Posts)
-                .get()
+    private void getAllDocumentNames() {
+        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Posts);
+
+        collectionRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                for (int i=0; i<document.getData().size();i++){
-                                    num[0]++;
-                                }
+                            List<String> documentNames = new ArrayList<>();
+                            for (DocumentSnapshot document : task.getResult()) {
+                                // Get the document ID (name) and add it to the list
+                                String documentName = document.getId();
+                                documentNames.add(documentName);
                             }
-                        } else {
 
+                            // Now you have a list of all document names
+                            countThePosts(documentNames);
+
+                        } else {
+                            Log.d("TAG", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-        return num[0];
+    }
+    private void countThePosts(List<String> documentNames){
+        docName=managePreferences.getString(Constants.Key_Email);
+
+        for(int i=0;i < documentNames.size(); i++){
+            String namesss = documentNames.get(i);
+            if(namesss.contains(managePreferences.getString(Constants.Key_Email))) {
+                Log.d("12345566777", "123456789" + namesss);
+                postnum ++;
+                Log.d("12345566", "===========---------" + postnum);
+
+            }
+        }
+        docName = docName + "-" + postnum;
+        Log.d("12345566", "===========---------" + docName);
+
     }
 
     private void showToast(String mssg){

@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.venda_fb.R;
+import com.example.venda_fb.activityContexs.Adapters.PeopleAdapter;
 import com.example.venda_fb.activityContexs.Adapters.ProfileAdapter;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
@@ -38,33 +39,36 @@ public class Searching extends AppCompatActivity {
     User userDt;
     ManagePreferences managePreferences;
     ProgressBar loadingProgressBar;
-    RecyclerView myPostHistory;
+    RecyclerView peopleView;
     DocumentReference docRef;
     FirebaseFirestore db;
     List<String> documentNames = new ArrayList<>();
 
-    List<Post> postz = new ArrayList<>();
-    String fullName, image;
+    List<User> userz = new ArrayList<>();
+    String peopleTshow, image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searching);
         //+++______--
         callViews();
+        peopleTshow= "allPpl";
         db = FirebaseFirestore.getInstance();
         managePreferences = new ManagePreferences(getApplicationContext());
+        getAllDocumentNames();
 
     }
     private void callViews(){
 
         searchbar = findViewById(R.id.searchBar);
+        peopleView = findViewById(R.id.recycleVsearch);
     }
 
     public void SearchNow(View view) {
     }
     private void getAllDocumentNames() {
 
-        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Posts);
+        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Users);
         collectionRef.get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -77,25 +81,20 @@ public class Searching extends AppCompatActivity {
                                 documentNames.add(documentName);
 
                                 for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                                    if (documentName.equals(queryDocumentSnapshot.getId())
-                                            &&documentName.contains(managePreferences.getString(Constants.Key_Email))) {
-                                        Post post = new Post();
-                                        post.posterNames = queryDocumentSnapshot.getString(Constants.Key_P_Names);
-                                        post.postTime = queryDocumentSnapshot.getString(Constants.Key_Post_Time);
-                                        post.postTxt = queryDocumentSnapshot.getString(Constants.Key_P_Text);
-                                        post.posterPP = queryDocumentSnapshot.getString(Constants.Key_Image_pp);
-                                        post.postedPic = queryDocumentSnapshot.getString(Constants.Key_Picture);
-                                        post.postLikes = queryDocumentSnapshot.getString(Constants.Key_Likes);
-                                        post.postComments = queryDocumentSnapshot.getString(Constants.Key_Comments);
-
-                                        postz.add(post);
+                                    if (documentName.equals(queryDocumentSnapshot.getId())) {
+                                        User user = new User();
+                                        user.name = queryDocumentSnapshot.getString(Constants.Key_Name);
+                                        user.surname = queryDocumentSnapshot.getString(Constants.Key_Surname);
+                                        user.email = queryDocumentSnapshot.getString(Constants.Key_Email);
+                                        user.image = queryDocumentSnapshot.getString(Constants.Key_Image);
+                                        userz.add(user);
                                     }
 
                                 }
-                                if (postz.size() > 0) {
-                                    ProfileAdapter profileAdapter = new ProfileAdapter(postz);
-                                    myPostHistory.setAdapter(profileAdapter);
-                                    myPostHistory.setVisibility(View.VISIBLE);
+                                if (userz.size() > 0) {
+                                    PeopleAdapter peopleAdapter = new PeopleAdapter(userz,peopleTshow);
+                                    peopleView.setAdapter(peopleAdapter);
+                                    peopleView.setVisibility(View.VISIBLE);
 
                                 }
 

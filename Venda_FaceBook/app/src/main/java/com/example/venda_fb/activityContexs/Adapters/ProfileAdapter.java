@@ -41,7 +41,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
         return post.size();
     }
 
-    public class UserViewHolder extends RecyclerView.ViewHolder{
+    public static class UserViewHolder extends RecyclerView.ViewHolder{
         View itemView;
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);

@@ -2,29 +2,58 @@ package com.example.venda_fb.activityContexs.activityContexs;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.ProfileAdapter;
 import com.example.venda_fb.activityContexs.utilities.Constants;
+import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.Post;
+import com.example.venda_fb.activityContexs.utilities.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.makeramen.roundedimageview.RoundedImageView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    ProgressBar loadingProgressBar;
+    RecyclerView feedPosts;
+    DocumentReference docRef;
+    FirebaseFirestore db;
+    List<String> documentNames = new ArrayList<>();
+    ManagePreferences managePreferences;
+    List<Post> postz = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //+____________________
+        db = FirebaseFirestore.getInstance();
+        managePreferences = new ManagePreferences(getApplicationContext());
+        callViews();
+        getAllDocumentNames();
+    }
+    private void callViews(){
+        feedPosts = findViewById(R.id.recycleVposts);
+        loadingProgressBar = findViewById(R.id.progressBar);
     }
     private void getAllDocumentNames() {
         loading(true);
@@ -34,32 +63,30 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-
                             for (DocumentSnapshot document : task.getResult()) {
                                 // Get the document ID (name) and add it to the list
                                 String documentName = document.getId();
                                 documentNames.add(documentName);
 
                                 for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                                    if (documentName.equals(queryDocumentSnapshot.getId())
-                                            &&documentName.contains(managePreferences.getString(Constants.Key_Email))) {
-                                        Post post = new Post();
-                                        post.posterNames = queryDocumentSnapshot.getString(Constants.Key_P_Names);
-                                        post.postTime = queryDocumentSnapshot.getString(Constants.Key_Post_Time);
-                                        post.postTxt = queryDocumentSnapshot.getString(Constants.Key_P_Text);
-                                        post.posterPP = queryDocumentSnapshot.getString(Constants.Key_Image_pp);
-                                        post.postedPic = queryDocumentSnapshot.getString(Constants.Key_Picture);
-                                        post.postLikes = queryDocumentSnapshot.getString(Constants.Key_Likes);
-                                        post.postComments = queryDocumentSnapshot.getString(Constants.Key_Comments);
-
-                                        postz.add(post);
+                                    if (documentName.equals(queryDocumentSnapshot.getId())){
+                                       continue;
                                     }
-
+                                    Post post = new Post();
+                                    post.posterNames = queryDocumentSnapshot.getString(Constants.Key_P_Names);
+                                    post.postTime = queryDocumentSnapshot.getString(Constants.Key_Post_Time);
+                                    post.postTxt = queryDocumentSnapshot.getString(Constants.Key_P_Text);
+                                    post.posterPP = queryDocumentSnapshot.getString(Constants.Key_Image_pp);
+                                    post.postedPic = queryDocumentSnapshot.getString(Constants.Key_Picture);
+                                    post.postLikes = queryDocumentSnapshot.getString(Constants.Key_Likes);
+                                    post.postComments = queryDocumentSnapshot.getString(Constants.Key_Comments);
+                                    postz.add(post);
                                 }
                                 if (postz.size() > 0) {
+                                    Collections.shuffle(postz);
                                     ProfileAdapter profileAdapter = new ProfileAdapter(postz);
-                                    myPostHistory.setAdapter(profileAdapter);
-                                    myPostHistory.setVisibility(View.VISIBLE);
+                                    feedPosts.setAdapter(profileAdapter);
+                                    feedPosts.setVisibility(View.VISIBLE);
                                     loading(false);
                                 }
 
@@ -72,6 +99,19 @@ public class MainActivity extends AppCompatActivity {
                         }
                     }
                 });
+
+    }
+    private void loading(boolean isLoading){
+        Log.d("l3 1111111", "_______________");
+        if(isLoading){
+
+            loadingProgressBar.setVisibility(View.VISIBLE);
+            Log.d("l4 1111111", "_______________");
+        }else{
+
+            loadingProgressBar.setVisibility(View.INVISIBLE);
+            Log.d("l5 1111111", "_______________");
+        }
 
     }
 

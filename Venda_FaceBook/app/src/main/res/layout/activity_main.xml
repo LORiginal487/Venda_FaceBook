@@ -14,7 +14,6 @@
         android:background="@color/c1"
         android:gravity="center_vertical|end"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/recycleVposts"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.10"
         app:layout_constraintStart_toStartOf="parent"
@@ -79,11 +78,23 @@
         android:id="@+id/recycleVposts"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:visibility="gone"
         app:layout_constraintHeight_percent="0.8"
         app:layout_constraintBottom_toTopOf="@+id/homeBottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerHome" />
+        app:layout_constraintTop_toBottomOf="@+id/headerHome"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/homeBottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerHome"/>
 
     <LinearLayout
         android:id="@+id/homeBottom"
@@ -92,11 +103,11 @@
         android:background="@color/c1"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/recycleVposts"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.10"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycleVposts">
+        >
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/homeBtn"

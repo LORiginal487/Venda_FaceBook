@@ -39,4 +39,7 @@
     <string name="menu">Menu</string>
     <string name="enter_your_bio_here">Enter your bio here!</string>
     <string name="help_support"><![CDATA[Help & support]]></string>
+    <string name="please_enter_a_bio_thats_less_than_150_words">Please enter a bio thats less than 150 words</string>
+    <string name="done">Done</string>
+    <string name="add_bio_here">Add bio here...</string>
 </resources>

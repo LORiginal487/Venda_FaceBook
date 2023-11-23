@@ -89,10 +89,12 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageBG"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
                 android:background="@color/c2"
+                android:clickable="true"
+                android:onClick="addBackGround"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.makeramen.roundedimageview.RoundedImageView
@@ -102,7 +104,9 @@
                 android:background="@drawable/circleback"
                 android:padding="5dp"
                 android:scaleType="centerCrop"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView"
+                android:clickable="true"
+                android:onClick="upDatePp"
+                app:layout_constraintBottom_toBottomOf="@+id/imageBG"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:riv_oval="true" />
@@ -126,6 +130,8 @@
                 android:text="@string/enter_your_bio_here"
                 android:textColor="@color/white"
                 android:textSize="20sp"
+                android:clickable="true"
+                android:onClick="addBio"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nameDis"

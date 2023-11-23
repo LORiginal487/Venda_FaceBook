@@ -24,7 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class Sign_In extends AppCompatActivity {
     EditText emailInBox, passwordInBox;
-    String email, password, name, surname,image;
+    String email, password, name, surname,image,bio, backGround;
     Button signIn_btn;
     ProgressBar loadingProgressBar;
     FirebaseFirestore db;
@@ -80,12 +80,16 @@ public class Sign_In extends AppCompatActivity {
                             Log.d("1234565432345676", ""+surname);
 
                             image = document.getString(Constants.Key_Image);
+                            bio = document.getString(Constants.Key_Bio);
+                            backGround = document.getString(Constants.Key_BackgroundPic);
                             managePreferences.putBoolean(Constants.Key_Is_Signed_In, true);
                             managePreferences.putString(Constants.Key_Users_Id, docRef.getId());
                             managePreferences.putString(Constants.Key_Name, name);
                             managePreferences.putString(Constants.Key_Surname, surname);
                             managePreferences.putString(Constants.Key_Email, emailStr);
                             managePreferences.putString(Constants.Key_Image, image);
+                            managePreferences.putString(Constants.Key_Bio, bio);
+                            managePreferences.putString(Constants.Key_BackgroundPic, backGround);
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);

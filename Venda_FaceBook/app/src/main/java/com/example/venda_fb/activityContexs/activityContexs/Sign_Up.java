@@ -157,6 +157,8 @@ public class Sign_Up extends AppCompatActivity {
         user.put(Constants.Key_Email, email);
         user.put(Constants.Key_Password, password);
         user.put(Constants.Key_Image, image);
+        user.put(Constants.Key_Bio, null);
+        user.put(Constants.Key_BackgroundPic, null);
 
         // Add a new document with a generated ID
         CollectionReference usersCol = db.collection(Constants.Key_Collection_Users);
@@ -170,6 +172,8 @@ public class Sign_Up extends AppCompatActivity {
                 managePreferences.putString(Constants.Key_Name, name);
                 managePreferences.putString(Constants.Key_Email, email);
                 managePreferences.putString(Constants.Key_Image, image);
+                managePreferences.putString(Constants.Key_Bio, "Add a Bio");
+                managePreferences.putString(Constants.Key_BackgroundPic, null);
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(intent);

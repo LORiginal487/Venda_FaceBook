@@ -6,6 +6,9 @@ public class Constants {
     public static final String Key_Surname = "surname";
     public static final String Key_Email = "email";
     public static final String Key_Password = "password";
+    public static final String Key_Bio = "bio";
+    public static final String Key_BackgroundPic = "background";
+
 
 
     public static final String Key_Collection_Posts = "posts";

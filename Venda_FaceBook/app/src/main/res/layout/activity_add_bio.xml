@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c2"
+    tools:context=".activityContexs.activityContexs.Add_Bio">
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addPostBack"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/circleback"
+        android:src="@drawable/angleleft"
+        android:padding="10dp"
+        android:tint="@color/white"
+        android:layout_marginEnd="10dp"
+        android:clickable="true"
+        android:onClick="goHome"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_oval="true" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Bio"
+        android:textColor="@color/white"
+        android:textSize="25sp"
+        app:layout_constraintBottom_toBottomOf="@+id/addPostBack"
+        app:layout_constraintStart_toEndOf="@+id/addPostBack"
+        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/addPost"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:background="@drawable/circleback"
+        android:src="@drawable/angleright"
+        android:padding="10dp"
+        android:tint="@color/white"
+        android:clickable="true"
+        android:onClick="addBioNow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:riv_oval="true" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/addPostBack">
+
+        <TextView
+            android:id="@+id/posterName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/please_enter_a_bio_thats_less_than_150_words"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:layout_marginBottom="5dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/inNewBio"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:gravity="top"
+            android:hint="@string/add_bio_here"
+            android:background="@drawable/border4post"
+            android:padding="10dp"
+            android:inputType="text"
+            android:textColor="@color/white"
+            android:textColorHint="@color/white"
+            app:layout_constraintTop_toBottomOf="@+id/posterName"
+            tools:layout_editor_absoluteY="52dp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constrPict"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/border4post"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <ImageView
+            android:id="@+id/picture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:background="@drawable/circleback"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

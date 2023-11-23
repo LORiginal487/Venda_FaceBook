@@ -83,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
                                     postz.add(post);
                                 }
                                 if (postz.size() > 0) {
+
                                     Collections.shuffle(postz);
                                     ProfileAdapter profileAdapter = new ProfileAdapter(postz);
                                     feedPosts.setAdapter(profileAdapter);

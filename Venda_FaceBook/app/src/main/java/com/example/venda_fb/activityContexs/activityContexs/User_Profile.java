@@ -60,7 +60,7 @@ public class User_Profile extends AppCompatActivity {
     List<String> documentNames = new ArrayList<>();
 
     List<Post> postz = new ArrayList<>();
-    String fullName, image,imageBG, userEm;
+    String fullName, image_pp,imageBG, userEm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,7 +86,8 @@ public class User_Profile extends AppCompatActivity {
         nameV.setText(fullName.toUpperCase());
         Log.d("1234567654321","----------------");
         Log.d("1234567654321", "12"+fullName);
-        imageViewPP.setImageBitmap(getBitmap(getIntent().getStringExtra(Constants.Key_Image)));
+        image_pp = getIntent().getStringExtra(Constants.Key_Image);
+        imageViewPP.setImageBitmap(getBitmap(image_pp));
         bioV.setText("not set");
         userEm = getIntent().getStringExtra(Constants.Key_Email);
 
@@ -248,4 +249,12 @@ public class User_Profile extends AppCompatActivity {
     }
 
 
+    public void openChat(View view) {
+        Intent intent = new Intent(getApplicationContext(), ChatScreen.class);
+        intent.putExtra(Constants.Key_Name, fullName);
+        intent.putExtra(Constants.Key_Email, userEm);
+        intent.putExtra(Constants.Key_Image, image_pp);
+        startActivity(intent);
+        finish();
+    }
 }

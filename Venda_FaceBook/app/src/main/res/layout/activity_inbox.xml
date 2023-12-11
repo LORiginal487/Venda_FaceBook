@@ -11,8 +11,9 @@
             android:id="@+id/backBtn"
             android:layout_width="50dp"
             android:layout_height="50dp"
+            android:padding="10dp"
             android:background="@drawable/circleback"
-            android:src="@drawable/plussmall"
+            android:src="@drawable/angleleft"
             android:tint="@color/white"
             android:layout_margin="10dp"
             android:clickable="true"
@@ -31,7 +32,8 @@
             android:layout_margin="10dp"
             android:textSize="30sp"
             app:layout_constraintStart_toEndOf="@+id/backBtn"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="@id/backBtn"
+            app:layout_constraintBottom_toBottomOf="@id/backBtn"/>
 
 
     <LinearLayout
@@ -63,7 +65,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:ems="10"
-            android:inputType="textPassword"
+            android:inputType="text"
             android:hint="@string/search"
             android:textColorHint="@color/c2.2"
             android:textColor="@color/white"
@@ -88,10 +90,9 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     <ProgressBar
         android:id="@+id/progressBar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:layout_gravity="center"
-        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

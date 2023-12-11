@@ -2,6 +2,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <solid android:color="@color/c2" /> <!-- Background color of the LinearLayout -->
     <corners android:topLeftRadius="50dp"
-        android:topRightRadius="50dp" /><!-- Adjust the radius to control corner curvature -->
+        android:bottomLeftRadius="50dp" /><!-- Adjust the radius to control corner curvature -->
 
 </shape>

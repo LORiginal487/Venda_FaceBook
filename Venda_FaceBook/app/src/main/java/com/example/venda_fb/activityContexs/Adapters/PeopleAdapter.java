@@ -13,30 +13,41 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.venda_fb.R;
+import com.example.venda_fb.activityContexs.Listeners.UserListener;
+import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.Post;
 import com.example.venda_fb.activityContexs.utilities.User;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
+import java.util.Objects;
 
 public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHolder>{
     private final List<User> users;
     String peopleToShow;
+    UserListener userL;
 
-    public PeopleAdapter(List<User> users, String peopleToShow) {
+    public PeopleAdapter(List<User> users, String peopleToShow, UserListener userL) {
         this.users = users;
         this.peopleToShow =peopleToShow;
+        this.userL = userL;
     }
 
     @NonNull
     @Override
     public PeopleAdapter.UserViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
-        if(peopleToShow == "allPpl"){
+        if(peopleToShow == Constants.Key_Every_Person){
             view = LayoutInflater.from(parent.getContext()).inflate(R.layout.people, parent, false);
             return new UserViewHolder(view);
-        }
-        else{
+        } else if (peopleToShow == Constants.Key_Suggestion) {
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_sugg_list, parent, false);
+            return new UserViewHolder(view);
+        }else if (peopleToShow == Constants.Key_Friends) {
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friends_list, parent, false);
+        return new UserViewHolder(view);
+    }
+    else{
             return null;
         }
     }
@@ -58,10 +69,11 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHo
             this.itemView = itemView;
         }
             void setPersonData(User user) {
-            if(peopleToShow == "allPpl"){
+                itemView.setOnClickListener(v -> userL.onUserClick(user));
+            if(Objects.equals(peopleToShow, Constants.Key_Every_Person)){
                 TextView names = itemView.findViewById(R.id.posterName);
                 names.setText((user.name +" "+ user.surname).toUpperCase());
-                //posterPP, postedPic, postTime, postTxt, postLikes, postComments;
+
                 TextView email = itemView.findViewById(R.id.email);
                 email.setText(user.email);
 
@@ -69,6 +81,18 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHo
                 imageProfile.setImageBitmap(getUserImage(user.image));
 
             }
+            else {
+                    TextView names = itemView.findViewById(R.id.theirName);
+                    names.setText((user.name +" "+ user.surname).toUpperCase());
+
+                    TextView email = itemView.findViewById(R.id.email);
+                    email.setText(user.email);
+
+                    RoundedImageView imageProfile = itemView.findViewById(R.id.image);
+                    imageProfile.setImageBitmap(getUserImage(user.image));
+
+            }
+
             /*TextView names = itemView.findViewById(R.id.posterName);
             names.setText(post.posterNames);
             //posterPP, postedPic, postTime, postTxt, postLikes, postComments;

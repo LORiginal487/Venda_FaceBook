@@ -32,7 +32,10 @@ public class Constants {
     public static final String Key_Message = "message";
     public static final String Key_Receiver_ID = "ReceiverID";
 
-
+    public static final String Key_Suggestion= "Suggestion";
+    public static final String Key_Request = "Request";
+    public static final String Key_Friends = "Friends";
+    public static final String Key_Every_Person = "Every_Person";
 
 
 

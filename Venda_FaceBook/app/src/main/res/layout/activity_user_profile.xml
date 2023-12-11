@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/c1"
+    tools:context=".activityContexs.activityContexs.User_Profile">
+    <LinearLayout
+        android:id="@+id/headerHome"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/c1"
+        android:gravity="center_vertical|end"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="30dp"
+            android:text="User Profile"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/addPost"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circleback"
+            android:src="@drawable/plussmall"
+            android:tint="@color/white"
+            android:layout_marginEnd="10dp"
+            android:clickable="true"
+            android:onClick="addPostPage"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/search"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:background="@drawable/circleback"
+            android:src="@drawable/search"
+            android:tint="@color/white"
+            android:layout_marginEnd="10dp"
+            android:clickable="true"
+            android:onClick="search"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/textPpl"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:background="@drawable/circleback"
+            android:src="@drawable/paperplanez"
+            android:tint="@color/white"
+            android:layout_marginEnd="5dp"
+            android:clickable="true"
+            android:onClick="inbox"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/profileHolder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toBottomOf="@id/headerHome">
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constrainnnn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imageBG"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/c2"
+                android:clickable="true"
+                android:onClick="addBackGround"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/myPP"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:background="@drawable/circleback"
+                android:padding="5dp"
+                android:scaleType="centerCrop"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="@+id/imageBG"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:riv_oval="true" />
+
+            <TextView
+                android:id="@+id/nameDis"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/name"
+                android:textColor="@color/white"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/myPP" />
+
+            <TextView
+                android:id="@+id/Bio"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@string/enter_your_bio_here"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:clickable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameDis"
+                app:layout_constraintBottom_toTopOf="@+id/message"
+                app:layout_constraintWidth_percent="0.6" />
+
+            <TextView
+                android:id="@+id/Friend_Status"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="@string/status"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:layout_margin="5dp"
+                android:padding="3dp"
+                android:gravity="center"
+                android:background="@drawable/buttom_shape"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/message"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+            <TextView
+                android:id="@+id/message"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:background="@drawable/buttom_shape"
+                android:padding="3dp"
+                android:gravity="center"
+                android:text="@string/message"
+                android:textColor="@color/white"
+                android:textSize="15sp"
+                android:onClick="openChat"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/Friend_Status"
+                 />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            android:padding="5dp"
+            android:visibility="gone"
+            android:layout_marginBottom="150dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/homeBottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/c1"
+        android:gravity="center"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.10"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/homeBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/circleback"
+            android:src="@drawable/home"
+            android:padding="10dp"
+            android:tint="@color/white"
+            android:clickable="true"
+            android:onClick="openHome"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/friendsBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/circleback"
+            android:src="@drawable/users"
+            android:padding="10dp"
+            android:tint="@color/white"
+            android:clickable="true"
+            android:onClick="friendsList"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/profilebtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/pressedicon"
+            android:padding="10dp"
+            android:src="@drawable/user"
+            android:tint="@color/white"
+            android:clickable="true"
+            android:onClick="profile"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/notificationsBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/circleback"
+            android:src="@drawable/bell"
+            android:padding="10dp"
+            android:tint="@color/white"
+            android:clickable="true"
+            android:onClick="notifications"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/menubtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="10dp"
+            android:background="@drawable/circleback"
+            android:padding="10dp"
+            android:src="@drawable/menuburger"
+            android:tint="@color/white"
+            android:clickable="true"
+            android:onClick="menu"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:riv_oval="true" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

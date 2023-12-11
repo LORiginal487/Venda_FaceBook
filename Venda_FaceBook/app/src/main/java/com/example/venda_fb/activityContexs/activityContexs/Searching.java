@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.PeopleAdapter;
 import com.example.venda_fb.activityContexs.Adapters.ProfileAdapter;
+import com.example.venda_fb.activityContexs.Listeners.UserListener;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.Post;
@@ -29,10 +30,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Searching extends AppCompatActivity {
+public class Searching extends AppCompatActivity implements UserListener {
     RoundedImageView imageViewPP;
     TextView nameV, bioV;
     EditText searchbar;
@@ -92,7 +94,7 @@ public class Searching extends AppCompatActivity {
 
                                 }
                                 if (userz.size() > 0) {
-                                    PeopleAdapter peopleAdapter = new PeopleAdapter(userz,peopleTshow);
+                                    PeopleAdapter peopleAdapter = new PeopleAdapter(userz,Constants.Key_Every_Person, Searching.this);
                                     peopleView.setAdapter(peopleAdapter);
                                     peopleView.setVisibility(View.VISIBLE);
 
@@ -113,5 +115,19 @@ public class Searching extends AppCompatActivity {
     public void goHome(View view) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onUserClick(User user) {
+        Log.d("1234567654321","--");
+        Intent intent = new Intent(getApplicationContext(), User_Profile.class);
+        Log.d("1234567654321","--=====");
+
+        intent.putExtra(Constants.Key_Name, user.name +" "+ user.surname);
+        intent.putExtra(Constants.Key_Email, user.email);
+        intent.putExtra(Constants.Key_Image, user.image);
+        Log.d("1234567654321","----------------"+user.name);
+        startActivity(intent);
+        finish();
     }
 }

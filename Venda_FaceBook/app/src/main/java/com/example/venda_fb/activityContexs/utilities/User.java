@@ -1,7 +1,9 @@
 package com.example.venda_fb.activityContexs.utilities;
 
-public class User {
-    public String name, surname, email, image;
+import java.io.Serializable;
+
+public class User implements Serializable {
+    public String name, surname, email, image, token, id;
 
 
 }

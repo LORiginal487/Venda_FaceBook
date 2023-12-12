@@ -89,6 +89,8 @@ public class Searching extends AppCompatActivity implements UserListener {
                                         user.surname = queryDocumentSnapshot.getString(Constants.Key_Surname);
                                         user.email = queryDocumentSnapshot.getString(Constants.Key_Email);
                                         user.image = queryDocumentSnapshot.getString(Constants.Key_Image);
+                                        user.token = queryDocumentSnapshot.getString(Constants.Key_FCM_Token);
+                                        user.id = queryDocumentSnapshot.getId();
                                         userz.add(user);
                                     }
 
@@ -123,9 +125,7 @@ public class Searching extends AppCompatActivity implements UserListener {
         Intent intent = new Intent(getApplicationContext(), User_Profile.class);
         Log.d("1234567654321","--=====");
 
-        intent.putExtra(Constants.Key_Name, user.name +" "+ user.surname);
-        intent.putExtra(Constants.Key_Email, user.email);
-        intent.putExtra(Constants.Key_Image, user.image);
+        intent.putExtra(Constants.Key_User, user);
         Log.d("1234567654321","----------------"+user.name);
         startActivity(intent);
         finish();

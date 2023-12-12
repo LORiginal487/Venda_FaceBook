@@ -79,17 +79,17 @@ public class User_Profile extends AppCompatActivity {
 
     private void setEverything(){
         //getIntent().getStringExtra(Constants.Key_Email)
-
+        userTo =(User) getIntent().getSerializableExtra(Constants.Key_User);
         Log.d("1234567654321","----------------");
-        fullName = getIntent().getStringExtra(Constants.Key_Name);
+        fullName = userTo.name;
         Log.d("1234567654321","----------------");
         nameV.setText(fullName.toUpperCase());
         Log.d("1234567654321","----------------");
         Log.d("1234567654321", "12"+fullName);
-        image_pp = getIntent().getStringExtra(Constants.Key_Image);
+        image_pp = userTo.image;
         imageViewPP.setImageBitmap(getBitmap(image_pp));
         bioV.setText("not set");
-        userEm = getIntent().getStringExtra(Constants.Key_Email);
+
 
     }
     private Bitmap getBitmap(String imageStr){
@@ -104,6 +104,7 @@ public class User_Profile extends AppCompatActivity {
         PostHistory = findViewById(R.id.recView);
         loadingProgressBar = findViewById(R.id.progressBar);
     }
+
     /*private String getImage(Bitmap bitmap){
         int previewWidth = 150;
         int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
@@ -153,7 +154,7 @@ public class User_Profile extends AppCompatActivity {
 
                                 for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
                                     if (documentName.equals(queryDocumentSnapshot.getId())
-                                            &&documentName.contains(userEm)) {
+                                            &&documentName.contains(userTo.email)) {
                                         Post post = new Post();
                                         post.posterNames = queryDocumentSnapshot.getString(Constants.Key_P_Names);
                                         post.postTime = queryDocumentSnapshot.getString(Constants.Key_Post_Time);
@@ -251,9 +252,7 @@ public class User_Profile extends AppCompatActivity {
 
     public void openChat(View view) {
         Intent intent = new Intent(getApplicationContext(), ChatScreen.class);
-        intent.putExtra(Constants.Key_Name, fullName);
-        intent.putExtra(Constants.Key_Email, userEm);
-        intent.putExtra(Constants.Key_Image, image_pp);
+        intent.putExtra(Constants.Key_User, userTo);
         startActivity(intent);
         finish();
     }

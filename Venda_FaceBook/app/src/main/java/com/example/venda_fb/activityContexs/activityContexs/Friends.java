@@ -184,6 +184,8 @@ public class Friends extends AppCompatActivity implements UserListener {
                                         user.surname = queryDocumentSnapshot.getString(Constants.Key_Surname);
                                         user.email = queryDocumentSnapshot.getString(Constants.Key_Email);
                                         user.image = queryDocumentSnapshot.getString(Constants.Key_Image);
+                                        user.token = queryDocumentSnapshot.getString(Constants.Key_FCM_Token);
+                                        user.id = queryDocumentSnapshot.getId();
                                         userz.add(user);
                                     }
 
@@ -209,8 +211,7 @@ public class Friends extends AppCompatActivity implements UserListener {
     @Override
     public void onUserClick(User user) {
         Intent intent = new Intent(getApplicationContext(), User_Profile.class);
-        intent.putExtra(Constants.Key_User, (Serializable) user);
-
+        intent.putExtra(Constants.Key_User, user);
         startActivity(intent);
         finish();
     }

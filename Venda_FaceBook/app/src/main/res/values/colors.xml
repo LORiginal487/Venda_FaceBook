@@ -8,5 +8,7 @@
     <color name="c3">#230046</color>
     <color name="c4">#320064</color>
     <color name="c5">#3700b3</color>
+    <color name="c2.1">#c3c3c3</color>
+    <color name="green">#008000</color>
     <color name="red">#e3170a</color>
 </resources>

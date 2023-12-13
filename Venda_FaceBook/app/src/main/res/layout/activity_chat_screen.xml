@@ -46,7 +46,7 @@
         android:id="@+id/recycleVchat"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/c2.2"
+        android:background="@color/c2.1"
         android:visibility="gone"
         app:stackFromEnd="true"
         app:layout_constraintHeight_percent="0.85"

@@ -120,8 +120,8 @@ public class ChatScreen extends AppCompatActivity {
     }
     public void sendMessage(View view){
         HashMap<String, Object> message = new HashMap<>();
-        message.put(Constants.Key_Sender_ID, managePreferences.getString(Constants.Key_Users_Id));
-        message.put(Constants.Key_Receiver_ID, userTo.id);
+        message.put(Constants.Key_Sender_ID, managePreferences.getString(Constants.Key_Email));
+        message.put(Constants.Key_Receiver_ID, userTo.email);
         message.put(Constants.Key_Message, intextBox.getText().toString());
         message.put(Constants.Key_Timestamp, new Date());
         db.collection(Constants.Key_Collection_Chat).add(message);
@@ -141,12 +141,12 @@ public class ChatScreen extends AppCompatActivity {
     }
     private void ListenMessages(){
         db.collection(Constants.Key_Collection_Chat)
-                .whereEqualTo(Constants.Key_Sender_ID, managePreferences.getString(Constants.Key_Users_Id))
-                .whereEqualTo(Constants.Key_Receiver_ID, userTo.id)
+                .whereEqualTo(Constants.Key_Sender_ID, managePreferences.getString(Constants.Key_Email))
+                .whereEqualTo(Constants.Key_Receiver_ID, userTo.email)
                 .addSnapshotListener(eventListener);
         db.collection(Constants.Key_Collection_Chat)
-                .whereEqualTo(Constants.Key_Sender_ID, userTo.id)
-                .whereEqualTo(Constants.Key_Receiver_ID, managePreferences.getString(Constants.Key_Users_Id))
+                .whereEqualTo(Constants.Key_Sender_ID, userTo.email)
+                .whereEqualTo(Constants.Key_Receiver_ID, managePreferences.getString(Constants.Key_Email))
                 .addSnapshotListener(eventListener);
     }
 

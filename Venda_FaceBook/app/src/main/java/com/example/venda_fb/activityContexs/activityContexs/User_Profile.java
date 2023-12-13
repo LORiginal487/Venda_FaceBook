@@ -88,7 +88,12 @@ public class User_Profile extends AppCompatActivity {
         Log.d("1234567654321", "12"+fullName);
         image_pp = userTo.image;
         imageViewPP.setImageBitmap(getBitmap(image_pp));
-        bioV.setText("not set");
+        if(userTo.biot !=null){
+            bioV.setText(userTo.biot);
+        }
+        if(userTo.bckGnd != null){
+            background.setImageBitmap(getBitmap(userTo.bckGnd));
+        }
 
 
     }

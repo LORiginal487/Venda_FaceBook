@@ -90,6 +90,7 @@ public class Sign_In extends AppCompatActivity {
                             managePreferences.putString(Constants.Key_Image, image);
                             managePreferences.putString(Constants.Key_Bio, bio);
                             managePreferences.putString(Constants.Key_BackgroundPic, backGround);
+                            showToast("you in"+managePreferences.getString(Constants.Key_Email));
                             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);

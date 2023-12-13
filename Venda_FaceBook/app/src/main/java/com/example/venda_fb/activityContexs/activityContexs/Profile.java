@@ -82,14 +82,14 @@ public class Profile extends AppCompatActivity {
         Log.d("wwwwwwwwwwwwwww", "12"+fullName);
         imageViewPP.setImageBitmap(getBitmap(managePreferences.getString(Constants.Key_Image)));
         Log.d("wwwwwwwwwwwwwww", "123"+managePreferences.getString(Constants.Key_Image));
-        if(!managePreferences.getString(Constants.Key_Bio).isEmpty() && managePreferences.getString(Constants.Key_Bio)!=null) {
+        if(managePreferences.getString(Constants.Key_Bio)!=null) {
             bioV.setText(managePreferences.getString(Constants.Key_Bio));
-            Log.d("wwwwwwwwwwwwwww", "1234"+managePreferences.getString(Constants.Key_Bio));
+            Log.d("wwwwwwwwwwwwwww", "1234" + managePreferences.getString(Constants.Key_Bio));
         }
         Log.d("wwwwwwwwwwwwwww", "1234---");
-        if(!managePreferences.getString(Constants.Key_BackgroundPic).isEmpty() && managePreferences.getString(Constants.Key_BackgroundPic)!=null) {
+        if(managePreferences.getString(Constants.Key_BackgroundPic)!=null) {
             background.setImageBitmap(getBitmap(managePreferences.getString(Constants.Key_BackgroundPic)));
-            Log.d("wwwwwwwwwwwwwww", "12345"+managePreferences.getString(Constants.Key_BackgroundPic));
+            Log.d("wwwwwwwwwwwwwww", "12345====" + managePreferences.getString(Constants.Key_BackgroundPic));
         }
         Log.d("wwwwwwwwwwwwwww", "123456------");
 

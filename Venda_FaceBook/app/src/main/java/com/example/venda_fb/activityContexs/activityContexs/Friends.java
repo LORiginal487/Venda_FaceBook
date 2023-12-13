@@ -186,6 +186,9 @@ public class Friends extends AppCompatActivity implements UserListener {
                                         user.image = queryDocumentSnapshot.getString(Constants.Key_Image);
                                         user.token = queryDocumentSnapshot.getString(Constants.Key_FCM_Token);
                                         user.id = queryDocumentSnapshot.getId();
+                                        user.biot = queryDocumentSnapshot.getString(Constants.Key_Bio);
+                                        user.bckGnd = queryDocumentSnapshot.getString(Constants.Key_BackgroundPic);
+                                        Log.d("eeeeeeeeeeeeeeeeeeee","11111111");
                                         userz.add(user);
                                     }
 

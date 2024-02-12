@@ -38,7 +38,7 @@
         android:layout_marginEnd="5dp"
         android:textSize="16sp"
         app:layout_constraintEnd_toStartOf="@id/activeBuble"
-        app:layout_constraintTop_toTopOf="@+id/theirName"
+        app:layout_constraintTop_toBottomOf="@+id/theirName"
         />
 
     <TextView
@@ -52,7 +52,7 @@
         android:textColor="@color/white"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@id/image"
-        app:layout_constraintTop_toBottomOf="@+id/theirName"
+        app:layout_constraintTop_toBottomOf="@+id/time"
         app:layout_constraintStart_toEndOf="@+id/image" />
 
     <TextView

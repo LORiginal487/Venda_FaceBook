@@ -41,9 +41,12 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Profile extends AppCompatActivity {
@@ -158,7 +161,7 @@ public class Profile extends AppCompatActivity {
                                                 &&documentName.contains(managePreferences.getString(Constants.Key_Email))) {
                                             Post post = new Post();
                                             post.posterNames = queryDocumentSnapshot.getString(Constants.Key_P_Names);
-                                            post.postTime = queryDocumentSnapshot.getString(Constants.Key_Post_Time);
+                                            post.postTime = getRedableDate(queryDocumentSnapshot.getDate(Constants.Key_Post_Time));
                                             post.postTxt = queryDocumentSnapshot.getString(Constants.Key_P_Text);
                                             post.posterPP = queryDocumentSnapshot.getString(Constants.Key_Image_pp);
                                             post.postedPic = queryDocumentSnapshot.getString(Constants.Key_Picture);
@@ -191,6 +194,7 @@ public class Profile extends AppCompatActivity {
         Log.d("l3 1111111", "_______________");
         if(isLoading){
 
+
             loadingProgressBar.setVisibility(View.VISIBLE);
             Log.d("l4 1111111", "_______________");
         }else{
@@ -200,6 +204,10 @@ public class Profile extends AppCompatActivity {
         }
 
     }
+    private String getRedableDate(Date date){
+        return new SimpleDateFormat("HH:mm - dd/MM/yyyy", Locale.getDefault()).format(date);
+    }
+
     private void addInDb(){
         showToast("Checking");
 

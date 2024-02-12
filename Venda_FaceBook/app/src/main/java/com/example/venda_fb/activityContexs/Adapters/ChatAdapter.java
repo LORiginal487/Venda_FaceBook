@@ -34,7 +34,6 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         //check type of message either and pick a layout related 2 the message
         if (viewType == view_TYPE_SENT) {
-
             View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_sent_message, parent, false);
             return new sentMessageHolder(view1);
         } else {

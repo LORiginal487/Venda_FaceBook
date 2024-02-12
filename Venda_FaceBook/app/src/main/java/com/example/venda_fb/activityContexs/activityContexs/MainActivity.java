@@ -27,9 +27,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -74,7 +77,9 @@ public class MainActivity extends AppCompatActivity {
                                     }
                                     Post post = new Post();
                                     post.posterNames = queryDocumentSnapshot.getString(Constants.Key_P_Names);
-                                    post.postTime = queryDocumentSnapshot.getString(Constants.Key_Post_Time);
+
+                                    post.postTime = getRedableDate(queryDocumentSnapshot.getDate(Constants.Key_Post_Time));
+
                                     post.postTxt = queryDocumentSnapshot.getString(Constants.Key_P_Text);
                                     post.posterPP = queryDocumentSnapshot.getString(Constants.Key_Image_pp);
                                     post.postedPic = queryDocumentSnapshot.getString(Constants.Key_Picture);
@@ -114,6 +119,9 @@ public class MainActivity extends AppCompatActivity {
             Log.d("l5 1111111", "_______________");
         }
 
+    }
+    private String getRedableDate(Date date){
+        return new SimpleDateFormat("HH:mm - dd/MM/yyyy", Locale.getDefault()).format(date);
     }
 
     public void addPostPage(View view) {

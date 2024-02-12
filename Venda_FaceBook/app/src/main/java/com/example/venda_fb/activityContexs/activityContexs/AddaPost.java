@@ -37,9 +37,12 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class AddaPost extends AppCompatActivity {
@@ -140,7 +143,7 @@ public class AddaPost extends AppCompatActivity {
         post.put(Constants.Key_P_Text, postText);
         post.put(Constants.Key_Image_pp, managePreferences.getString(Constants.Key_Image));
         post.put(Constants.Key_Picture, imagePosted);
-        post.put(Constants.Key_Post_Time, "00:00");
+        post.put(Constants.Key_Post_Time, new Date());
         post.put(Constants.Key_Likes, "0");
         post.put(Constants.Key_Comments, "0");
         Log.d("12345566777", "123456789"+managePreferences.getString(Constants.Key_Image));
@@ -211,5 +214,6 @@ public class AddaPost extends AppCompatActivity {
     private void showToast(String mssg){
         Toast.makeText(this, mssg, Toast.LENGTH_SHORT).show();
     }
+
 
 }

@@ -22,12 +22,16 @@ import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.Post;
 import com.example.venda_fb.activityContexs.utilities.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.makeramen.roundedimageview.RoundedImageView;
+
+import org.checkerframework.checker.units.qual.C;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -54,6 +58,7 @@ public class ChatScreen extends AppCompatActivity {
     ChatAdapter chatAdapter;
     List<Post> postz = new ArrayList<>();
     String fullName, image_pp,imageBG, userEm;
+    String convoID;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +130,21 @@ public class ChatScreen extends AppCompatActivity {
         message.put(Constants.Key_Message, intextBox.getText().toString());
         message.put(Constants.Key_Timestamp, new Date());
         db.collection(Constants.Key_Collection_Chat).add(message);
+        if(convoID != null){
+            updateConvo(intextBox.getText().toString());
+        }else{
+            HashMap<String, Object> convoHM = new HashMap<>();
+            convoHM.put(Constants.Key_Sender_ID, managePreferences.getString(Constants.Key_Users_Id));
+            convoHM.put(Constants.Key_Sender_Name, managePreferences.getString(Constants.Key_Name));
+            convoHM.put(Constants.Key_Sender_Image, managePreferences.getString(Constants.Key_Image));
+            convoHM.put(Constants.Key_Receiver_ID, userTo.email);
+            convoHM.put(Constants.Key_Receiver_Name, userTo.name);
+            convoHM.put(Constants.Key_Receiver_Image, userTo.image);
+            convoHM.put(Constants.Key_Last_Message, intextBox.getText().toString());
+            convoHM.put(Constants.Key_Timestamp, new Date());
+            addConvo2Db(convoHM);
+
+        }
         intextBox.setText(null);
     }
     private String getRedableDate(Date date){
@@ -195,6 +215,49 @@ public class ChatScreen extends AppCompatActivity {
         System.out.println("ok we in 1");
         Log.d("ok", "22222222222222222");
         loading(false); // Hide the progress bar
+        if(convoID == null){
+            checkForConvos();
+        }
+    };
+    private void addConvo2Db(HashMap<String, Object> convoHM){
+        db.collection(Constants.Key_Collection_Convos)
+                .add(convoHM)
+                .addOnSuccessListener(documentReference -> convoID = documentReference.getId());
+    }
+    private void updateConvo(String message ){
+        DocumentReference documentReference =
+                db.collection(Constants.Key_Collection_Convos).document(convoID);
+        documentReference.update(
+                Constants.Key_Last_Message, message,
+                Constants.Key_Timestamp, new Date()
+        );
+    }
+    private void checkForConvos(){
+        if(chatMessages.size() != 0){
+            checkForConvosRemotly(
+                    managePreferences.getString(Constants.Key_Users_Id),
+                    userTo.id
+            );
+            checkForConvosRemotly(
+                    userTo.id,
+                    managePreferences.getString(Constants.Key_Users_Id)
+            );
+        }
+    }
+    private void checkForConvosRemotly(String senderId, String receiverId){
+        db.collection(Constants.Key_Collection_Convos)
+                .whereEqualTo(Constants.Key_Sender_ID, senderId )
+                .whereEqualTo(Constants.Key_Receiver_ID, receiverId)
+                .get()
+                .addOnCompleteListener(convoCompleteListener);
+
+    }
+    private final OnCompleteListener<QuerySnapshot> convoCompleteListener = task ->
+    {
+        if(task.isSuccessful() && task.getResult() != null && task.getResult().getDocuments().size() > 0){
+            DocumentSnapshot documentSnapshot = task.getResult().getDocuments().get(0);
+            convoID = documentSnapshot.getId();
+        }
     };
 
 

@@ -21,6 +21,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.venda_fb.R;
+import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.Post;
@@ -49,7 +50,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class Profile extends AppCompatActivity {
+public class Profile extends AppCompatActivity implements LikesAndCommentListener {
     RoundedImageView imageViewPP;
     TextView nameV, bioV;
     ImageView background;
@@ -173,7 +174,7 @@ public class Profile extends AppCompatActivity {
 
                                     }
                                     if (postz.size() > 0) {
-                                        ProfileAdapter profileAdapter = new ProfileAdapter(postz);
+                                        ProfileAdapter profileAdapter = new ProfileAdapter(postz, Profile.this);
                                         myPostHistory.setAdapter(profileAdapter);
                                         myPostHistory.setVisibility(View.VISIBLE);
                                         loading(false);
@@ -288,5 +289,15 @@ public class Profile extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         pickImage.launch(intent);
+    }
+
+    @Override
+    public void onCommentClicked(Post post) {
+
+    }
+
+    @Override
+    public void onLikeClicked(Post post) {
+
     }
 }

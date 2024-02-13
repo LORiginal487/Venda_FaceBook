@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.ProfileAdapter;
+import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.Post;
@@ -34,7 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements LikesAndCommentListener {
 
     ProgressBar loadingProgressBar;
     RecyclerView feedPosts;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                                 if (postz.size() > 0) {
 
                                     Collections.shuffle(postz);
-                                    ProfileAdapter profileAdapter = new ProfileAdapter(postz);
+                                    ProfileAdapter profileAdapter = new ProfileAdapter(postz, MainActivity.this);
                                     feedPosts.setAdapter(profileAdapter);
                                     feedPosts.setVisibility(View.VISIBLE);
                                     loading(false);
@@ -158,5 +159,15 @@ public class MainActivity extends AppCompatActivity {
     public void profile(View view) {
         Intent intent = new Intent(getApplicationContext(), Profile.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onCommentClicked(Post post) {
+
+    }
+
+    @Override
+    public void onLikeClicked(Post post) {
+
     }
 }

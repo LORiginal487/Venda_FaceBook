@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.venda_fb.R;
+import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
 import com.example.venda_fb.activityContexs.utilities.Post;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -20,7 +21,9 @@ import java.util.List;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserViewHolder>{
     private final List<Post> post;
-    public ProfileAdapter(List<Post> post ) {
+    LikesAndCommentListener likesAndCommentListener;
+    public ProfileAdapter(List<Post> post, LikesAndCommentListener likesAndCommentListener ) {
+        this.likesAndCommentListener = likesAndCommentListener;
         this.post = post;
     }
 
@@ -43,9 +46,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
 
     public static class UserViewHolder extends RecyclerView.ViewHolder{
         View itemView;
+
         public UserViewHolder(@NonNull View itemView) {
             super(itemView);
             this.itemView = itemView;
+
         }
         void setPostData(Post post) {
             TextView names = itemView.findViewById(R.id.posterName);

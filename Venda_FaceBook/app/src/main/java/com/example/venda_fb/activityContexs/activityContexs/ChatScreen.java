@@ -148,7 +148,7 @@ public class ChatScreen extends AppCompatActivity {
         intextBox.setText(null);
     }
     private String getRedableDate(Date date){
-        return new SimpleDateFormat("MMMM dd, yyyy - hh:mm a", Locale.getDefault()).format(date);
+        return new SimpleDateFormat(" HH:mm ", Locale.getDefault()).format(date);
     }
     private void callClasses(){
         managePreferences = new ManagePreferences(getApplicationContext());

@@ -22,6 +22,7 @@ import android.widget.Toast;
 
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.ProfileAdapter;
+import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.Post;
@@ -46,7 +47,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class User_Profile extends AppCompatActivity {
+public class User_Profile extends AppCompatActivity implements LikesAndCommentListener {
     private User userTo;
     RoundedImageView imageViewPP;
     TextView nameV, bioV;
@@ -174,7 +175,7 @@ public class User_Profile extends AppCompatActivity {
 
                                 }
                                 if (postz.size() > 0) {
-                                    ProfileAdapter profileAdapter = new ProfileAdapter(postz);
+                                    ProfileAdapter profileAdapter = new ProfileAdapter(postz, User_Profile.this);
                                     PostHistory.setAdapter(profileAdapter);
                                     PostHistory.setVisibility(View.VISIBLE);
                                     loading(false);
@@ -260,5 +261,15 @@ public class User_Profile extends AppCompatActivity {
         intent.putExtra(Constants.Key_User, userTo);
         startActivity(intent);
         finish();
+    }
+
+    @Override
+    public void onCommentClicked(Post post) {
+
+    }
+
+    @Override
+    public void onLikeClicked(Post post) {
+
     }
 }

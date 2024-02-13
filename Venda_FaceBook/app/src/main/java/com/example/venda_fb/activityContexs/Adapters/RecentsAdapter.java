@@ -80,7 +80,7 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.conversa
                 return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             }
             private String getRedableDate(Date date){
-                return new SimpleDateFormat("HH:mm - dd/MM/yyyy", Locale.getDefault()).format(date);
+                return new SimpleDateFormat("HH:mm", Locale.getDefault()).format(date);
             }
         }
 }

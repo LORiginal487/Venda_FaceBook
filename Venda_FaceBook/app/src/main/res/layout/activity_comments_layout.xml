@@ -161,10 +161,42 @@
         android:overScrollMode="never"
         android:padding="5dp"
         android:visibility="visible"
-        android:layout_marginBottom="150dp"
+        android:layout_marginTop="15dp"
+        app:layout_constraintHeight_percent="0.4"
         app:layout_constraintTop_toBottomOf="@+id/likeBtn"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/sendBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:padding="10dp"
+        android:background="@drawable/circleback"
+        android:src="@drawable/round_send_24"
+        android:tint="@color/white"
+        android:layout_margin="10dp"
+        android:clickable="true"
+        android:onClick="addComment"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:riv_oval="true" />
+    <EditText
+        android:id="@+id/typeBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:padding="10dp"
+        android:inputType="text"
+        android:background="@drawable/intextbos"
+        android:hint="@string/comment"
+        android:textColorHint="@color/c2.2"
+        android:textColor="@color/white"
+        tools:layout_editor_absoluteY="118dp"
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintTop_toTopOf="@id/sendBtn"
+        app:layout_constraintBottom_toBottomOf="@id/sendBtn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sendBtn"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

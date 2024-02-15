@@ -11,6 +11,7 @@ public class Constants {
 
 
 
+    public static final String Key_Post = "post";
     public static final String Key_Collection_Posts = "posts";
     public static final String Key_P_ID = "posts_ID";
     public static final String Key_P_Names = "names";
@@ -45,6 +46,13 @@ public class Constants {
     public static final String Key_Receiver_Image = "Receiver_Image";
     public static final String Key_Last_Message = "Last_Message";
 
+    public static final String Key_Collection_Likes= "All_Likes";
+    public static final String Key_Liker_Name = "Liker_Name";
+    public static final String Key_Post_ID_like = "Post_ID";
+
+    public static final String Key_Collection_Comments= "All_Comments";
+    public static final String Key_Commenter_Name = "Sender_Name";
+    public static final String Key_Post_ID_Comment = "Post_ID";
 
 
 

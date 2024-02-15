@@ -46,7 +46,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AddaPost extends AppCompatActivity {
-    String fullName, image,imagePosted = "", postText,docName;
+    String fullName, image,imagePosted = "", postText,docName, email;
     Boolean addImage = false;
     RoundedImageView imageViewPP;
     TextView nameV, addPict;
@@ -82,6 +82,7 @@ public class AddaPost extends AppCompatActivity {
     private void setUp(){
         fullName = managePreferences.getString(Constants.Key_Name )+" "+managePreferences.getString(Constants.Key_Surname);
         nameV.setText(fullName.toUpperCase());
+        email = managePreferences.getString(Constants.Key_Email );
         image = managePreferences.getString(Constants.Key_Image);
         byte[] bytes = Base64.decode(image, Base64.DEFAULT);
         Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -144,6 +145,7 @@ public class AddaPost extends AppCompatActivity {
         post.put(Constants.Key_Image_pp, managePreferences.getString(Constants.Key_Image));
         post.put(Constants.Key_Picture, imagePosted);
         post.put(Constants.Key_Post_Time, new Date());
+        post.put(Constants.Key_P_ID, docName+"post");
         post.put(Constants.Key_Likes, "0");
         post.put(Constants.Key_Comments, "0");
         Log.d("12345566777", "123456789"+managePreferences.getString(Constants.Key_Image));

@@ -169,6 +169,7 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
                                         post.postedPic = queryDocumentSnapshot.getString(Constants.Key_Picture);
                                         post.postLikes = queryDocumentSnapshot.getString(Constants.Key_Likes);
                                         post.postComments = queryDocumentSnapshot.getString(Constants.Key_Comments);
+                                        post.postID = queryDocumentSnapshot.getString(Constants.Key_P_ID);
 
                                         postz.add(post);
                                     }

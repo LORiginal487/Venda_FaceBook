@@ -124,6 +124,7 @@
         android:layout_height="50dp"
         android:text="@string/like"
         android:textColor="@color/c2.2"
+        android:clickable="true"
         android:textSize="16sp"
         android:gravity="center"
         app:layout_constraintWidth_percent="0.4"
@@ -144,6 +145,7 @@
 
     <TextView
         android:id="@+id/commentBtn"
+        android:clickable="true"
         android:layout_width="0dp"
         android:layout_height="50dp"
         android:gravity="center"

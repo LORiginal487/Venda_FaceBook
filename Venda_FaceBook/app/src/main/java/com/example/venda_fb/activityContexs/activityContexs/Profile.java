@@ -42,6 +42,7 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -167,6 +168,7 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
                                             post.posterPP = queryDocumentSnapshot.getString(Constants.Key_Image_pp);
                                             post.postedPic = queryDocumentSnapshot.getString(Constants.Key_Picture);
                                             post.postLikes = queryDocumentSnapshot.getString(Constants.Key_Likes);
+                                            post.postID = queryDocumentSnapshot.getString(Constants.Key_P_ID);
                                             post.postComments = queryDocumentSnapshot.getString(Constants.Key_Comments);
 
                                             postz.add(post);
@@ -293,7 +295,11 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
 
     @Override
     public void onCommentClicked(Post post) {
-
+        Log.d("l6 1111111", "_______________");
+        Intent intent = new Intent(this, CommentsLayout.class);
+        // Pass any necessary data to the CommentsLayout activity using extras
+        intent.putExtra(Constants.Key_Post, post);
+        startActivity(intent);
     }
 
     @Override

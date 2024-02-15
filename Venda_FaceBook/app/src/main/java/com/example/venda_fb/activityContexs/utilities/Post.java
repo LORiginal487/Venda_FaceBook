@@ -1,5 +1,7 @@
 package com.example.venda_fb.activityContexs.utilities;
 
-public class Post {
-    public String posterNames, posterPP, postedPic, postTime, postTxt, postLikes, postComments;
+import java.io.Serializable;
+
+public class Post implements Serializable {
+    public String posterNames, posterPP, postedPic, postTime, postTxt, postLikes, postComments, postID;
 }

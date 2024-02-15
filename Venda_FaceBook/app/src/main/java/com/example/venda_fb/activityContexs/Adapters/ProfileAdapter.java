@@ -19,10 +19,11 @@ import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
-public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserViewHolder>{
+public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserViewHolder> {
     private final List<Post> post;
-    LikesAndCommentListener likesAndCommentListener;
-    public ProfileAdapter(List<Post> post, LikesAndCommentListener likesAndCommentListener ) {
+    private final LikesAndCommentListener likesAndCommentListener;
+
+    public ProfileAdapter(List<Post> post, LikesAndCommentListener likesAndCommentListener) {
         this.likesAndCommentListener = likesAndCommentListener;
         this.post = post;
     }
@@ -44,7 +45,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
         return post.size();
     }
 
-    public static class UserViewHolder extends RecyclerView.ViewHolder{
+    class UserViewHolder extends RecyclerView.ViewHolder {
         View itemView;
 
         public UserViewHolder(@NonNull View itemView) {
@@ -52,26 +53,36 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
             this.itemView = itemView;
 
         }
+
         void setPostData(Post post) {
             TextView names = itemView.findViewById(R.id.posterName);
             names.setText(post.posterNames);
-            //posterPP, postedPic, postTime, postTxt, postLikes, postComments;
             TextView time = itemView.findViewById(R.id.timePosted);
             time.setText(post.postTime);
             TextView txt = itemView.findViewById(R.id.txtPOSTED);
             txt.setText(post.postTxt);
             RoundedImageView imageProfile = itemView.findViewById(R.id.posterPP);
-            imageProfile.setImageBitmap(getUserImage(post.posterPP));
+            imageProfile.setImageBitmap(getBitmapFromBase64(post.posterPP));
             ImageView postedImage = itemView.findViewById(R.id.picture);
-            postedImage.setImageBitmap(getUserImage(post.postedPic));
+            postedImage.setImageBitmap(getBitmapFromBase64(post.postedPic));
             TextView likesC = itemView.findViewById(R.id.likesCount);
             likesC.setText(post.postLikes);
             TextView comntsC = itemView.findViewById(R.id.commentCount);
             comntsC.setText(post.postComments);
+            TextView comntB = itemView.findViewById(R.id.commentBtn);
+            TextView likeB = itemView.findViewById(R.id.likeBtn);
+            comntB.setOnClickListener(v -> {
+
+                likesAndCommentListener.onCommentClicked(post);
+            });
+            likeB.setOnClickListener(v -> {
+                likesAndCommentListener.onLikeClicked(post);
+            });
         }
-        private Bitmap getUserImage(String encodedImg) {
-            byte[] bytes = Base64.decode(encodedImg, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+
+        private Bitmap getBitmapFromBase64(String encodedImg) {
+            byte[] decodedString = Base64.decode(encodedImg, Base64.DEFAULT);
+            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         }
     }
 }

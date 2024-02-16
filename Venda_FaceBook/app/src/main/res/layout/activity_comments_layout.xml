@@ -160,11 +160,22 @@
         android:orientation="vertical"
         android:overScrollMode="never"
         android:padding="5dp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:layout_marginTop="15dp"
         app:layout_constraintHeight_percent="0.4"
         app:layout_constraintTop_toBottomOf="@+id/likeBtn"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@id/typeBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/likeBtn"/>
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/sendBtn"

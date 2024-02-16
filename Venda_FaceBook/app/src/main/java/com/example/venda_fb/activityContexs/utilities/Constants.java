@@ -51,8 +51,12 @@ public class Constants {
     public static final String Key_Post_ID_like = "Post_ID";
 
     public static final String Key_Collection_Comments= "All_Comments";
-    public static final String Key_Commenter_Name = "Sender_Name";
+    public static final String Key_Commenter_Name = "Commenter_Name";
+    public static final String Key_Commenter_PP = "Commenter_pp";
+    public static final String Key_Commenter_TXT = "Comment";
+    public static final String Key_Commenter_TIME = "Comment_time";
     public static final String Key_Post_ID_Comment = "Post_ID";
+    public static final String Key_Comment_ID = "Comment_ID";
 
 
 

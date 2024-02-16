@@ -3,6 +3,7 @@ package com.example.venda_fb.activityContexs.Adapters;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,28 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
+import com.example.venda_fb.activityContexs.activityContexs.Profile;
+import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.Post;
+import com.example.venda_fb.activityContexs.utilities.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.makeramen.roundedimageview.RoundedImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserViewHolder> {
     private final List<Post> post;
     private final LikesAndCommentListener likesAndCommentListener;
+    FirebaseFirestore db;
+
+    List<String> documentNames = new ArrayList<>();
 
     public ProfileAdapter(List<Post> post, LikesAndCommentListener likesAndCommentListener) {
         this.likesAndCommentListener = likesAndCommentListener;
@@ -78,11 +93,70 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
             likeB.setOnClickListener(v -> {
                 likesAndCommentListener.onLikeClicked(post);
             });
+            names.setOnClickListener(v -> {
+                likesAndCommentListener.onPersonClicked(extractUser(post.postID));
+            });
+            imageProfile.setOnClickListener(v -> {
+                likesAndCommentListener.onPersonClicked(extractUser(post.postID));
+            });
+            postedImage.setOnClickListener(v -> {
+                likesAndCommentListener.onPictureClick(post);
+            });
         }
 
         private Bitmap getBitmapFromBase64(String encodedImg) {
             byte[] decodedString = Base64.decode(encodedImg, Base64.DEFAULT);
             return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        }
+        private User extractUser(String postId){
+            db = FirebaseFirestore.getInstance();
+            CollectionReference collectionRef = db.collection(Constants.Key_Collection_Users);
+            String[] parts = postId.split("-");
+
+            // Extract the words that come before "hill" and including "hill"
+            String email = parts[0].trim();
+            collectionRef.get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    // Get the document ID (name) and add it to the list
+                                    String documentName = document.getId();
+                                    documentNames.add(documentName);
+
+                                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
+                                        if (documentName.equals(queryDocumentSnapshot.getId())
+                                                &&documentName.contains(email)) {
+                                            User user1 = new User();
+                                            user1.name = queryDocumentSnapshot.getString(Constants.Key_Name);
+                                            user1.email = queryDocumentSnapshot.getString(Constants.Key_Email);
+                                            user1.surname = queryDocumentSnapshot.getString(Constants.Key_Surname);
+                                            user1.image = queryDocumentSnapshot.getString(Constants.Key_Image);
+                                            user1.id = queryDocumentSnapshot.getString(Constants.Key_Users_Id);
+
+                                            postz.add(user1);
+                                        }
+
+                                    }
+                                    if (postz.size() > 0) {
+                                        ProfileAdapter profileAdapter = new ProfileAdapter(postz, Profile.this);
+                                        myPostHistory.setAdapter(profileAdapter);
+                                        myPostHistory.setVisibility(View.VISIBLE);
+                                        loading(false);
+                                    }
+
+                                }
+
+
+                                // Now you have a list of all document names
+                            } else {
+                                Log.d("TAG", "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+            return null;
         }
     }
 }

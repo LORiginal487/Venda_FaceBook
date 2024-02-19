@@ -16,7 +16,7 @@
         app:riv_oval="true" />
 
     <TextView
-        android:id="@+id/posterName"
+        android:id="@+id/names"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/poster_name"
@@ -26,14 +26,14 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/timePosted"
+        android:id="@+id/email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/time"
         android:textColor="@color/c2.2"
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/image"
-        app:layout_constraintTop_toBottomOf="@+id/posterName" />
+        app:layout_constraintTop_toBottomOf="@+id/names" />
 
     <TextView
         android:id="@+id/confirm_button"
@@ -48,24 +48,7 @@
         android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/image"
-        app:layout_constraintTop_toBottomOf="@+id/timePosted"
-        app:layout_constraintWidth_percent="0.35" />
-
-    <TextView
-        android:id="@+id/unfriendBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/buttom_shape"
-        android:padding="3dp"
-        android:text="@string/delete"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:gravity="center"
-        app:layout_constraintBottom_toBottomOf="@+id/confirm_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/confirm_button"
-        app:layout_constraintTop_toTopOf="@+id/confirm_button"
+        app:layout_constraintTop_toBottomOf="@+id/email"
         app:layout_constraintWidth_percent="0.35" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

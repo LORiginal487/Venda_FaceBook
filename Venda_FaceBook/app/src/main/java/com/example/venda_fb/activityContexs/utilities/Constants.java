@@ -58,6 +58,11 @@ public class Constants {
     public static final String Key_Post_ID_Comment = "Post_ID";
     public static final String Key_Comment_ID = "Comment_ID";
 
+    public static final String Key_Collection_Fiends= "Friends";
+    public static final String Key_Friend_Status = "pending";
+    public static final String Key_My_Email = "List_Owner";
+
+
 
 
 

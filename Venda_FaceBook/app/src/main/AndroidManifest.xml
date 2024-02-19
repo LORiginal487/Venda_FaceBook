@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Venda_FB"
         tools:targetApi="31">
         <activity
+            android:name=".activityContexs.activityContexs.View_Image"
+            android:exported="false" />
+        <activity
             android:name=".activityContexs.activityContexs.CommentsLayout"
             android:exported="false" />
         <activity

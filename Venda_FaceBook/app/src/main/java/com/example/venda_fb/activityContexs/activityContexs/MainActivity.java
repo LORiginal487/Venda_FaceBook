@@ -192,12 +192,18 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
 
     @Override
     public void onPictureClick(Post post) {
-
+        Intent intent = new Intent(this, View_Image.class);
+        // Pass any necessary data to the CommentsLayout activity using extras
+        intent.putExtra(Constants.Key_Post, post);
+        startActivity(intent);
     }
 
     @Override
     public void onPersonClicked(User user) {
-
+        Intent intent = new Intent(this, Profile.class);
+        // Pass any necessary data to the CommentsLayout activity using extras
+        intent.putExtra(Constants.Key_User, user);
+        startActivity(intent);
     }
 
     private void likingApost(Post post){

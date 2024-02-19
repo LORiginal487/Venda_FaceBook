@@ -35,6 +35,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
     private final List<Post> post;
     private final LikesAndCommentListener likesAndCommentListener;
     FirebaseFirestore db;
+    User user1;
 
     List<String> documentNames = new ArrayList<>();
 
@@ -129,34 +130,30 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
                                     for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
                                         if (documentName.equals(queryDocumentSnapshot.getId())
                                                 &&documentName.contains(email)) {
-                                            User user1 = new User();
+                                            user1 = new User();
                                             user1.name = queryDocumentSnapshot.getString(Constants.Key_Name);
                                             user1.email = queryDocumentSnapshot.getString(Constants.Key_Email);
                                             user1.surname = queryDocumentSnapshot.getString(Constants.Key_Surname);
                                             user1.image = queryDocumentSnapshot.getString(Constants.Key_Image);
                                             user1.id = queryDocumentSnapshot.getString(Constants.Key_Users_Id);
 
-                                            postz.add(user1);
+
                                         }
 
                                     }
-                                    if (postz.size() > 0) {
-                                        ProfileAdapter profileAdapter = new ProfileAdapter(postz, Profile.this);
-                                        myPostHistory.setAdapter(profileAdapter);
-                                        myPostHistory.setVisibility(View.VISIBLE);
-                                        loading(false);
-                                    }
+
 
                                 }
 
 
                                 // Now you have a list of all document names
                             } else {
+
                                 Log.d("TAG", "Error getting documents: ", task.getException());
                             }
                         }
                     });
-            return null;
+            return user1;
         }
     }
 }

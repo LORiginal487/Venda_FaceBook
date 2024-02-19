@@ -61,6 +61,8 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
     List<String> documentNames = new ArrayList<>();
 
     List<Post> postz = new ArrayList<>();
+    int postnum = 1;
+    String docName;
     String fullName, image_pp,imageBG, userEm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,35 +112,6 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
         PostHistory = findViewById(R.id.recView);
         loadingProgressBar = findViewById(R.id.progressBar);
     }
-
-    /*private String getImage(Bitmap bitmap){
-        int previewWidth = 150;
-        int previewHeight = bitmap.getHeight() * previewWidth / bitmap.getWidth();
-        Bitmap previewBitmap = Bitmap.createScaledBitmap(bitmap, previewWidth, previewHeight, false);
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        previewBitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
-        byte[] bytes= byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(bytes, Base64.DEFAULT);
-    }
-    private final ActivityResultLauncher<Intent> pickImage = registerForActivityResult(
-            new ActivityResultContracts.StartActivityForResult(),
-            result ->{
-                if(result.getResultCode()==RESULT_OK){
-                    if(result.getData() != null){
-                        Uri imgUri = result.getData().getData();
-                        try{
-                            InputStream inputStream = getContentResolver().openInputStream(imgUri);
-                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                            background.setImageBitmap(bitmap);
-                            imageBG = getImage(bitmap);
-                            addInDb();
-                        }catch (FileNotFoundException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-*/
     private void showPosts(){
 
         getAllDocumentNames();
@@ -266,11 +239,124 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
 
     @Override
     public void onCommentClicked(Post post) {
-
+        Log.d("l6 1111111", "_______________");
+        Intent intent = new Intent(getApplicationContext(), CommentsLayout.class);
+        // Pass any necessary data to the CommentsLayout activity using extras
+        intent.putExtra(Constants.Key_Post, post);
+        startActivity(intent);
     }
 
     @Override
     public void onLikeClicked(Post post) {
+        addAlike2db(post);
+        likingApost(post);
+    }
+    private void addAlike2db(Post post){
+        // Reference to the collection
+        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Posts);
+        String docname2 = null;
+        for (int i = 0; i < post.postID.length(); i++){
+            int endIndex = post.postID.indexOf("post");
+
+            // Extract the substring before "team"
+            docname2 = post.postID.substring(0, endIndex).trim();
+
+            // Add the extracted name to the list
+
+        }
+        // Reference to the document you want to update
+        DocumentReference documentRef = collectionRef.document(docname2);
+
+        // Fetch the document
+        documentRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document.exists()) {
+                        // Get the value of the existing field
+                        String strLike = document.getString(Constants.Key_Comments);
+
+                        // Update the value or perform any operation
+                        String addedAlyk = Integer.toString(Integer.parseInt(strLike)+1); // Update this with your new value
+                        updateField(documentRef, Constants.Key_Likes, addedAlyk);
+                    } else {
+
+                    }
+                } else {
+
+                }
+            }
+        });
+    }
+    private void updateField(DocumentReference documentRef, String fieldName, String newValue) {
+        // Create a map to update the field
+        Map<String, Object> updateMap = new HashMap<>();
+        updateMap.put(fieldName, newValue);
+
+        // Perform the update
+        documentRef.update(updateMap)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("12345566666666666666", "===========---------" + docName);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("123455677777777777", "===========---------" + docName);
+                    }
+                });
+    }
+    private void likingApost(Post post){
+        // Reference to the Firebase database
+        // Create a new user with a first and last name
+        Map<String, Object> alike = new HashMap<>();
+        alike.put(Constants.Key_Liker_Name, managePreferences.getString(Constants.Key_Name));
+        alike.put(Constants.Key_Post_ID_like, post.postID);
+
+        // Add a new document with a generated ID
+        CollectionReference likesCol = db.collection(Constants.Key_Collection_Likes);
+        likesCol.add(alike).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                showToast("Liked!");
+
+                // Call countTheLikes after successfully adding the like
+                //getAllDocumentNames(post.postID);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showToast("Retry!");
+            }
+        });
+    }
+    private void countTheLikes(List<String> documentNames, String postID){
+        docName=postID+"likes";
+
+        for(int i=0;i < documentNames.size(); i++){
+            String namesss = documentNames.get(i);
+            if(namesss.contains(postID)) {
+                postnum ++;
+            }
+        }
+        docName = docName + "-" + postnum;
+        Log.d("12345566", "===========---------" + docName);
+
+    }
+
+    @Override
+    public void onPictureClick(Post post) {
+        Intent intent = new Intent(this, View_Image.class);
+        // Pass any necessary data to the CommentsLayout activity using extras
+        intent.putExtra(Constants.Key_Post, post);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onPersonClicked(User user) {
 
     }
 }

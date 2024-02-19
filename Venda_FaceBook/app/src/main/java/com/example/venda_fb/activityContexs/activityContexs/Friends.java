@@ -10,16 +10,21 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.PeopleAdapter;
 import com.example.venda_fb.activityContexs.Listeners.UserListener;
+import com.example.venda_fb.activityContexs.utilities.ConstantMethods;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -27,16 +32,25 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 public class Friends extends AppCompatActivity implements UserListener {
     List<String> documentNames = new ArrayList<>();
+    List<User> allUsers = new ArrayList<>();
+    List<User> friendsList = new ArrayList<>();
+    List<User> notFriends = new ArrayList<>();
     FirebaseFirestore db;
     ManagePreferences managePreferences;
     RecyclerView recycleV;
     ProgressBar loadingProgressBar;
     TextView requests, suggestions, friends;
     List<User> userz = new ArrayList<>();
+    List<String> listEmails1= new ArrayList<>();
+    Map<String, Object> friendsMap1 = new HashMap<>();
+    User user1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,9 +58,10 @@ public class Friends extends AppCompatActivity implements UserListener {
 
 
         callViews();
-        //thestarterMethod();
+
         db = FirebaseFirestore.getInstance();
         managePreferences = new ManagePreferences(getApplicationContext());
+        showFriends();
     }
     public void addPostPage(View view) {
         Intent intent = new Intent(getApplicationContext(), AddaPost.class);
@@ -100,45 +115,45 @@ public class Friends extends AppCompatActivity implements UserListener {
         requests.setVisibility(View.VISIBLE);
         suggestions.setVisibility(View.GONE);
         friends.setVisibility(View.VISIBLE);
-        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Users);
-        collectionRef.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
 
-                            for (DocumentSnapshot document : task.getResult()) {
-                                // Get the document ID (name) and add it to the list
-                                String documentName = document.getId();
-                                documentNames.add(documentName);
-
-                                for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                                    if (documentName.equals(queryDocumentSnapshot.getId())) {
-                                        User user = new User();
-                                        user.name = queryDocumentSnapshot.getString(Constants.Key_Name);
-                                        user.surname = queryDocumentSnapshot.getString(Constants.Key_Surname);
-                                        user.email = queryDocumentSnapshot.getString(Constants.Key_Email);
-                                        user.image = queryDocumentSnapshot.getString(Constants.Key_Image);
-                                        userz.add(user);
-                                    }
-
-                                }
-                                if (userz.size() > 0) {
-                                    PeopleAdapter peopleAdapter = new PeopleAdapter(userz,Constants.Key_Suggestion, Friends.this);
-                                    recycleV.setAdapter(peopleAdapter);
-                                    recycleV.setVisibility(View.VISIBLE);
-                                    loading(false);
-                                }
-
-                            }
+        ConstantMethods.returnAllUsers(new ConstantMethods.UserListRetrievedListener() {
+            @Override
+            public void onUserListRetrieved(List<User> users) {
+                // Do something with the list of users
+                allUsers = users;
+                checkFriends();
+                findAllNonFrnds();
+                Log.d("lmmkmmkmkmkmkmkmkmkmkmkmmmkm", "_______________"+allUsers.size());
+                Log.d("lmmkmmkmkmkmkmkmkmkmkmkmmmkm", "_______________"+friendsList.size());
+                Log.d("lmmkmmkmkmkmkmkmkmkmkmkmmmkm", "_______________"+notFriends.size());
+                PeopleAdapter peopleAdapter = new PeopleAdapter(notFriends,Constants.Key_Suggestion, Friends.this);
+                recycleV.setAdapter(peopleAdapter);
+                recycleV.setVisibility(View.VISIBLE);
+                loading(false);
+            }
+        });
 
 
-                            // Now you have a list of all document names
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
+
+
+    }
+    private void findAllNonFrnds(){
+        for (User user : allUsers) {
+            boolean isFriend = false;
+
+            // Check if the user is in friendsList
+            for (User friend : friendsList) {
+                if (user.email.equals(friend.email)) {
+                    isFriend = true;
+                    break;
+                }
+            }
+
+            // If the user is not in friendsList, add them to notFriends list
+            if (!isFriend) {
+                notFriends.add(user);
+            }
+        }
     }
     private void loading(boolean isLoading){
         Log.d("l3 1111111", "_______________");
@@ -156,66 +171,133 @@ public class Friends extends AppCompatActivity implements UserListener {
         requests.setVisibility(View.GONE);
         suggestions.setVisibility(View.VISIBLE);
         friends.setVisibility(View.VISIBLE);
+        PeopleAdapter peopleAdapter = new PeopleAdapter(getRequests(),Constants.Key_Request, Friends.this);
+        recycleV.setAdapter(peopleAdapter);
+        recycleV.setVisibility(View.VISIBLE);
+        loading(false);
     }
 
     public void openFriends(View view) {
-        requests.setVisibility(View.VISIBLE);
-        suggestions.setVisibility(View.VISIBLE);
-        friends.setVisibility(View.GONE);
-        thestarterMethod();
+        showFriends();
     }
-    void thestarterMethod(){
-        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Users);
-        collectionRef.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+private void showFriends() {
+    requests.setVisibility(View.VISIBLE);
+    suggestions.setVisibility(View.VISIBLE);
+    friends.setVisibility(View.GONE);
+    ConstantMethods.OnFriendsMapReadyListener listener = new ConstantMethods.OnFriendsMapReadyListener() {
+        @Override
+        public void onFriendsMapReady(Map<String, Object> friendsMap) {
+            friendsMap1 = friendsMap;
 
-                            for (DocumentSnapshot document : task.getResult()) {
-                                // Get the document ID (name) and add it to the list
-                                String documentName = document.getId();
-                                documentNames.add(documentName);
-
-                                for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                                    if (documentName.equals(queryDocumentSnapshot.getId())) {
-                                        User user = new User();
-                                        user.name = queryDocumentSnapshot.getString(Constants.Key_Name);
-                                        user.surname = queryDocumentSnapshot.getString(Constants.Key_Surname);
-                                        user.email = queryDocumentSnapshot.getString(Constants.Key_Email);
-                                        user.image = queryDocumentSnapshot.getString(Constants.Key_Image);
-                                        user.token = queryDocumentSnapshot.getString(Constants.Key_FCM_Token);
-                                        user.id = queryDocumentSnapshot.getId();
-                                        user.biot = queryDocumentSnapshot.getString(Constants.Key_Bio);
-                                        user.bckGnd = queryDocumentSnapshot.getString(Constants.Key_BackgroundPic);
-                                        Log.d("eeeeeeeeeeeeeeeeeeee","11111111");
-                                        userz.add(user);
-                                    }
-
-                                }
-                                if (userz.size() > 0) {
-                                    PeopleAdapter peopleAdapter = new PeopleAdapter(userz,Constants.Key_Friends, Friends.this);
-                                    recycleV.setAdapter(peopleAdapter);
-                                    recycleV.setVisibility(View.VISIBLE);
-                                    loading(false);
-                                }
-
+            Set<String> keysFM = friendsMap1.keySet();
+            for(String key : keysFM){
+                if(!key.equals(Constants.Key_My_Email)) {
+                    ConstantMethods.getUserByEmail(key, new ConstantMethods.OnUserRetrievedListener() {
+                        @Override
+                        public void onUserRetrieved(User user) {
+                            if (user != null) {
+                                userz.add(user);
+                                friendsList.addAll(userz);
+                                PeopleAdapter peopleAdapter = new PeopleAdapter(userz,Constants.Key_Friends, Friends.this);
+                                recycleV.setAdapter(peopleAdapter);
+                                recycleV.setVisibility(View.VISIBLE);
+                                loading(false);
+                            } else {
+                                showToast("User not found for key: " + key);
                             }
-
-
-                            // Now you have a list of all document names
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
                         }
+                    });
+                }
+            }
+        }
+    };
+
+    // Call the method with the listener
+    ConstantMethods.getAllFriendsMap(managePreferences.getString(Constants.Key_Email), listener);
+
+}
+    private void checkFriends(){
+
+        ConstantMethods.OnFriendsMapReadyListener listener = new ConstantMethods.OnFriendsMapReadyListener() {
+            @Override
+            public void onFriendsMapReady(Map<String, Object> friendsMap) {
+                friendsMap1 = friendsMap;
+
+                Set<String> keysFM = friendsMap1.keySet();
+                for(String key : keysFM){
+                    if(!key.equals(Constants.Key_My_Email)) {
+                        ConstantMethods.getUserByEmail(key, new ConstantMethods.OnUserRetrievedListener() {
+                            @Override
+                            public void onUserRetrieved(User user) {
+                                if (user != null) {
+                                    friendsList.add(user);
+
+                                } else {
+                                    showToast("User not found for key: " + key);
+                                }
+                            }
+                        });
                     }
-                });
+                }
+            }
+        };
+
+        // Call the method with the listener
+        ConstantMethods.getAllFriendsMap(managePreferences.getString(Constants.Key_Email), listener);
+
+    }
+
+    void thestarterMethod(){
+        ConstantMethods.getAllUsers(recycleV, Friends.this);
+        loading(false);
+
     }
 
     @Override
     public void onUserClick(User user) {
-        Intent intent = new Intent(getApplicationContext(), User_Profile.class);
+        Intent intent = new Intent(this, Profile.class);
+        // Pass any necessary data to the CommentsLayout activity using extras
         intent.putExtra(Constants.Key_User, user);
         startActivity(intent);
-        finish();
     }
+
+    @Override
+    public void OnAddFriendClick(User user) {
+        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Fiends);
+
+        // Fetch the document
+        Map<String, Object> newFrnd = new HashMap<>();
+        newFrnd.put(Constants.Key_My_Email, managePreferences.getString(Constants.Key_Email));
+        newFrnd.put(user.email, Constants.Key_Friend_Status);
+
+        collectionRef.document(managePreferences.getString(Constants.Key_Email))
+                .set(newFrnd)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                showToast("added!");
+                checkFrndStatus(user);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                //loading(false);
+                showToast("Retry!");
+            }
+        });
+
+    }
+    private void checkFrndStatus(User user){
+
+    }
+    private void showToast(String mssg){
+        Toast.makeText(this, mssg, Toast.LENGTH_SHORT).show();
+    }
+    private List<User> getRequests(){
+        userz = null;
+
+
+        return userz;
+    }
+
 }

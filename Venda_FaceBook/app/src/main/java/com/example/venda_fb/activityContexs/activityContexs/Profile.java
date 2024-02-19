@@ -310,13 +310,20 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
 
     @Override
     public void onPictureClick(Post post) {
-
+        Intent intent = new Intent(this, View_Image.class);
+        // Pass any necessary data to the CommentsLayout activity using extras
+        intent.putExtra(Constants.Key_Post, post);
+        startActivity(intent);
     }
 
     @Override
     public void onPersonClicked(User user) {
-
+        Intent intent = new Intent(this, Profile.class);
+        // Pass any necessary data to the CommentsLayout activity using extras
+        intent.putExtra(Constants.Key_User, user);
+        startActivity(intent);
     }
+
 
     private void likingApost(Post post){
         // Reference to the Firebase database
@@ -383,30 +390,7 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
     }
 
 
-    private void getAllDocumentNames( String postID) {
-        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Likes);
 
-        collectionRef.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<String> documentNames = new ArrayList<>();
-                            for (DocumentSnapshot document : task.getResult()) {
-                                // Get the document ID (name) and add it to the list
-                                String documentName = document.getId();
-                                documentNames.add(documentName);
-                            }
-
-                            // Now you have a list of all document names
-                            //countTheLikes(documentNames, postID);
-
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
     private void updateField(DocumentReference documentRef, String fieldName, String newValue) {
         // Create a map to update the field
         Map<String, Object> updateMap = new HashMap<>();

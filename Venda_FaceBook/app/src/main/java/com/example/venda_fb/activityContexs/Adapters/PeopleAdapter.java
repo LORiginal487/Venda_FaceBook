@@ -46,9 +46,13 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHo
         }else if (peopleToShow == Constants.Key_Friends) {
         view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friends_list, parent, false);
         return new UserViewHolder(view);
+        } else if (peopleToShow == Constants.Key_Request) {
+        view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_rq_list, parent, false);
+        return new UserViewHolder(view);
     }
     else{
-            return null;
+            view = LayoutInflater.from(parent.getContext()).inflate(R.layout.friend_rq_list, parent, false);
+            return new UserViewHolder(view);
         }
     }
 
@@ -79,7 +83,46 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHo
 
                 RoundedImageView imageProfile = itemView.findViewById(R.id.image);
                 imageProfile.setImageBitmap(getUserImage(user.image));
+                names.getRootView().setOnClickListener(v -> {
+                    userL.onUserClick(user);
+                });
 
+            }
+            else if (peopleToShow == Constants.Key_Suggestion){
+                TextView names = itemView.findViewById(R.id.theirName);
+                names.setText((user.name +" "+ user.surname).toUpperCase());
+
+                TextView email = itemView.findViewById(R.id.email);
+                email.setText(user.email);
+
+                RoundedImageView imageProfile = itemView.findViewById(R.id.image);
+                imageProfile.setImageBitmap(getUserImage(user.image));
+                TextView confirm_button = itemView.findViewById(R.id.confirm_button);
+                names.getRootView().setOnClickListener(v -> {
+                    userL.onUserClick(user);
+                });
+                confirm_button.setOnClickListener(v -> {
+
+                    userL.OnAddFriendClick(user);
+                });
+            }
+            else if (peopleToShow == Constants.Key_Request){
+                TextView names = itemView.findViewById(R.id.names);
+                names.setText((user.name +" "+ user.surname).toUpperCase());
+
+                TextView email = itemView.findViewById(R.id.email);
+                email.setText(user.email);
+
+                RoundedImageView imageProfile = itemView.findViewById(R.id.image);
+                imageProfile.setImageBitmap(getUserImage(user.image));
+                TextView confirm_button = itemView.findViewById(R.id.confirm_button);
+                names.getRootView().setOnClickListener(v -> {
+                    userL.onUserClick(user);
+                });
+                confirm_button.setOnClickListener(v -> {
+
+                    userL.OnAddFriendClick(user);
+                });
             }
             else {
                     TextView names = itemView.findViewById(R.id.theirName);
@@ -90,24 +133,12 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHo
 
                     RoundedImageView imageProfile = itemView.findViewById(R.id.image);
                     imageProfile.setImageBitmap(getUserImage(user.image));
+                names.getRootView().setOnClickListener(v -> {
+                    userL.onUserClick(user);
+                });
+
 
             }
-
-            /*TextView names = itemView.findViewById(R.id.posterName);
-            names.setText(post.posterNames);
-            //posterPP, postedPic, postTime, postTxt, postLikes, postComments;
-            TextView time = itemView.findViewById(R.id.timePosted);
-            time.setText(post.postTime);
-            TextView txt = itemView.findViewById(R.id.txtPOSTED);
-            txt.setText(post.postTxt);
-            RoundedImageView imageProfile = itemView.findViewById(R.id.posterPP);
-            imageProfile.setImageBitmap(getUserImage(post.posterPP));
-            ImageView postedImage = itemView.findViewById(R.id.picture);
-            postedImage.setImageBitmap(getUserImage(post.postedPic));
-            TextView likesC = itemView.findViewById(R.id.likesCount);
-            likesC.setText(post.postLikes);
-            TextView comntsC = itemView.findViewById(R.id.commentCount);
-            comntsC.setText(post.postComments);*/
         }
         private Bitmap getUserImage(String encodedImg) {
             byte[] bytes = Base64.decode(encodedImg, Base64.DEFAULT);

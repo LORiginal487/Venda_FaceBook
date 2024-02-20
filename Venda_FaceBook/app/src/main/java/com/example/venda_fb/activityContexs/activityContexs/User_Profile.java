@@ -42,9 +42,12 @@ import com.makeramen.roundedimageview.RoundedImageView;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class User_Profile extends AppCompatActivity implements LikesAndCommentListener {
@@ -136,13 +139,13 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
                                             &&documentName.contains(userTo.email)) {
                                         Post post = new Post();
                                         post.posterNames = queryDocumentSnapshot.getString(Constants.Key_P_Names);
-                                        post.postTime = queryDocumentSnapshot.getString(Constants.Key_Post_Time);
+                                        post.postTime = getRedableDate(queryDocumentSnapshot.getDate(Constants.Key_Post_Time));
                                         post.postTxt = queryDocumentSnapshot.getString(Constants.Key_P_Text);
                                         post.posterPP = queryDocumentSnapshot.getString(Constants.Key_Image_pp);
                                         post.postedPic = queryDocumentSnapshot.getString(Constants.Key_Picture);
                                         post.postLikes = queryDocumentSnapshot.getString(Constants.Key_Likes);
-                                        post.postComments = queryDocumentSnapshot.getString(Constants.Key_Comments);
                                         post.postID = queryDocumentSnapshot.getString(Constants.Key_P_ID);
+                                        post.postComments = queryDocumentSnapshot.getString(Constants.Key_Comments);
 
                                         postz.add(post);
                                     }
@@ -165,6 +168,9 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
                     }
                 });
 
+    }
+    private String getRedableDate(Date date){
+        return new SimpleDateFormat("HH:mm - dd/MM/yyyy", Locale.getDefault()).format(date);
     }
     private void loading(boolean isLoading){
         Log.d("l3 1111111", "_______________");

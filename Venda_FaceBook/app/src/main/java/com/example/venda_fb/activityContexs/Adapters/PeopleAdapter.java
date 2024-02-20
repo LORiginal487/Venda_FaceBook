@@ -121,7 +121,7 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHo
                 });
                 confirm_button.setOnClickListener(v -> {
 
-                    userL.OnAddFriendClick(user);
+                    userL.OnConfirmFriendClick(user);
                 });
             }
             else {

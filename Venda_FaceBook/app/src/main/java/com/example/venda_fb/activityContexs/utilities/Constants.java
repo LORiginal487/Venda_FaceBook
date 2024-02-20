@@ -60,8 +60,17 @@ public class Constants {
 
     public static final String Key_Collection_Fiends= "Friends";
     public static final String Key_Friend_Status = "pending";
+    public static final String Key_Friend_Status2 = "friends";
     public static final String Key_My_Email = "List_Owner";
+    public static final String Key_Add_Frnd = "Add_Frnd";
+    public static final String Key_Confirm_Frind = "Confirm_Frind";
+    public static final Boolean Key_Is_1st = true;
+    public static final Boolean Key_Not_1st = false;
 
+
+    public static final String Key_Collection_Notifications= "Notifications";
+    public static final String Key_Noti_Names = "Names";
+    public static final String Key_Noti_pp = "Profile_Pic";
 
 
 

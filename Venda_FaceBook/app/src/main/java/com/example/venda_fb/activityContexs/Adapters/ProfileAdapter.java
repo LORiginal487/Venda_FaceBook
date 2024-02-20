@@ -80,7 +80,11 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
             RoundedImageView imageProfile = itemView.findViewById(R.id.posterPP);
             imageProfile.setImageBitmap(getBitmapFromBase64(post.posterPP));
             ImageView postedImage = itemView.findViewById(R.id.picture);
-            postedImage.setImageBitmap(getBitmapFromBase64(post.postedPic));
+            if(getBitmapFromBase64(post.postedPic) != null) {
+                postedImage.setImageBitmap(getBitmapFromBase64(post.postedPic));
+            }else{
+                postedImage.setVisibility(View.GONE);
+            }
             TextView likesC = itemView.findViewById(R.id.likesCount);
             likesC.setText(post.postLikes);
             TextView comntsC = itemView.findViewById(R.id.commentCount);
@@ -106,8 +110,12 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
         }
 
         private Bitmap getBitmapFromBase64(String encodedImg) {
-            byte[] decodedString = Base64.decode(encodedImg, Base64.DEFAULT);
-            return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            if(encodedImg != null && encodedImg != "null" && encodedImg != "" && !encodedImg.isEmpty() && encodedImg.length()>5) {
+                byte[] decodedString = Base64.decode(encodedImg, Base64.DEFAULT);
+                return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+            }else{
+                return null;
+            }
         }
         private User extractUser(String postId){
             db = FirebaseFirestore.getInstance();

@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
                                 if (postz.size() > 0) {
 
                                     Collections.shuffle(postz);
+
                                     ProfileAdapter profileAdapter = new ProfileAdapter(postz, MainActivity.this);
                                     feedPosts.setAdapter(profileAdapter);
                                     feedPosts.setVisibility(View.VISIBLE);
@@ -200,7 +201,7 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
 
     @Override
     public void onPersonClicked(User user) {
-        Intent intent = new Intent(this, Profile.class);
+        Intent intent = new Intent(this, User_Profile.class);
         // Pass any necessary data to the CommentsLayout activity using extras
         intent.putExtra(Constants.Key_User, user);
         startActivity(intent);
@@ -230,6 +231,7 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
             }
         });
     }
+
 
     private void addAlike2db(Post post){
         // Reference to the collection

@@ -32,6 +32,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -56,6 +58,10 @@ public class AddaPost extends AppCompatActivity {
     int postnum = 1;
      FirebaseFirestore db;
     ManagePreferences managePreferences;
+    StorageReference storageReference;
+    FirebaseStorage fbStorage;
+    ArrayList<String> urlList;
+    Uri imageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +70,8 @@ public class AddaPost extends AppCompatActivity {
 
         //_________________--------------
         db = FirebaseFirestore.getInstance();
+        fbStorage = FirebaseStorage.getInstance();
+        storageReference = fbStorage.getReference();
         managePreferences = new ManagePreferences(getApplicationContext());
         getAllDocumentNames();
 
@@ -114,6 +122,7 @@ public class AddaPost extends AppCompatActivity {
                 if(result.getResultCode()==RESULT_OK){
                     if(result.getData() != null){
                         Uri imgUri = result.getData().getData();
+                        //newPicSaver(imgUri);
                         try{
                             InputStream inputStream = getContentResolver().openInputStream(imgUri);
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
@@ -134,6 +143,20 @@ public class AddaPost extends AppCompatActivity {
         byte[] bytes= byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
+    private void newPicSaver(Uri imageUri2){
+        StorageReference imageFoulder = FirebaseStorage.getInstance().getReference().child("Images");
+        final StorageReference ImageName = imageFoulder.child("image1");
+        ImageName.putFile(imageUri2).addOnCompleteListener(command -> {
+            ImageName.getDownloadUrl().addOnSuccessListener(command1 -> {
+                
+                Log.d("qweqwrtyrutr","123456789");
+            });
+        });
+    }
+    private void addImageToDB(){
+
+    }
+
     private void postAndSave() {
         showToast("Checking");
 

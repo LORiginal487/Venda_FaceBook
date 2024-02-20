@@ -48,6 +48,7 @@ public class Searching extends AppCompatActivity implements UserListener {
     List<String> documentNames = new ArrayList<>();
 
     List<User> userz = new ArrayList<>();
+    List<User> allUsers = new ArrayList<>();
     String peopleTshow, image;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +71,18 @@ public class Searching extends AppCompatActivity implements UserListener {
     public void SearchNow(View view) {
     }
     private void getAllDocumentNames() {
+        ConstantMethods.returnAllUsers(new ConstantMethods.UserListRetrievedListener() {
+            @Override
+            public void onUserListRetrieved(List<User> users) {
+                // Do something with the list of users
+                allUsers = users;
 
-        ConstantMethods.getAllUsers(peopleView, Searching.this);
+                PeopleAdapter peopleAdapter = new PeopleAdapter(allUsers,Constants.Key_Every_Person, Searching.this);
+                peopleView.setAdapter(peopleAdapter);
+                peopleView.setVisibility(View.VISIBLE);
+
+            }
+        });
 
     }
 
@@ -82,7 +93,7 @@ public class Searching extends AppCompatActivity implements UserListener {
 
     @Override
     public void onUserClick(User user) {
-        Intent intent = new Intent(this, Profile.class);
+        Intent intent = new Intent(this, User_Profile.class);
         // Pass any necessary data to the CommentsLayout activity using extras
         intent.putExtra(Constants.Key_User, user);
         startActivity(intent);
@@ -92,6 +103,12 @@ public class Searching extends AppCompatActivity implements UserListener {
     public void OnAddFriendClick(User user) {
 
     }
+
+    @Override
+    public void OnConfirmFriendClick(User user) {
+
+    }
+
     private void addingAfriend(User user){
 
     }

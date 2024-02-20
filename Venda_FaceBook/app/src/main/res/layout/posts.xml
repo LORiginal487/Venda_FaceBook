@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/c2"
+    android:background="@color/c1"
     android:layout_marginTop="5dp"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
@@ -137,7 +137,7 @@
         android:id="@+id/line"
         android:layout_width="1dp"
         android:layout_height="35dp"
-        android:background="@color/c2.2"
+        android:background="@color/c2"
         app:layout_constraintTop_toTopOf="@id/likeBtn"
         app:layout_constraintStart_toStartOf="@+id/showReacts"
         app:layout_constraintEnd_toEndOf="parent"

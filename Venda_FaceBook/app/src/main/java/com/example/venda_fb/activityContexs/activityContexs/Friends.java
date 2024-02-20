@@ -171,51 +171,20 @@ public class Friends extends AppCompatActivity implements UserListener {
         requests.setVisibility(View.GONE);
         suggestions.setVisibility(View.VISIBLE);
         friends.setVisibility(View.VISIBLE);
-        PeopleAdapter peopleAdapter = new PeopleAdapter(getRequests(),Constants.Key_Request, Friends.this);
-        recycleV.setAdapter(peopleAdapter);
-        recycleV.setVisibility(View.VISIBLE);
+        ConstantMethods.FindUsersFrindsR(managePreferences.getString(Constants.Key_Email),Friends.this,recycleV);
         loading(false);
     }
 
     public void openFriends(View view) {
         showFriends();
     }
-private void showFriends() {
-    requests.setVisibility(View.VISIBLE);
-    suggestions.setVisibility(View.VISIBLE);
-    friends.setVisibility(View.GONE);
-    ConstantMethods.OnFriendsMapReadyListener listener = new ConstantMethods.OnFriendsMapReadyListener() {
-        @Override
-        public void onFriendsMapReady(Map<String, Object> friendsMap) {
-            friendsMap1 = friendsMap;
-
-            Set<String> keysFM = friendsMap1.keySet();
-            for(String key : keysFM){
-                if(!key.equals(Constants.Key_My_Email)) {
-                    ConstantMethods.getUserByEmail(key, new ConstantMethods.OnUserRetrievedListener() {
-                        @Override
-                        public void onUserRetrieved(User user) {
-                            if (user != null) {
-                                userz.add(user);
-                                friendsList.addAll(userz);
-                                PeopleAdapter peopleAdapter = new PeopleAdapter(userz,Constants.Key_Friends, Friends.this);
-                                recycleV.setAdapter(peopleAdapter);
-                                recycleV.setVisibility(View.VISIBLE);
-                                loading(false);
-                            } else {
-                                showToast("User not found for key: " + key);
-                            }
-                        }
-                    });
-                }
-            }
-        }
-    };
-
-    // Call the method with the listener
-    ConstantMethods.getAllFriendsMap(managePreferences.getString(Constants.Key_Email), listener);
-
-}
+    private void showFriends() {
+        requests.setVisibility(View.VISIBLE);
+        suggestions.setVisibility(View.VISIBLE);
+        friends.setVisibility(View.GONE);
+        ConstantMethods.FindFriends(managePreferences.getString(Constants.Key_Email),Friends.this,recycleV);
+        loading(false);
+    }
     private void checkFriends(){
 
         ConstantMethods.OnFriendsMapReadyListener listener = new ConstantMethods.OnFriendsMapReadyListener() {
@@ -247,15 +216,11 @@ private void showFriends() {
 
     }
 
-    void thestarterMethod(){
-        ConstantMethods.getAllUsers(recycleV, Friends.this);
-        loading(false);
 
-    }
 
     @Override
     public void onUserClick(User user) {
-        Intent intent = new Intent(this, Profile.class);
+        Intent intent = new Intent(this, User_Profile.class);
         // Pass any necessary data to the CommentsLayout activity using extras
         intent.putExtra(Constants.Key_User, user);
         startActivity(intent);
@@ -263,30 +228,39 @@ private void showFriends() {
 
     @Override
     public void OnAddFriendClick(User user) {
-        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Fiends);
-
-        // Fetch the document
-        Map<String, Object> newFrnd = new HashMap<>();
-        newFrnd.put(Constants.Key_My_Email, managePreferences.getString(Constants.Key_Email));
-        newFrnd.put(user.email, Constants.Key_Friend_Status);
-
-        collectionRef.document(managePreferences.getString(Constants.Key_Email))
-                .set(newFrnd)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void unused) {
-                showToast("added!");
-                checkFrndStatus(user);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                //loading(false);
-                showToast("Retry!");
-            }
-        });
+        ConstantMethods.CheckIfFrnds(managePreferences.getString(Constants.Key_Email), user.email);
+//        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Fiends);
+//
+//        // Fetch the document
+//        Map<String, Object> newFrnd = new HashMap<>();
+//        newFrnd.put(Constants.Key_My_Email, managePreferences.getString(Constants.Key_Email));
+//        newFrnd.put(user.email, Constants.Key_Friend_Status);
+//
+//        collectionRef.document(managePreferences.getString(Constants.Key_Email))
+//                .set(newFrnd)
+//                .addOnSuccessListener(new OnSuccessListener<Void>() {
+//            @Override
+//            public void onSuccess(Void unused) {
+//                showToast("added!");
+//                checkFrndStatus(user);
+//            }
+//        }).addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception e) {
+//                //loading(false);
+//                showToast("Retry!");
+//            }
+//        });
 
     }
+
+    @Override
+    public void OnConfirmFriendClick(User user) {
+        ConstantMethods.ConfirmingAfrnd(managePreferences.getString(Constants.Key_Email), user.email);
+        ConstantMethods.FindUsersFrindsR(managePreferences.getString(Constants.Key_Email),Friends.this,recycleV);
+
+    }
+
     private void checkFrndStatus(User user){
 
     }

@@ -71,6 +71,13 @@ public class Constants {
     public static final String Key_Collection_Notifications= "Notifications";
     public static final String Key_Noti_Names = "Names";
     public static final String Key_Noti_pp = "Profile_Pic";
+    public static final String Key_Noti_Text = "Notification";
+    public static final String Key_Noti_Email = "Email";
+    public static final String Key_Noti_Time = "Notification_time";
+    public static final String Key_Like_Noti = "Liked Your POST";
+    public static final String Key_Comment_Not = "Commented On Your POST";
+    public static final String Key_Added_Noti = "Sent You A Request";
+    public static final String Key_Confirm_Not = "You Are Now Friends";
 
 
 

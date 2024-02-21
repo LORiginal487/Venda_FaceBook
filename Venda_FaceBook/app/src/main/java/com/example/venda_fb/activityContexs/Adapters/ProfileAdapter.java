@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
 import com.example.venda_fb.activityContexs.activityContexs.Profile;
+import com.example.venda_fb.activityContexs.utilities.ConstantMethods;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.Post;
 import com.example.venda_fb.activityContexs.utilities.User;
@@ -99,10 +100,13 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
                 likesAndCommentListener.onLikeClicked(post);
             });
             names.setOnClickListener(v -> {
-                likesAndCommentListener.onPersonClicked(extractUser(post.postID));
+                //extractEmail(post.postID);
+                Log.d("wertyioitrfhhnlk", "2345678988888"+post.postID);
             });
             imageProfile.setOnClickListener(v -> {
-                likesAndCommentListener.onPersonClicked(extractUser(post.postID));
+                Log.d("wertyioitrfhhnlk", "2345678988888"+post.postID);
+
+                //extractEmail(post.postID);
             });
             postedImage.setOnClickListener(v -> {
                 likesAndCommentListener.onPictureClick(post);
@@ -117,51 +121,29 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
                 return null;
             }
         }
-        private User extractUser(String postId){
-            db = FirebaseFirestore.getInstance();
-            CollectionReference collectionRef = db.collection(Constants.Key_Collection_Users);
-            String[] parts = postId.split("-");
+        private void extractEmail(String postId) {
+            String[] email1 = postId.split("-");
+            String email = email1[0];
+            Log.d("wertyioitrfhhnlk", "2345678988888"+email);
 
-            // Extract the words that come before "hill" and including "hill"
-            String email = parts[0].trim();
-            collectionRef.get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
+            extractUser(email);
 
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    // Get the document ID (name) and add it to the list
-                                    String documentName = document.getId();
-                                    documentNames.add(documentName);
+        }
+        private void extractUser(String email) {
+            db.collection(Constants.Key_Collection_Users).whereEqualTo(Constants.Key_Email, email)
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful() && task.getResult() != null) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                User user = document.toObject(User.class);
+                                Log.d("wertyioitrfhhnlk", "2345678988888"+user.email);
 
-                                    for (QueryDocumentSnapshot queryDocumentSnapshot : task.getResult()) {
-                                        if (documentName.equals(queryDocumentSnapshot.getId())
-                                                &&documentName.contains(email)) {
-                                            user1 = new User();
-                                            user1.name = queryDocumentSnapshot.getString(Constants.Key_Name);
-                                            user1.email = queryDocumentSnapshot.getString(Constants.Key_Email);
-                                            user1.surname = queryDocumentSnapshot.getString(Constants.Key_Surname);
-                                            user1.image = queryDocumentSnapshot.getString(Constants.Key_Image);
-                                            user1.id = queryDocumentSnapshot.getString(Constants.Key_Users_Id);
-
-
-                                        }
-
-                                    }
-
-
-                                }
-
-
-                                // Now you have a list of all document names
-                            } else {
-
-                                Log.d("TAG", "Error getting documents: ", task.getException());
+                                likesAndCommentListener.onPersonClicked(user);
                             }
+                        } else {
+                            Log.d("TAG", "Error getting user by email: ", task.getException());
                         }
                     });
-            return user1;
         }
     }
 }

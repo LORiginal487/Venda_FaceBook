@@ -32,6 +32,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -229,28 +230,8 @@ public class Friends extends AppCompatActivity implements UserListener {
     @Override
     public void OnAddFriendClick(User user) {
         ConstantMethods.CheckIfFrnds(managePreferences.getString(Constants.Key_Email), user.email);
-//        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Fiends);
-//
-//        // Fetch the document
-//        Map<String, Object> newFrnd = new HashMap<>();
-//        newFrnd.put(Constants.Key_My_Email, managePreferences.getString(Constants.Key_Email));
-//        newFrnd.put(user.email, Constants.Key_Friend_Status);
-//
-//        collectionRef.document(managePreferences.getString(Constants.Key_Email))
-//                .set(newFrnd)
-//                .addOnSuccessListener(new OnSuccessListener<Void>() {
-//            @Override
-//            public void onSuccess(Void unused) {
-//                showToast("added!");
-//                checkFrndStatus(user);
-//            }
-//        }).addOnFailureListener(new OnFailureListener() {
-//            @Override
-//            public void onFailure(@NonNull Exception e) {
-//                //loading(false);
-//                showToast("Retry!");
-//            }
-//        });
+        sendNotification(Constants.Key_Added_Noti, user.email);
+
 
     }
 
@@ -258,6 +239,31 @@ public class Friends extends AppCompatActivity implements UserListener {
     public void OnConfirmFriendClick(User user) {
         ConstantMethods.ConfirmingAfrnd(managePreferences.getString(Constants.Key_Email), user.email);
         ConstantMethods.FindUsersFrindsR(managePreferences.getString(Constants.Key_Email),Friends.this,recycleV);
+        sendNotification(Constants.Key_Confirm_Not, user.email);
+    }
+    private void sendNotification(String type, String email){
+        Map<String, Object> noti = new HashMap<>();
+        noti.put(Constants.Key_Noti_Names, managePreferences.getString(Constants.Key_Name));
+        noti.put(Constants.Key_Noti_pp, managePreferences.getString(Constants.Key_Image));
+        noti.put(Constants.Key_Noti_Text, type);
+        noti.put(Constants.Key_Noti_Time, new Date());
+        noti.put(Constants.Key_Noti_Email, email);
+        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Notifications);
+        collectionRef.add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                showToast("Done!");
+
+
+                // Call countTheLikes after successfully adding the like
+                //getAllDocumentNames(post.postID);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showToast("Retry!");
+            }
+        });
 
     }
 

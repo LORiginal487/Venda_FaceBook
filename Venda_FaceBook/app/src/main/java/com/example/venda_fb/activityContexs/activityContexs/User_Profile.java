@@ -87,7 +87,7 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
         //getIntent().getStringExtra(Constants.Key_Email)
         userTo =(User) getIntent().getSerializableExtra(Constants.Key_User);
         Log.d("1234567654321","----------------");
-        fullName = userTo.name;
+        fullName = userTo.name +" " + userTo.surname;
         Log.d("1234567654321","----------------");
         nameV.setText(fullName.toUpperCase());
         Log.d("1234567654321","----------------");

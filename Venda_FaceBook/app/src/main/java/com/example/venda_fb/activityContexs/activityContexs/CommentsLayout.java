@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.CommentsAdapter;
@@ -171,6 +172,7 @@ public class CommentsLayout extends AppCompatActivity implements CommentListener
             public void onSuccess(DocumentReference documentReference) {
                 getAllcomments();
                 addAcommnt2db();
+                sendNotification(Constants.Key_Comment_Not, extractEmail(post.postID));
                 // Call countTheLikes after successfully adding the like
                 //getAllDocumentNames(post.postID);
             }
@@ -179,6 +181,38 @@ public class CommentsLayout extends AppCompatActivity implements CommentListener
             public void onFailure(@NonNull Exception e) {
             }
         });
+    }
+    private String extractEmail(String postId) {
+        String[] email1 = postId.split("-");
+        return email1[0];
+
+
+
+    }
+    private void sendNotification(String type, String email){
+        Map<String, Object> noti = new HashMap<>();
+        noti.put(Constants.Key_Noti_Names, managePreferences.getString(Constants.Key_Name));
+        noti.put(Constants.Key_Noti_pp, managePreferences.getString(Constants.Key_Image));
+        noti.put(Constants.Key_Noti_Text, type);
+        noti.put(Constants.Key_Noti_Time, new Date());
+        noti.put(Constants.Key_Noti_Email, email);
+        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Notifications);
+        collectionRef.add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                showToast("Commented!");
+
+
+                // Call countTheLikes after successfully adding the like
+                //getAllDocumentNames(post.postID);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showToast("Retry!");
+            }
+        });
+
     }
     private void addAcommnt2db(){
         // Reference to the collection
@@ -249,4 +283,8 @@ public class CommentsLayout extends AppCompatActivity implements CommentListener
     public void onCommentClicked(User user) {
 
     }
+    private void showToast(String mssg){
+        Toast.makeText(this, mssg, Toast.LENGTH_SHORT).show();
+    }
+
 }

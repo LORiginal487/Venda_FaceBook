@@ -16,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.CommentsAdapter;
 import com.example.venda_fb.activityContexs.Adapters.ProfileAdapter;
@@ -91,7 +92,13 @@ public class CommentsLayout extends AppCompatActivity implements CommentListener
         commentsCount.setText(post.postComments);
         time.setText(post.postTime);
         imagePP.setImageBitmap(getBitmap(post.posterPP));
-        ImagePosted.setImageBitmap(getBitmap(post.postedPic));
+        if(post.postedPic != null){
+            Glide.with(CommentsLayout.this) // Pass the activity or fragment context
+                    .load(post.postedPic) // Load the image from the URL
+                    .into(ImagePosted);
+        }else{
+            ImagePosted.setVisibility(View.GONE);
+        }
 
 
     }

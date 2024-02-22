@@ -6,42 +6,45 @@
     android:layout_height="match_parent"
     android:background="@color/c1"
     tools:context=".activityContexs.activityContexs.ChatScreen">
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/backBtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:padding="10dp"
-        android:src="@drawable/angleleft"
-        android:tint="@color/white"
-        android:layout_margin="10dp"
-        android:clickable="true"
-        android:onClick="go2inbox"
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="start|center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:riv_oval="true" />
-    <com.makeramen.roundedimageview.RoundedImageView
-        android:id="@+id/imagePP"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="10dp"
-        android:background="@drawable/circleback"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toEndOf="@+id/backBtn"
-        app:layout_constraintTop_toTopOf="@id/backBtn"
-        app:layout_constraintBottom_toBottomOf="@id/backBtn"
-        app:riv_oval="true" />
-    <TextView
-        android:id="@+id/chatName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="30dp"
-        android:text="@string/name"
-        android:textColor="@color/white"
-        android:layout_margin="10dp"
-        android:textSize="20sp"
-        app:layout_constraintStart_toEndOf="@+id/imagePP"
-        app:layout_constraintTop_toTopOf="@id/backBtn"
-        app:layout_constraintBottom_toBottomOf="@id/backBtn"/>
+        app:layout_constraintWidth_percent="0.8">
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/backBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:src="@drawable/angleleft"
+            android:tint="@color/white"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:onClick="go2inbox"
+            app:riv_oval="true" />
+        <com.makeramen.roundedimageview.RoundedImageView
+            android:id="@+id/imagePP"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/circleback"
+            android:scaleType="centerCrop"
+            app:riv_oval="true" />
+        <TextView
+            android:id="@+id/chatName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textColor="@color/white"
+            android:layout_margin="10dp"
+            android:textSize="20sp"
+            />
+
+    </LinearLayout>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleVchat"
         android:layout_width="match_parent"
@@ -52,49 +55,52 @@
         app:layout_constraintHeight_percent="0.85"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/backBtn"
-        app:layout_constraintBottom_toTopOf="@id/sendBtn"
+        app:layout_constraintTop_toBottomOf="@+id/topBar"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
-        app:layout_constraintTop_toBottomOf="@+id/backBtn"
-        app:layout_constraintBottom_toTopOf="@id/sendBtn"
+        app:layout_constraintTop_toBottomOf="@+id/topBar"
+        app:layout_constraintBottom_toTopOf="@id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-    <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/sendBtn"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:padding="10dp"
-        android:background="@drawable/circleback"
-        android:src="@drawable/round_send_24"
-        android:tint="@color/white"
-        android:layout_margin="10dp"
-        android:clickable="true"
-        android:onClick="sendMessage"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:riv_oval="true" />
-    <EditText
-        android:id="@+id/typeBar"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:padding="10dp"
-        android:inputType="text"
-        android:background="@drawable/intextbos"
-        android:hint="@string/message"
-        android:textColorHint="@color/c2.2"
-        android:textColor="@color/white"
-        tools:layout_editor_absoluteY="118dp"
-        app:layout_constraintWidth_percent="0.8"
-        app:layout_constraintTop_toTopOf="@id/sendBtn"
-        app:layout_constraintBottom_toBottomOf="@id/sendBtn"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/sendBtn"/>
+app:layout_constraintBottom_toBottomOf="parent"        app:layout_constraintWidth_percent="0.8">
+        <EditText
+            android:id="@+id/typeBar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:padding="10dp"
+            android:layout_weight="0.6"
+            android:inputType="text"
+            android:background="@drawable/intextbos"
+            android:hint="@string/message"
+            android:textColorHint="@color/c2.2"
+            android:textColor="@color/white"/>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/sendBtn"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:padding="10dp"
+            android:background="@drawable/circleback"
+            android:src="@drawable/round_send_24"
+            android:tint="@color/white"
+            android:layout_margin="10dp"
+            android:clickable="true"
+            android:onClick="sendMessage"
+            app:riv_oval="true" />
 
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

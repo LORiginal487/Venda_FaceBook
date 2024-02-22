@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.ProfileAdapter;
 import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
@@ -98,7 +99,7 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
             bioV.setText(userTo.biot);
         }
         if(userTo.bckGnd != null){
-            background.setImageBitmap(getBitmap(userTo.bckGnd));
+            showNewImage(userTo.bckGnd, background);
         }
 
 
@@ -114,6 +115,11 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
         bioV = findViewById(R.id.Bio);
         PostHistory = findViewById(R.id.recView);
         loadingProgressBar = findViewById(R.id.progressBar);
+    }
+    private void showNewImage(String imageU, ImageView imageView){
+        Glide.with(User_Profile.this) // Pass the activity or fragment context
+                .load(imageU) // Load the image from the URL
+                .into(imageView);
     }
     private void showPosts(){
 

@@ -110,7 +110,16 @@ public static void getUserByEmail(String email, OnUserRetrievedListener listener
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            User user = document.toObject(User.class);
+                            User user = new User();
+                            user.name = document.getString(Constants.Key_Name);
+                            user.surname = document.getString(Constants.Key_Surname);
+                            user.email =document.getString(Constants.Key_Email);
+                            user.image =document.getString(Constants.Key_Image);
+                            //user.token =document.getString(Constants.KT);
+                            user.id =document.getString(Constants.Key_Users_Id);
+                            user.biot =document.getString(Constants.Key_Bio);
+                            user.bckGnd = document.getString(Constants.Key_BackgroundPic);
+
                             users.add(user);
                         }
                         // Notify the listener with the retrieved list of users

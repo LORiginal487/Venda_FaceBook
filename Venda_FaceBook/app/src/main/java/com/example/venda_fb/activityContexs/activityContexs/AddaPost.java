@@ -1,8 +1,11 @@
 package com.example.venda_fb.activityContexs.activityContexs;
 
+
+
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -34,7 +37,9 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -48,7 +53,7 @@ import java.util.Locale;
 import java.util.Map;
 
 public class AddaPost extends AppCompatActivity {
-    String fullName, image,imagePosted = "", postText,docName, email;
+    String fullName, image,imagePosted, postText,docName, email;
     Boolean addImage = false;
     RoundedImageView imageViewPP;
     TextView nameV, addPict;
@@ -61,7 +66,8 @@ public class AddaPost extends AppCompatActivity {
     StorageReference storageReference;
     FirebaseStorage fbStorage;
     ArrayList<String> urlList;
-    Uri imageUri;
+    FirebaseStorage storage1;
+    Uri imageUri2;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +77,7 @@ public class AddaPost extends AppCompatActivity {
         //_________________--------------
         db = FirebaseFirestore.getInstance();
         fbStorage = FirebaseStorage.getInstance();
+        storage1 = FirebaseStorage.getInstance();
         storageReference = fbStorage.getReference();
         managePreferences = new ManagePreferences(getApplicationContext());
         getAllDocumentNames();
@@ -122,15 +129,20 @@ public class AddaPost extends AppCompatActivity {
                 if(result.getResultCode()==RESULT_OK){
                     if(result.getData() != null){
                         Uri imgUri = result.getData().getData();
+                        imageUri2 =imgUri;
+                        addImage = true;
                         //newPicSaver(imgUri);
-                        try{
+                        uploadAnImage(imgUri);
+
+                        Log.d("ttrttrttrtrttrttrtrtrt", "123456789-0---"+imageUri2);
+                        try {
                             InputStream inputStream = getContentResolver().openInputStream(imgUri);
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                             pic2post.setImageBitmap(bitmap);
-                            imagePosted = getImage(bitmap);
                         }catch (FileNotFoundException e){
-                            e.printStackTrace();
+                            showToast("Retry!");
                         }
+//
                     }
                 }
             });
@@ -143,19 +155,7 @@ public class AddaPost extends AppCompatActivity {
         byte[] bytes= byteArrayOutputStream.toByteArray();
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
-    private void newPicSaver(Uri imageUri2){
-        StorageReference imageFoulder = FirebaseStorage.getInstance().getReference().child("Images");
-        final StorageReference ImageName = imageFoulder.child("image1");
-        ImageName.putFile(imageUri2).addOnCompleteListener(command -> {
-            ImageName.getDownloadUrl().addOnSuccessListener(command1 -> {
-                
-                Log.d("qweqwrtyrutr","123456789");
-            });
-        });
-    }
-    private void addImageToDB(){
 
-    }
 
     private void postAndSave() {
         showToast("Checking");
@@ -166,18 +166,43 @@ public class AddaPost extends AppCompatActivity {
         post.put(Constants.Key_P_Names, fullName);
         post.put(Constants.Key_P_Text, postText);
         post.put(Constants.Key_Image_pp, managePreferences.getString(Constants.Key_Image));
-        post.put(Constants.Key_Picture, imagePosted);
+        if (addImage && imageUri2 != null) {
+            StorageReference storageRef = storage1.getReference();
+            StorageReference imagesRef = storageRef.child("images/" + imageUri2.getLastPathSegment());
+            imagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String image = uri.toString();
+                Log.d("ttrttrttrtrttrttrtrtrt", "123456789-0---" + image);
+
+                post.put(Constants.Key_Picture, image);
+
+                // Update the post data and save it to the database
+                savePostData(post);
+            }).addOnFailureListener(exception -> {
+                // Handle failure to get download URL
+                Log.e("TAG", "Failed to get download URL: " + exception.getMessage());
+                showToast("Failed to upload image");
+            });
+        } else {
+            post.put(Constants.Key_Picture, imagePosted);
+            Log.d("ttrttrttrtrttrttrtrtrt", "123456789-0--------''''");
+
+            // Update the post data and save it to the database
+            savePostData(post);
+        }
+    }
+
+    private void savePostData(Map<String, Object> post) {
         post.put(Constants.Key_Post_Time, new Date());
-        post.put(Constants.Key_P_ID, docName+"post");
+        post.put(Constants.Key_P_ID, docName + "post");
         post.put(Constants.Key_Likes, "0");
         post.put(Constants.Key_Comments, "0");
-        Log.d("12345566777", "123456789"+managePreferences.getString(Constants.Key_Image));
+        Log.d("12345566777", "123456789" + managePreferences.getString(Constants.Key_Image));
 
         // Add a new document with a generated ID
         CollectionReference usersCol = db.collection(Constants.Key_Collection_Posts);
 
-        Log.d("12345566777", "123456789-0---"+postnum);
-        Log.d("12345566777", "123456789---000---"+docName);
+        Log.d("12345566777", "123456789-0---" + postnum);
+        Log.d("12345566777", "123456789---000---" + docName);
         usersCol.document(docName).set(post).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -193,7 +218,6 @@ public class AddaPost extends AppCompatActivity {
                 showToast("Retry!");
             }
         });
-
     }
     private void getAllDocumentNames() {
         CollectionReference collectionRef = db.collection(Constants.Key_Collection_Posts);
@@ -234,7 +258,38 @@ public class AddaPost extends AppCompatActivity {
         docName = docName + "-" + postnum;
         Log.d("12345566", "===========---------" + docName);
 
+    }private void uploadAnImage(Uri uriFile){
+
+        StorageReference storageRef = storage1.getReference();
+
+// Create a reference to "mountains.jpg"
+        StorageReference mountainsRef = storageRef.child( uriFile.getLastPathSegment());
+
+// Create a reference to 'images/mountains.jpg'
+        StorageReference imagesRef = storageRef.child("images/" + uriFile.getLastPathSegment());
+        //ImageView imageView = (ImageView)findViewById(android.R.id.text1);
+
+
+
+        UploadTask uploadTask  = imagesRef.putFile(uriFile);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+
+            }
+        });
+
     }
+
 
     private void showToast(String mssg){
         Toast.makeText(this, mssg, Toast.LENGTH_SHORT).show();
@@ -242,3 +297,56 @@ public class AddaPost extends AppCompatActivity {
 
 
 }
+/*
+// Step 1: Select an image from the device
+Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+intent.setType("image/*");
+startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+
+// Step 2 and 3: Handle the selected image URI and upload to Firebase Storage
+@Override
+protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    super.onActivityResult(requestCode, resultCode, data);
+    if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+        Uri imageUri = data.getData();
+
+        // Create a storage reference
+        StorageReference storageRef = storage.getReference();
+        // Create a reference to the image file in Firebase Storage
+        StorageReference imageRef = storageRef.child("images/" + UUID.randomUUID().toString());
+
+        // Upload the file to Firebase Storage
+        imageRef.putFile(imageUri)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // Image uploaded successfully, get the download URL
+                    imageRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                        String imageUrl = uri.toString();
+                        // Step 4: Save the download URL in Firebase Realtime Database
+                        saveImageUrlToDatabase(imageUrl);
+                    });
+                })
+                .addOnFailureListener(exception -> {
+                    // Image upload failed
+                    Log.e("TAG", "Image upload failed: " + exception.getMessage());
+                    // Handle the error
+                });
+    }
+}
+
+// Step 4: Save the download URL in Firebase Realtime Database
+private void saveImageUrlToDatabase(String imageUrl) {
+    // Get a reference to the Firebase Realtime Database
+    DatabaseReference databaseRef = FirebaseDatabase.getInstance().getReference("users").child(userId);
+
+    // Save the image URL under a specific node in the database
+    databaseRef.child("profileImageUrl").setValue(imageUrl)
+            .addOnSuccessListener(aVoid -> {
+                // Image URL saved successfully in the database
+                Log.d("TAG", "Image URL saved in database");
+            })
+            .addOnFailureListener(e -> {
+                // Error occurred while saving the image URL
+                Log.e("TAG", "Error saving image URL: " + e.getMessage());
+            });
+}
+ */

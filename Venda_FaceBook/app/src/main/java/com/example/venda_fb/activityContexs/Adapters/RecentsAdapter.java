@@ -3,6 +3,7 @@ package com.example.venda_fb.activityContexs.Adapters;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Listeners.RecentConvoClickerListener;
+import com.example.venda_fb.activityContexs.activityContexs.Friends;
 import com.example.venda_fb.activityContexs.utilities.ChatMessage;
+import com.example.venda_fb.activityContexs.utilities.ConstantMethods;
+import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.User;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -67,12 +71,13 @@ public class RecentsAdapter extends RecyclerView.Adapter<RecentsAdapter.conversa
                 pp.setImageBitmap(getUserImage(chatMessage.convoImage));
 
                 name.getRootView().setOnClickListener(v -> {
-                    User user = new User();
-                    user.id = chatMessage.convoID;
-                    user.email = chatMessage.convoID;
-                    user.name = chatMessage.convoName;
-                    user.image = chatMessage.convoImage;
-                    recentConvoClickerListener.onConvoClicked(user);
+                    ConstantMethods.getUserByEmail(chatMessage.convoID,new ConstantMethods.OnUserRetrievedListener() {
+                        @Override
+                        public void onUserRetrieved(User user) {
+                            recentConvoClickerListener.onConvoClicked(user);
+                        }
+                    });
+
                 });
             }
             private Bitmap getUserImage(String encodedImg) {

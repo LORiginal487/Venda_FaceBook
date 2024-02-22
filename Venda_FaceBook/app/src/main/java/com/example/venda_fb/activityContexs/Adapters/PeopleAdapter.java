@@ -3,6 +3,7 @@ package com.example.venda_fb.activityContexs.Adapters;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +59,8 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHo
 
     @Override
     public void onBindViewHolder(@NonNull PeopleAdapter.UserViewHolder holder, int position) {
+        Log.d("dftfgjkhgguigkuhkjhuh", "_______________"+users.get(position).bckGnd);
+
         holder.setPersonData(users.get(position));
     }
 

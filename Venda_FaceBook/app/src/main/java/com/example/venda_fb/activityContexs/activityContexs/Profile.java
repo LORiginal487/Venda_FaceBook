@@ -20,6 +20,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
 import com.example.venda_fb.activityContexs.utilities.Constants;
@@ -37,6 +38,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -64,7 +68,14 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
     List<String> documentNames = new ArrayList<>();
 
     List<Post> postz = new ArrayList<>();
-    String fullName, image,imageBG;
+    String fullName, type,imageBG,imagePPstr;
+    Uri imageUri2;
+    Boolean addImage = false;
+    StorageReference storageReference;
+    FirebaseStorage fbStorage1;
+    CollectionReference collectionUser;
+    DocumentReference documentRefUser;
+    private FirebaseStorage storage1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,13 +86,21 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
         //---------------------
         callViews();
         db = FirebaseFirestore.getInstance();
+        Log.d("wwwwwwwwwwwwwww", "====------1");
+        storage1 = FirebaseStorage.getInstance();
+        Log.d("wwwwwwwwwwwwwww", "====------2");
+
+        Log.d("wwwwwwwwwwwwwww", "====------3");
+        Log.d("wwwwwwwwwwwwwww", "====------4");
         managePreferences = new ManagePreferences(getApplicationContext());
+        Log.d("wwwwwwwwwwwwwww", "====------5");
         //getFromDB();
         setEverything();
         showPosts();
 
     }
     private void setEverything(){
+        Log.d("wwwwwwwwwwwwwww", "--------");
         fullName = managePreferences.getString(Constants.Key_Name )+" "+managePreferences.getString(Constants.Key_Surname);
         nameV.setText(fullName.toUpperCase());
         Log.d("wwwwwwwwwwwwwww", "12"+fullName);
@@ -93,7 +112,7 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
         }
         Log.d("wwwwwwwwwwwwwww", "1234---");
         if(managePreferences.getString(Constants.Key_BackgroundPic)!=null) {
-            background.setImageBitmap(getBitmap(managePreferences.getString(Constants.Key_BackgroundPic)));
+            showNewImage(managePreferences.getString(Constants.Key_BackgroundPic), background);
             Log.d("wwwwwwwwwwwwwww", "12345====" + managePreferences.getString(Constants.Key_BackgroundPic));
         }
         Log.d("wwwwwwwwwwwwwww", "123456------");
@@ -104,12 +123,14 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
     private void callViews(){
+        Log.d("wwwwwwwwwwwwwww", "====------");
         background = findViewById(R.id.imageBG);
         imageViewPP = findViewById(R.id.myPP);
         nameV = findViewById(R.id.nameDis);
         bioV = findViewById(R.id.Bio);
         myPostHistory = findViewById(R.id.recView);
         loadingProgressBar = findViewById(R.id.progressBar);
+        Log.d("wwwwwwwwwwwwwww", "====------");
     }
     private String getImage(Bitmap bitmap){
         int previewWidth = 150;
@@ -126,14 +147,26 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
                 if(result.getResultCode()==RESULT_OK){
                     if(result.getData() != null){
                         Uri imgUri = result.getData().getData();
-                        try{
-                            InputStream inputStream = getContentResolver().openInputStream(imgUri);
-                            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                            background.setImageBitmap(bitmap);
-                            imageBG = getImage(bitmap);
-                            addInDb();
-                        }catch (FileNotFoundException e){
-                            e.printStackTrace();
+                        imageUri2 =imgUri;
+                        addImage = true;
+                        //newPicSaver(imgUri);
+                        if(type == Constants.Key_BackgroundPic){
+                            uploadAnImage(imgUri);
+                        }else{
+                            try{
+                                InputStream inputStream = getContentResolver().openInputStream(imgUri);
+                                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                                imageViewPP.setImageBitmap(bitmap);
+                                imagePPstr = getImage(bitmap);
+                                managePreferences.putString(Constants.Key_Image, imagePPstr);
+                                documentRefUser = FirebaseFirestore.getInstance().collection(Constants.Key_Collection_Users).document(managePreferences.getString(Constants.Key_Email));
+
+                                updateField(documentRefUser, Constants.Key_Image, imagePPstr);
+                                imageViewPP.setImageBitmap(getBitmap(managePreferences.getString(Constants.Key_Image)));
+
+                            }catch (FileNotFoundException e){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -213,15 +246,30 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
 
     private void addInDb(){
         showToast("Checking");
-
-        // Reference to the Firebase database
-        // Create a new user with a first and last name
         Map<String, Object> inBG = new HashMap<>();
-        inBG.put(Constants.Key_BackgroundPic, imageBG);
-        managePreferences.putString(Constants.Key_BackgroundPic, imageBG);
-        Log.d("12345566777", "123456789"+managePreferences.getString(Constants.Key_BackgroundPic));
+        if (addImage && imageUri2 != null) {
+            StorageReference storageRef = storage1.getReference();
+            StorageReference imagesRef = storageRef.child("images/" + imageUri2.getLastPathSegment());
+            imagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String image = uri.toString();
+                Log.d("ttrttrttrtrttrttrtrtrt", "123456789-0---" + image);
+                inBG.put(Constants.Key_BackgroundPic, image);
+                managePreferences.putString(Constants.Key_BackgroundPic, image);
+                // Update the post data and save it to the database
+                saveNewBG(inBG);
+            }).addOnFailureListener(exception -> {
+                // Handle failure to get download URL
+                Log.e("TAG", "Failed to get download URL: " + exception.getMessage());
+                showToast("Failed to upload image");
+            });
+        } else {
 
+        }
         // Add a new document with a generated ID
+
+    }
+
+    private void saveNewBG(Map<String, Object> inBG) {
         CollectionReference usersCol = db.collection(Constants.Key_Collection_Users);
 
         usersCol.document(managePreferences.getString(Constants.Key_Email))
@@ -238,6 +286,7 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
                     }
                 });
     }
+
     private void showToast(String mssg){
         Toast.makeText(this, mssg, Toast.LENGTH_SHORT).show();
     }
@@ -290,6 +339,7 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
     public void addBackGround(View view) {
         Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        type = Constants.Key_BackgroundPic;
         pickImage.launch(intent);
     }
 
@@ -378,6 +428,7 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
 
                         // Update the value or perform any operation
                         String addedAlyk = Integer.toString(Integer.parseInt(strLike)+1); // Update this with your new value
+
                         updateField(documentRef, Constants.Key_Likes, addedAlyk);
                     } else {
 
@@ -388,7 +439,86 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
             }
         });
     }
+private void uploadAnImage(Uri uriFile){
 
+    StorageReference storageRef = storage1.getReference();
+
+// Create a reference to "mountains.jpg"
+    StorageReference mountainsRef = storageRef.child( uriFile.getLastPathSegment());
+
+// Create a reference to 'images/mountains.jpg'
+    StorageReference imagesRef = storageRef.child("images/" + uriFile.getLastPathSegment());
+    //ImageView imageView = (ImageView)findViewById(android.R.id.text1);
+
+
+
+    UploadTask uploadTask  = imagesRef.putFile(uriFile);
+
+    // Register observers to listen for when the download is done or if it fails
+    uploadTask.addOnFailureListener(new OnFailureListener() {
+        @Override
+        public void onFailure(@NonNull Exception exception) {
+            // Handle unsuccessful uploads
+
+        }
+    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        @Override
+        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+            imagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                String image = uri.toString();
+                Log.d("ttrttrttrtrttrttrtrtrt", "123456789-0---" + image);
+                documentRefUser = FirebaseFirestore.getInstance().collection(Constants.Key_Collection_Users).document(managePreferences.getString(Constants.Key_Email));
+                updateField(documentRefUser, Constants.Key_BackgroundPic, image);
+                showNewImage(image, background);
+            });
+        }
+    });
+
+}
+    private void uploadAnImagePP(Uri uriFile){
+
+        StorageReference storageRef = storage1.getReference();
+
+// Create a reference to "mountains.jpg"
+        StorageReference mountainsRef = storageRef.child( uriFile.getLastPathSegment());
+
+// Create a reference to 'images/mountains.jpg'
+        StorageReference imagesRef = storageRef.child("images/" + uriFile.getLastPathSegment());
+        //ImageView imageView = (ImageView)findViewById(android.R.id.text1);
+
+
+
+        UploadTask uploadTask  = imagesRef.putFile(uriFile);
+
+        // Register observers to listen for when the download is done or if it fails
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                imagesRef.getDownloadUrl().addOnSuccessListener(uri -> {
+                    String image = uri.toString();
+                    Log.d("ttrttrttrtrttrttrtrtrt", "123456789-0---" + image);
+                    documentRefUser = FirebaseFirestore.getInstance().collection(Constants.Key_Collection_Users).document(managePreferences.getString(Constants.Key_Email));
+
+                    updateField(documentRefUser, Constants.Key_Image, image);
+
+                });
+            }
+        });
+
+    }
+    private void showNewImage(String imageU, ImageView imageView){
+        Glide.with(Profile.this) // Pass the activity or fragment context
+                .load(imageU) // Load the image from the URL
+                .into(imageView);
+    }
 
 
     private void updateField(DocumentReference documentRef, String fieldName, String newValue) {
@@ -412,4 +542,10 @@ public class Profile extends AppCompatActivity implements LikesAndCommentListene
                 });
     }
 
+    public void upDatePp(View view) {
+        Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        type = Constants.Key_Image;
+        pickImage.launch(intent);
+    }
 }

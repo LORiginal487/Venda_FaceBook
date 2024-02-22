@@ -5,6 +5,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -30,24 +33,15 @@ import java.util.List;
 
 public class Inbox extends AppCompatActivity implements RecentConvoClickerListener {
     User userTo;
-    private List<ChatMessage> convos;
-    RoundedImageView imageViewPP;
+    private List<ChatMessage> convos= new ArrayList<>();
     RecentsAdapter recentsAdapter;
-    TextView nameV, bioV;
     EditText searchbar;
     User userDt;
     ManagePreferences managePreferences;
     ProgressBar loadingProgressBar;
     RecyclerView recentsView;
-    DocumentReference docRef;
     FirebaseFirestore db;
-    List<String> documentNames = new ArrayList<>();
 
-    List<User> userz = new ArrayList<>();
-    List<String> timeOfTexts = new ArrayList<>();
-    List<String> texts = new ArrayList<>();
-    String nameofP, timeLast;
-    String lastText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,20 +52,72 @@ public class Inbox extends AppCompatActivity implements RecentConvoClickerListen
         db = FirebaseFirestore.getInstance();
         managePreferences = new ManagePreferences(getApplicationContext());
         callViews();
-        displayRecents();
         ListenMessages();
+        displayRecents();
+        whileSearching();
     }
     private void callViews(){
 
         loadingProgressBar = findViewById(R.id.progressBar);
         recentsView = findViewById(R.id.recycleVrecents);
+        searchbar = findViewById(R.id.searchText);
 
 
+    }private void whileSearching(){
+        searchbar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(searchbar.getText().toString().isEmpty()){
+                    displayRecents();
+                }else {
+                    Log.d("rteyruihbcfdid","567890--00000001");
+                    Filtering(searchbar.getText().toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(searchbar.getText().toString().isEmpty()){
+                    displayRecents();
+                }else {
+                    Log.d("rteyruihbcfdid","567890--00000002");
+                    Filtering(searchbar.getText().toString());
+
+                }
+            }
+        });
+    }
+    private void Filtering(String text) {
+
+
+        List<ChatMessage> filteredConvo = new ArrayList<>();
+
+        for (ChatMessage chatMessage : convos) {
+            if (chatMessage.convoID.toUpperCase().contains(text.toUpperCase().trim()) ||
+                    chatMessage.convoName.toUpperCase().contains(text.toUpperCase().trim()) ||
+                    chatMessage.message.toUpperCase().contains(text.toUpperCase().trim()))  {
+                Log.d("rteyruihbcfdid","567890--0000000"+chatMessage.convoID);
+                filteredConvo.add(chatMessage);
+                Log.d("rteyruihbcfdid","567890--0000000"+filteredConvo.size());
+            }
+
+        }
+        Log.d("rteyruihbcfdid","567890--0000000"+filteredConvo.size());
+        callAdapter(filteredConvo);
 
     }
     private void displayRecents(){
-        convos = new ArrayList<>();
-        recentsAdapter = new RecentsAdapter(convos, this);
+
+        callAdapter(convos);
+
+    }
+    private void callAdapter(List<ChatMessage> convos1){
+        recentsAdapter = new RecentsAdapter(convos1, this);
         recentsView.setAdapter(recentsAdapter);
     }
 

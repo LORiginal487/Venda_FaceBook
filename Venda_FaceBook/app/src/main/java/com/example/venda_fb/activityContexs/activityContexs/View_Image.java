@@ -6,9 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.Post;
@@ -34,7 +36,13 @@ public class View_Image extends AppCompatActivity {
     private void setEverything(){
         post = (Post) getIntent().getSerializableExtra(Constants.Key_Post);
         text.setText(post.postTxt);
-        image.setImageBitmap(getBitmap(post.postedPic));
+        if(post.postedPic != null){
+            Glide.with(View_Image.this) // Pass the activity or fragment context
+                    .load(post.postedPic) // Load the image from the URL
+                    .into(image);
+        }else{
+            image.setVisibility(View.GONE);
+        }
 
     }
     private Bitmap getBitmap(String imageStr){

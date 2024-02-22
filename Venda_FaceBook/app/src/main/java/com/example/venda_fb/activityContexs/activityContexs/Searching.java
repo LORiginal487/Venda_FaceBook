@@ -49,7 +49,7 @@ public class Searching extends AppCompatActivity implements UserListener {
     FirebaseFirestore db;
     List<String> documentNames = new ArrayList<>();
 
-    List<User> userz = new ArrayList<>();
+    List<User> filteredUserz = new ArrayList<>();
     List<User> allUsers = new ArrayList<>();
     String peopleTshow, image;
     @Override
@@ -62,6 +62,7 @@ public class Searching extends AppCompatActivity implements UserListener {
         db = FirebaseFirestore.getInstance();
         managePreferences = new ManagePreferences(getApplicationContext());
         getAllDocumentNames();
+        whileSearching();
 
     }
     private void callViews(){
@@ -71,6 +72,31 @@ public class Searching extends AppCompatActivity implements UserListener {
     }
 
     public void SearchNow(View view) {
+
+
+    }
+
+
+
+    private void getAllDocumentNames() {
+        ConstantMethods.returnAllUsers(new ConstantMethods.UserListRetrievedListener() {
+            @Override
+            public void onUserListRetrieved(List<User> users) {
+                // Do something with the list of users
+                allUsers = users;
+
+                callAdapter(allUsers);
+
+            }
+        });
+
+    }
+    private void callAdapter(List<User> users){
+        PeopleAdapter peopleAdapter = new PeopleAdapter(users,Constants.Key_Every_Person, Searching.this);
+        peopleView.setAdapter(peopleAdapter);
+        peopleView.setVisibility(View.VISIBLE);
+    }
+    private void whileSearching(){
         searchbar.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -79,28 +105,38 @@ public class Searching extends AppCompatActivity implements UserListener {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+                if(searchbar.getText().toString().isEmpty()){
+                    getAllDocumentNames();
+                }else {
+                    Filtering(searchbar.getText().toString());
+                }
             }
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if(searchbar.getText().toString().isEmpty()){
+                    getAllDocumentNames();
+                }else {
+                    Filtering(searchbar.getText().toString());
+                }
             }
         });
     }
-    private void getAllDocumentNames() {
-        ConstantMethods.returnAllUsers(new ConstantMethods.UserListRetrievedListener() {
-            @Override
-            public void onUserListRetrieved(List<User> users) {
-                // Do something with the list of users
-                allUsers = users;
+    private void Filtering(String text) {
 
-                PeopleAdapter peopleAdapter = new PeopleAdapter(allUsers,Constants.Key_Every_Person, Searching.this);
-                peopleView.setAdapter(peopleAdapter);
-                peopleView.setVisibility(View.VISIBLE);
 
+        filteredUserz.clear(); // Clear the list before filtering
+
+        for (User user : allUsers) {
+            if (user.name.toUpperCase().contains(text.toUpperCase().trim()) ||
+                    user.surname.toUpperCase().contains(text.toUpperCase().trim()) ||
+                    user.email.toUpperCase().contains(text.toUpperCase().trim()) ||
+                    ((user.email + " " + user.surname).toUpperCase().contains(text.toUpperCase().trim())) ||
+                    ((user.surname + " " + user.name).toUpperCase().contains(text.toUpperCase().trim()))) {
+                filteredUserz.add(user);
             }
-        });
+        }
+        callAdapter(filteredUserz);
 
     }
 

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
 import com.example.venda_fb.activityContexs.activityContexs.Profile;
@@ -81,11 +82,14 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
             RoundedImageView imageProfile = itemView.findViewById(R.id.posterPP);
             imageProfile.setImageBitmap(getBitmapFromBase64(post.posterPP));
             ImageView postedImage = itemView.findViewById(R.id.picture);
-            if(getBitmapFromBase64(post.postedPic) != null) {
-                postedImage.setImageBitmap(getBitmapFromBase64(post.postedPic));
+            if(post.postedPic != null){
+                Glide.with(itemView.getContext()) // Pass the activity or fragment context
+                        .load(post.postedPic) // Load the image from the URL
+                        .into(postedImage);
             }else{
                 postedImage.setVisibility(View.GONE);
             }
+
             TextView likesC = itemView.findViewById(R.id.likesCount);
             likesC.setText(post.postLikes);
             TextView comntsC = itemView.findViewById(R.id.commentCount);

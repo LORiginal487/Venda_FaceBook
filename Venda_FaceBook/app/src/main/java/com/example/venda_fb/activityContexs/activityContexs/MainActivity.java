@@ -96,6 +96,7 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
                                     post.postComments = queryDocumentSnapshot.getString(Constants.Key_Comments);
                                     post.postID = queryDocumentSnapshot.getString(Constants.Key_P_ID);
                                     postz.add(post);
+                                    Log.d("1234598urytfygfygyg","rtyuio");
                                 }
                                 if (postz.size() > 0) {
 
@@ -104,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
                                     ProfileAdapter profileAdapter = new ProfileAdapter(postz, MainActivity.this);
                                     feedPosts.setAdapter(profileAdapter);
                                     feedPosts.setVisibility(View.VISIBLE);
+                                    Log.d("1234598urytfygfygyg","111111111111111");
                                     loading(false);
                                 }
 
@@ -220,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 showToast("Liking!");
-                sendNotification(Constants.Key_Like_Noti, extractEmail(post.postID));
+                sendNotification(Constants.Key_Like_Noti, extractEmail(post.postID), post.postID);
 
                 // Call countTheLikes after successfully adding the like
                 //getAllDocumentNames(post.postID);
@@ -232,11 +234,12 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
             }
         });
     }
-    private void sendNotification(String type, String email){
+    private void sendNotification(String type, String email, String postID){
         Map<String, Object> noti = new HashMap<>();
         noti.put(Constants.Key_Noti_Names, managePreferences.getString(Constants.Key_Name));
         noti.put(Constants.Key_Noti_pp, managePreferences.getString(Constants.Key_Image));
         noti.put(Constants.Key_Noti_Text, type);
+        noti.put(Constants.Key_Noti_PostId, postID);
         noti.put(Constants.Key_Noti_Time, new Date());
         noti.put(Constants.Key_Noti_Email, email);
         CollectionReference collectionRef = db.collection(Constants.Key_Collection_Notifications);
@@ -306,30 +309,7 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
     }
 
 
-    private void getAllDocumentNames( String postID) {
-        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Likes);
 
-        collectionRef.get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            List<String> documentNames = new ArrayList<>();
-                            for (DocumentSnapshot document : task.getResult()) {
-                                // Get the document ID (name) and add it to the list
-                                String documentName = document.getId();
-                                documentNames.add(documentName);
-                            }
-
-                            // Now you have a list of all document names
-                            countTheLikes(documentNames, postID);
-
-                        } else {
-                            Log.d("TAG", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-    }
     private void updateField(DocumentReference documentRef, String fieldName, String newValue) {
         // Create a map to update the field
         Map<String, Object> updateMap = new HashMap<>();
@@ -350,18 +330,6 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
                     }
                 });
     }
-    private void countTheLikes(List<String> documentNames, String postID){
-        docName=postID+"likes";
 
-        for(int i=0;i < documentNames.size(); i++){
-            String namesss = documentNames.get(i);
-            if(namesss.contains(postID)) {
-                postnum ++;
-            }
-        }
-        docName = docName + "-" + postnum;
-        Log.d("12345566", "===========---------" + docName);
-
-    }
 
 }

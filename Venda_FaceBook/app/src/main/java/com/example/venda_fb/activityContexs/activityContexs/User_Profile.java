@@ -173,6 +173,7 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
                         }
                     }
                 });
+        loading(false);
 
     }
     private String getRedableDate(Date date){
@@ -334,6 +335,38 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
             @Override
             public void onSuccess(DocumentReference documentReference) {
                 showToast("Liked!");
+                sendNotification(Constants.Key_Like_Noti, extractEmail(post.postID), post.postID);
+                // Call countTheLikes after successfully adding the like
+                //getAllDocumentNames(post.postID);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                showToast("Retry!");
+            }
+        });
+    }
+    private String extractEmail(String postId) {
+        String[] email1 = postId.split("-");
+        return email1[0];
+
+
+
+    }
+    private void sendNotification(String type, String email, String postID){
+        Map<String, Object> noti = new HashMap<>();
+        noti.put(Constants.Key_Noti_Names, managePreferences.getString(Constants.Key_Name));
+        noti.put(Constants.Key_Noti_pp, managePreferences.getString(Constants.Key_Image));
+        noti.put(Constants.Key_Noti_Text, type);
+        noti.put(Constants.Key_Noti_PostId, postID);
+        noti.put(Constants.Key_Noti_Time, new Date());
+        noti.put(Constants.Key_Noti_Email, email);
+        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Notifications);
+        collectionRef.add(noti).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                showToast("Liked!");
+
 
                 // Call countTheLikes after successfully adding the like
                 //getAllDocumentNames(post.postID);
@@ -344,6 +377,7 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
                 showToast("Retry!");
             }
         });
+
     }
     private void countTheLikes(List<String> documentNames, String postID){
         docName=postID+"likes";

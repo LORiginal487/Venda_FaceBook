@@ -112,6 +112,7 @@ public class CommentsLayout extends AppCompatActivity implements CommentListener
     private void showAllcomments(){
         Log.d("ggggggggggggggggggggggggderggd", "0");
         getAllcomments();
+        progressBar.setVisibility(View.GONE);
     }
     private void getAllcomments() {
         CollectionReference collectionRef = db.collection(Constants.Key_Collection_Comments);
@@ -179,7 +180,7 @@ public class CommentsLayout extends AppCompatActivity implements CommentListener
             public void onSuccess(DocumentReference documentReference) {
                 getAllcomments();
                 addAcommnt2db();
-                sendNotification(Constants.Key_Comment_Not, extractEmail(post.postID));
+                sendNotification(Constants.Key_Comment_Not, extractEmail(post.postID), post.postID);
                 // Call countTheLikes after successfully adding the like
                 //getAllDocumentNames(post.postID);
             }
@@ -196,11 +197,12 @@ public class CommentsLayout extends AppCompatActivity implements CommentListener
 
 
     }
-    private void sendNotification(String type, String email){
+    private void sendNotification(String type, String email, String postID){
         Map<String, Object> noti = new HashMap<>();
         noti.put(Constants.Key_Noti_Names, managePreferences.getString(Constants.Key_Name));
         noti.put(Constants.Key_Noti_pp, managePreferences.getString(Constants.Key_Image));
         noti.put(Constants.Key_Noti_Text, type);
+        noti.put(Constants.Key_Noti_PostId, postID);
         noti.put(Constants.Key_Noti_Time, new Date());
         noti.put(Constants.Key_Noti_Email, email);
         CollectionReference collectionRef = db.collection(Constants.Key_Collection_Notifications);

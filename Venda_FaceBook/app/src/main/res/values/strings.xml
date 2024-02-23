@@ -44,4 +44,5 @@
     <string name="add_bio_here">Add bio here...</string>
     <string name="status">Status</string>
     <string name="no_bio">No bio</string>
+    <string name="edit">Edit</string>
 </resources>

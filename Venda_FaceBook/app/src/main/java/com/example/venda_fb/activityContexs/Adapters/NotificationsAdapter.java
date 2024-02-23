@@ -13,9 +13,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.venda_fb.R;
+import com.example.venda_fb.activityContexs.Listeners.NotificationListener;
 import com.example.venda_fb.activityContexs.Listeners.RecentConvoClickerListener;
 import com.example.venda_fb.activityContexs.utilities.ChatMessage;
+import com.example.venda_fb.activityContexs.utilities.ConstantMethods;
 import com.example.venda_fb.activityContexs.utilities.Notification_c;
+import com.example.venda_fb.activityContexs.utilities.Post;
 import com.example.venda_fb.activityContexs.utilities.User;
 import com.makeramen.roundedimageview.RoundedImageView;
 
@@ -27,8 +30,11 @@ import java.util.Locale;
 public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdapter.notificationsViewHolder>{
     private final List<Notification_c> notis;
 
-    public NotificationsAdapter(List<Notification_c> notis) {
+    NotificationListener notificationListener;
+
+    public NotificationsAdapter(List<Notification_c> notis, NotificationListener notificationListener) {
         this.notis = notis;
+        notificationListener = this.notificationListener;
     }
 
     @NonNull
@@ -66,6 +72,15 @@ public class NotificationsAdapter extends RecyclerView.Adapter<NotificationsAdap
             RoundedImageView pp = itemView1.findViewById(R.id.image);
             pp.setImageBitmap(getUserImage(noti.imagePP));
             Log.d("qwedrfrgucuyjdfgas", "325444444q6546344"+noti.names);
+            name.getRootView().setOnClickListener(v -> {
+                ConstantMethods.getPostByID(noti.postID, new ConstantMethods.OnPostRetrievedListener() {
+                    @Override
+                    public void onPostRetrieved(Post post) {
+                        notificationListener.onNotiClicked(post);
+                    }
+                });
+
+            });
 
 
 

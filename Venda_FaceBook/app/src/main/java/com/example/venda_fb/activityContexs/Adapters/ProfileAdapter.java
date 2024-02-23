@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -93,27 +94,54 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
             TextView likesC = itemView.findViewById(R.id.likesCount);
             likesC.setText(post.postLikes);
             TextView comntsC = itemView.findViewById(R.id.commentCount);
+            LinearLayoutCompat likeBtnL = itemView.findViewById(R.id.likeBtn);
+            LinearLayoutCompat commBtnL = itemView.findViewById(R.id.commentBtn);
             comntsC.setText(post.postComments);
-            TextView comntB = itemView.findViewById(R.id.commentBtn);
-            TextView likeB = itemView.findViewById(R.id.likeBtn);
+                TextView comntB = itemView.findViewById(R.id.commBtnt);
+            TextView likeB = itemView.findViewById(R.id.likeBtnt);
+            commBtnL.setOnClickListener(v -> {
+                likesAndCommentListener.onCommentClicked(post);
+            });
             comntB.setOnClickListener(v -> {
-
                 likesAndCommentListener.onCommentClicked(post);
             });
             likeB.setOnClickListener(v -> {
                 likesAndCommentListener.onLikeClicked(post);
             });
+            postedImage.getRootView().setOnClickListener(v -> {
+                likesAndCommentListener.onPictureClick(post);
+                    }
+            );
+            likeBtnL.setOnClickListener(v -> {
+                likesAndCommentListener.onLikeClicked(post);
+            });
             names.setOnClickListener(v -> {
                 //extractEmail(post.postID);
+                ConstantMethods.getUserByEmail(extractEmail(post.postID), new ConstantMethods.OnUserRetrievedListener() {
+                    @Override
+                    public void onUserRetrieved(User user) {
+                        likesAndCommentListener.onPersonClicked(user);
+                    }
+                });
                 Log.d("wertyioitrfhhnlk", "2345678988888"+post.postID);
             });
             imageProfile.setOnClickListener(v -> {
                 Log.d("wertyioitrfhhnlk", "2345678988888"+post.postID);
 
-                //extractEmail(post.postID);
+                ConstantMethods.getUserByEmail(extractEmail(post.postID), new ConstantMethods.OnUserRetrievedListener() {
+                    @Override
+                    public void onUserRetrieved(User user) {
+                        likesAndCommentListener.onPersonClicked(user);
+                    }
+                });
             });
             postedImage.setOnClickListener(v -> {
-                likesAndCommentListener.onPictureClick(post);
+                ConstantMethods.getPostByID(post.postID, new ConstantMethods.OnPostRetrievedListener() {
+                    @Override
+                    public void onPostRetrieved(Post post) {
+                        likesAndCommentListener.onPictureClick(post);
+                    }
+                });
             });
         }
 
@@ -125,29 +153,38 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
                 return null;
             }
         }
-        private void extractEmail(String postId) {
-            String[] email1 = postId.split("-");
-            String email = email1[0];
-            Log.d("wertyioitrfhhnlk", "2345678988888"+email);
+        private String extractEmail(String name) {
 
-            extractUser(email);
 
+            String[] parts = name.split("-");
+            String email = parts[0];
+
+
+            return email;
+        }private void clickPicture(String postId){
+            ConstantMethods.getPostByID(postId, new ConstantMethods.OnPostRetrievedListener() {
+                @Override
+                public void onPostRetrieved(Post post) {
+                    likesAndCommentListener.onPictureClick(post);
+                }
+            });
         }
-        private void extractUser(String email) {
-            db.collection(Constants.Key_Collection_Users).whereEqualTo(Constants.Key_Email, email)
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful() && task.getResult() != null) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                User user = document.toObject(User.class);
-                                Log.d("wertyioitrfhhnlk", "2345678988888"+user.email);
-
-                                likesAndCommentListener.onPersonClicked(user);
-                            }
-                        } else {
-                            Log.d("TAG", "Error getting user by email: ", task.getException());
-                        }
-                    });
+        private void clickComment(String postId){
+            ConstantMethods.getPostByID(postId, new ConstantMethods.OnPostRetrievedListener() {
+                @Override
+                public void onPostRetrieved(Post post) {
+                    likesAndCommentListener.onCommentClicked(post);
+                }
+            });
         }
+        private void clickLike(String postId){
+            ConstantMethods.getPostByID(postId, new ConstantMethods.OnPostRetrievedListener() {
+                @Override
+                public void onPostRetrieved(Post post) {
+                    likesAndCommentListener.onLikeClicked(post);
+                }
+            });
+        }
+
     }
 }

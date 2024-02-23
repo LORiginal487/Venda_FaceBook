@@ -24,12 +24,15 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -54,7 +57,15 @@ public static void getUserByEmail(String email, OnUserRetrievedListener listener
             .addOnCompleteListener(task -> {
                 if (task.isSuccessful() && task.getResult() != null) {
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        User user = document.toObject(User.class);
+                        User user = new User();
+                        user.name = document.getString(Constants.Key_Name);
+                        user.surname = document.getString(Constants.Key_Surname);
+                        user.email =document.getString(Constants.Key_Email);
+                        user.image =document.getString(Constants.Key_Image);
+                        //user.token =document.getString(Constants.KT);
+                        user.id =document.getString(Constants.Key_Users_Id);
+                        user.biot =document.getString(Constants.Key_Bio);
+                        user.bckGnd = document.getString(Constants.Key_BackgroundPic);
                         listener.onUserRetrieved(user); // Pass the retrieved user to the listener
                     }
                 } else {
@@ -63,6 +74,39 @@ public static void getUserByEmail(String email, OnUserRetrievedListener listener
                 }
             });
 }
+    private static String getRedableDate(Date date){
+        return new SimpleDateFormat("HH:mm - dd/MM/yyyy", Locale.getDefault()).format(date);
+    }
+    public interface OnPostRetrievedListener {
+        void onPostRetrieved(Post post);
+    }
+    public static void getPostByID(String postID, OnPostRetrievedListener listener) {
+        db.collection(Constants.Key_Collection_Posts)
+                .whereEqualTo(Constants.Key_Email, postID)
+                .get()
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            Post post = new Post();
+                            post.posterNames = document.getString(Constants.Key_P_Names);
+
+                            post.postTime = getRedableDate(document.getDate(Constants.Key_Post_Time));
+
+                            post.postTxt = document.getString(Constants.Key_P_Text);
+                            post.posterPP = document.getString(Constants.Key_Image_pp);
+                            post.postedPic = document.getString(Constants.Key_Picture);
+                            post.postLikes = document.getString(Constants.Key_Likes);
+                            post.postComments = document.getString(Constants.Key_Comments);
+                            post.postID = document.getString(Constants.Key_P_ID);
+
+                            listener.onPostRetrieved(post); // Pass the retrieved user to the listener
+                        }
+                    } else {
+                        Log.d("TAG", "Error getting user by email: ", task.getException());
+                        listener.onPostRetrieved(null); // Notify listener of failure
+                    }
+                });
+    }
 
 
 

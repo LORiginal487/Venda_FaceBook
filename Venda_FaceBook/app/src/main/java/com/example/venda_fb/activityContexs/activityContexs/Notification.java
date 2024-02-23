@@ -11,10 +11,12 @@ import android.view.View;
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.NotificationsAdapter;
 import com.example.venda_fb.activityContexs.Adapters.RecentsAdapter;
+import com.example.venda_fb.activityContexs.Listeners.NotificationListener;
 import com.example.venda_fb.activityContexs.utilities.ChatMessage;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.Notification_c;
+import com.example.venda_fb.activityContexs.utilities.Post;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -27,7 +29,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class Notification extends AppCompatActivity {
+public class Notification extends AppCompatActivity implements NotificationListener {
     FirebaseFirestore db;
     ManagePreferences managePreferences;
     List<Notification_c> notis;
@@ -48,7 +50,7 @@ public class Notification extends AppCompatActivity {
 
     private void displayNotifcations() {
         notis = new ArrayList<>();
-        notificationsAdapter = new NotificationsAdapter(notis);
+        notificationsAdapter = new NotificationsAdapter(notis, Notification.this);
         notiView.setAdapter(notificationsAdapter);
     }
 
@@ -144,5 +146,13 @@ public class Notification extends AppCompatActivity {
     };
     private String getRedableDate(Date date){
         return new SimpleDateFormat("HH:mm", Locale.getDefault()).format(date);
+    }
+
+    @Override
+    public void onNotiClicked(Post post) {
+        Intent intent = new Intent(getApplicationContext(), CommentsLayout.class);
+        // Pass any necessary data to the CommentsLayout activity using extras
+        intent.putExtra(Constants.Key_Post, post);
+        startActivity(intent);
     }
 }

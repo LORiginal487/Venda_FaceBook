@@ -94,18 +94,17 @@ public class Inbox extends AppCompatActivity implements RecentConvoClickerListen
     }
     private void Filtering(String text) {
 
-
+        List<ChatMessage> before = new ArrayList<>();
+        before.addAll(convos);
+        Log.d("rteyruihbcfdid","567890--0000000"+before.size());
         List<ChatMessage> filteredConvo = new ArrayList<>();
 
-        for (ChatMessage chatMessage : convos) {
-            if (chatMessage.convoID.toUpperCase().contains(text.toUpperCase().trim()) ||
-                    chatMessage.convoName.toUpperCase().contains(text.toUpperCase().trim()) ||
-                    chatMessage.message.toUpperCase().contains(text.toUpperCase().trim()))  {
-                Log.d("rteyruihbcfdid","567890--0000000"+chatMessage.convoID);
+        for (ChatMessage chatMessage : before) {
+            Log.d("rteyruihbcfdid","567890--0000000pppp-");
+            if(chatMessage.convoName.toUpperCase().contains(text.toUpperCase())){
                 filteredConvo.add(chatMessage);
-                Log.d("rteyruihbcfdid","567890--0000000"+filteredConvo.size());
             }
-
+            Log.d("rteyruihbcfdid","567890--0000000pppp");
         }
         Log.d("rteyruihbcfdid","567890--0000000"+filteredConvo.size());
         callAdapter(filteredConvo);

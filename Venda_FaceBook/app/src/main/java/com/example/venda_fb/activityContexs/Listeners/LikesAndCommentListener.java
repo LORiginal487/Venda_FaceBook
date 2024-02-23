@@ -8,4 +8,5 @@ public interface LikesAndCommentListener {
     void onLikeClicked(Post post);
     void onPictureClick(Post post);
     void onPersonClicked(User user);
+    void onThreeDotsClick(String type, String postId);
 }

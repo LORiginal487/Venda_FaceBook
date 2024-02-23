@@ -234,6 +234,13 @@ public static void getAllFriendsMap(String userEmail, final OnFriendsMapReadyLis
                     }
                 });
     }
+    public static void deletePost(String postID){
+        CollectionReference collectionRef = db.collection(Constants.Key_Collection_Posts);
+        String[] docName = postID.split("post");
+        collectionRef.document(docName[0]).delete().addOnCompleteListener(task -> {
+
+        });
+    }
     private static void notifyUserRetrieved(List<User> userList, UserListener userListener, RecyclerView recyclerView, String ppl2show) {
         PeopleAdapter peopleAdapter = new PeopleAdapter(userList, ppl2show, userListener);
         recyclerView.setAdapter(peopleAdapter);

@@ -2,6 +2,8 @@ package com.example.venda_fb.activityContexs.activityContexs;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.graphics.Bitmap;
@@ -55,6 +57,8 @@ public class CommentsLayout extends AppCompatActivity implements CommentListener
     RoundedImageView imagePP;
     ManagePreferences managePreferences;
     FirebaseFirestore db;
+    AppCompatImageView menuDots;
+    LinearLayoutCompat likeBtnL;
     List<String> documentNames = new ArrayList<>();
     List<Comment> commntz = new ArrayList<>();
     private Post post;
@@ -81,6 +85,8 @@ public class CommentsLayout extends AppCompatActivity implements CommentListener
         writeComm = findViewById(R.id.typeBar);
         commentsRV = findViewById(R.id.recView);
         progressBar = findViewById(R.id.progressBar);
+        menuDots = findViewById(R.id.dots);
+         likeBtnL = findViewById(R.id.menuPanel);
 
     }
     private void setEverything(){
@@ -98,6 +104,10 @@ public class CommentsLayout extends AppCompatActivity implements CommentListener
                     .into(ImagePosted);
         }else{
             ImagePosted.setVisibility(View.GONE);
+        }
+        if(!post.postID.contains(managePreferences.getString(Constants.Key_Email))){
+
+            menuDots.setVisibility(View.GONE);
         }
 
 

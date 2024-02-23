@@ -4,6 +4,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -24,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.ProfileAdapter;
 import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
+import com.example.venda_fb.activityContexs.utilities.ConstantMethods;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.Post;
@@ -58,6 +60,7 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
     ImageView background;
     User userDt;
     ManagePreferences managePreferences;
+    LinearLayoutCompat menuPanel;
     ProgressBar loadingProgressBar;
     RecyclerView PostHistory;
     DocumentReference docRef;
@@ -115,6 +118,7 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
         bioV = findViewById(R.id.Bio);
         PostHistory = findViewById(R.id.recView);
         loadingProgressBar = findViewById(R.id.progressBar);
+        menuPanel = findViewById(R.id.menuPanel);
     }
     private void showNewImage(String imageU, ImageView imageView){
         Glide.with(User_Profile.this) // Pass the activity or fragment context
@@ -404,5 +408,14 @@ public class User_Profile extends AppCompatActivity implements LikesAndCommentLi
     @Override
     public void onPersonClicked(User user) {
 
+    }
+
+    @Override
+    public void onThreeDotsClick(String type, String postId) {
+        if (type.equals(Constants.Key_Delete)) {
+            ConstantMethods.deletePost(postId);
+        }else{
+
+        }
     }
 }

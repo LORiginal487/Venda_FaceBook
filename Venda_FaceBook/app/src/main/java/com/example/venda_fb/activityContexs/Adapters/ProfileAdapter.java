@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.LinearLayoutCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
 import com.example.venda_fb.activityContexs.activityContexs.Profile;
 import com.example.venda_fb.activityContexs.utilities.ConstantMethods;
 import com.example.venda_fb.activityContexs.utilities.Constants;
+import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.Post;
 import com.example.venda_fb.activityContexs.utilities.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -37,6 +39,7 @@ import java.util.List;
 public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserViewHolder> {
     private final List<Post> post;
     private final LikesAndCommentListener likesAndCommentListener;
+    ManagePreferences managePreferences;
     FirebaseFirestore db;
     User user1;
 
@@ -91,29 +94,49 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
                 postedImage.setVisibility(View.GONE);
             }
 
+
             TextView likesC = itemView.findViewById(R.id.likesCount);
+            TextView deleteBtn = itemView.findViewById(R.id.deleteBtn);
+            TextView editBtn = itemView.findViewById(R.id.editbtn);
             likesC.setText(post.postLikes);
             TextView comntsC = itemView.findViewById(R.id.commentCount);
+            AppCompatImageView menuDots = itemView.findViewById(R.id.dots);
             LinearLayoutCompat likeBtnL = itemView.findViewById(R.id.likeBtn);
             LinearLayoutCompat commBtnL = itemView.findViewById(R.id.commentBtn);
+            LinearLayoutCompat menuPanel = itemView.findViewById(R.id.menuPanel);
+            managePreferences = new ManagePreferences(itemView.getContext());
+            if(!post.postID.contains(managePreferences.getString(Constants.Key_Email))){
+                menuDots.setVisibility(View.GONE);
+            }
             comntsC.setText(post.postComments);
                 TextView comntB = itemView.findViewById(R.id.commBtnt);
+
             TextView likeB = itemView.findViewById(R.id.likeBtnt);
             commBtnL.setOnClickListener(v -> {
                 likesAndCommentListener.onCommentClicked(post);
+                menuPanel.setVisibility(View.GONE);
             });
             comntB.setOnClickListener(v -> {
                 likesAndCommentListener.onCommentClicked(post);
+                menuPanel.setVisibility(View.GONE);
             });
             likeB.setOnClickListener(v -> {
                 likesAndCommentListener.onLikeClicked(post);
+                menuPanel.setVisibility(View.GONE);
             });
-            postedImage.getRootView().setOnClickListener(v -> {
+            postedImage.setOnClickListener(v -> {
                 likesAndCommentListener.onPictureClick(post);
+                menuPanel.setVisibility(View.GONE);
+                    }
+            );
+            postedImage.getRootView().setOnClickListener(v -> {
+                        likesAndCommentListener.onCommentClicked(post);
+                        menuPanel.setVisibility(View.GONE);
                     }
             );
             likeBtnL.setOnClickListener(v -> {
                 likesAndCommentListener.onLikeClicked(post);
+                menuPanel.setVisibility(View.GONE);
             });
             names.setOnClickListener(v -> {
                 //extractEmail(post.postID);
@@ -121,6 +144,7 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
                     @Override
                     public void onUserRetrieved(User user) {
                         likesAndCommentListener.onPersonClicked(user);
+                        menuPanel.setVisibility(View.GONE);
                     }
                 });
                 Log.d("wertyioitrfhhnlk", "2345678988888"+post.postID);
@@ -132,17 +156,21 @@ public class ProfileAdapter extends RecyclerView.Adapter<ProfileAdapter.UserView
                     @Override
                     public void onUserRetrieved(User user) {
                         likesAndCommentListener.onPersonClicked(user);
+                        menuPanel.setVisibility(View.GONE);
                     }
                 });
             });
-            postedImage.setOnClickListener(v -> {
-                ConstantMethods.getPostByID(post.postID, new ConstantMethods.OnPostRetrievedListener() {
-                    @Override
-                    public void onPostRetrieved(Post post) {
-                        likesAndCommentListener.onPictureClick(post);
-                    }
-                });
+
+            menuDots.setOnClickListener(v -> {
+                menuPanel.setVisibility(View.VISIBLE);
             });
+            deleteBtn.setOnClickListener(v -> {
+                likesAndCommentListener.onThreeDotsClick(Constants.Key_Delete, post.postID);
+            });
+            editBtn.setOnClickListener(v -> {
+                likesAndCommentListener.onThreeDotsClick(Constants.Key_Edit, post.postID);
+            });
+
         }
 
         private Bitmap getBitmapFromBase64(String encodedImg) {

@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.example.venda_fb.R;
 import com.example.venda_fb.activityContexs.Adapters.ProfileAdapter;
 import com.example.venda_fb.activityContexs.Listeners.LikesAndCommentListener;
+import com.example.venda_fb.activityContexs.utilities.ConstantMethods;
 import com.example.venda_fb.activityContexs.utilities.Constants;
 import com.example.venda_fb.activityContexs.utilities.ManagePreferences;
 import com.example.venda_fb.activityContexs.utilities.Post;
@@ -207,6 +208,17 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
         // Pass any necessary data to the CommentsLayout activity using extras
         intent.putExtra(Constants.Key_User, user);
         startActivity(intent);
+    }
+
+    @Override
+    public void onThreeDotsClick(String type, String postId) {
+        if (type.equals(Constants.Key_Delete)) {
+            ConstantMethods.deletePost(postId);
+            Intent intent = new Intent(getApplicationContext(), Profile.class);
+            startActivity(intent);
+        }else{
+
+        }
     }
 
     private void likingApost(Post post){

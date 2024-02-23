@@ -136,6 +136,7 @@ public class Inbox extends AppCompatActivity implements RecentConvoClickerListen
                 .addSnapshotListener(eventListener);
     }
     private EventListener<QuerySnapshot> eventListener = (value, error) -> {
+
         if (error != null){
             return;
         }
@@ -159,8 +160,18 @@ public class Inbox extends AppCompatActivity implements RecentConvoClickerListen
                     }
                     chatMessage.message = documentChange.getDocument().getString(Constants.Key_Last_Message);
                     chatMessage.dateObject = documentChange.getDocument().getDate(Constants.Key_Timestamp);
-
-                    convos.add(chatMessage);
+                    boolean conversationExists = false;
+                    for (ChatMessage existingMessage : convos) {
+                        if (existingMessage.convoID.equals(chatMessage.convoID)) {
+                            existingMessage.message = chatMessage.message;
+                            existingMessage.dateObject = chatMessage.dateObject;
+                            conversationExists = true;
+                            break;
+                        }
+                    }
+                    if (!conversationExists) {
+                        convos.add(chatMessage);
+                    }
                 }else if(documentChange.getType() == DocumentChange.Type.MODIFIED){
                     for(int i = 0; i <convos.size(); i++){
                         String senderId = documentChange.getDocument().getString(Constants.Key_Sender_ID);

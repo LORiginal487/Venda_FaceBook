@@ -117,7 +117,7 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:background="@drawable/pressedicon"
-            android:src="@drawable/home"
+            android:src="@drawable/home_pressed"
             android:padding="10dp"
             android:tint="@color/white"
             app:layout_constraintStart_toStartOf="parent"

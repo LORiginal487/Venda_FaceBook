@@ -148,7 +148,7 @@
             android:layout_height="50dp"
             android:layout_margin="10dp"
             android:background="@drawable/pressedicon"
-            android:src="@drawable/bell"
+            android:src="@drawable/bell_pressd"
             android:padding="10dp"
             android:tint="@color/white"
             android:clickable="true"

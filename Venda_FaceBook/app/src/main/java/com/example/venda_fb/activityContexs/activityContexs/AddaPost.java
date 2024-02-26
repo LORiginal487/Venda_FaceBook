@@ -9,6 +9,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +23,7 @@ import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.example.venda_fb.R;
@@ -54,6 +57,7 @@ import java.util.Map;
 
 public class AddaPost extends AppCompatActivity {
     String fullName, image,imagePosted, postText,docName, email;
+    AppCompatImageView buttonDn;
     Boolean addImage = false;
     RoundedImageView imageViewPP;
     TextView nameV, addPict;
@@ -84,6 +88,7 @@ public class AddaPost extends AppCompatActivity {
 
         callviews();
         setUp();
+        Ontyping();
 
     }
     private void callviews(){
@@ -93,6 +98,29 @@ public class AddaPost extends AppCompatActivity {
         addPict = findViewById(R.id.addPict);
         constrPict = findViewById(R.id.constrPict);
         pic2post = findViewById(R.id.picture);
+        buttonDn = findViewById(R.id.addPostb);
+    }
+    private void Ontyping(){
+        inpost.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(inpost.getText().toString().isEmpty()&&pic2post.getVisibility() == View.GONE){
+                    buttonDn.setVisibility(View.GONE);
+                }else{
+                    buttonDn.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
     private void setUp(){
         fullName = managePreferences.getString(Constants.Key_Name )+" "+managePreferences.getString(Constants.Key_Surname);
@@ -138,6 +166,7 @@ public class AddaPost extends AppCompatActivity {
                         try {
                             InputStream inputStream = getContentResolver().openInputStream(imgUri);
                             Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                            pic2post.setVisibility(View.VISIBLE);
                             pic2post.setImageBitmap(bitmap);
                         }catch (FileNotFoundException e){
                             showToast("Retry!");

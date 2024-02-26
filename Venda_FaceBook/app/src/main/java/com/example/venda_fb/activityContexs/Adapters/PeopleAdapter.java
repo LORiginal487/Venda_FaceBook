@@ -133,6 +133,10 @@ public class PeopleAdapter extends RecyclerView.Adapter<PeopleAdapter.UserViewHo
 
                     TextView email = itemView.findViewById(R.id.email);
                     email.setText(user.email);
+                TextView inBoxing = itemView.findViewById(R.id.texting);
+                inBoxing.setOnClickListener(v -> {
+                    userL.onInboxClick(user);
+                });
 
                     RoundedImageView imageProfile = itemView.findViewById(R.id.image);
                     imageProfile.setImageBitmap(getUserImage(user.image));

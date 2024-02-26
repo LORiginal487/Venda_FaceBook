@@ -32,7 +32,7 @@
         app:layout_constraintStart_toEndOf="@+id/addPostBack"
         app:layout_constraintTop_toTopOf="parent" />
     <androidx.appcompat.widget.AppCompatImageView
-        android:id="@+id/addPost"
+        android:id="@+id/addbiob"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:background="@drawable/circleback"
@@ -41,6 +41,7 @@
         android:tint="@color/white"
         android:clickable="true"
         android:onClick="addBioNow"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:riv_oval="true" />

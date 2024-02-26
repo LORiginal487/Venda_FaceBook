@@ -126,7 +126,7 @@ public class Notification extends AppCompatActivity implements NotificationListe
                     notification.notiTime = time;
                     notification.email = email;
                     notification.dateObject = documentChange.getDocument().getDate(Constants.Key_Noti_Time);
-
+                    notification.postID = documentChange.getDocument().getString(Constants.Key_Noti_PostId);
                     notis.add(notification);
                     Log.d("qwedrfrgucuyjdfgas", "325444444q6546344"+notis.size());
 

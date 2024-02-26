@@ -163,6 +163,11 @@ public class Searching extends AppCompatActivity implements UserListener {
 
     }
 
+    @Override
+    public void onInboxClick(User user) {
+
+    }
+
     private void addingAfriend(User user){
 
     }

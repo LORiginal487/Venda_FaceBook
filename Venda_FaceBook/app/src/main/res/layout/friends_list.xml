@@ -55,21 +55,5 @@
         app:layout_constraintTop_toBottomOf="@+id/email"
         app:layout_constraintWidth_percent="0.35" />
 
-    <TextView
-        android:id="@+id/unfriendBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:background="@drawable/buttom_shape"
-        android:gravity="center"
-        android:padding="3dp"
-        android:text="@string/unfriend"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="@+id/texting"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/texting"
-        app:layout_constraintTop_toTopOf="@+id/texting"
-        app:layout_constraintWidth_percent="0.35" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -241,6 +241,16 @@ public class Friends extends AppCompatActivity implements UserListener {
         ConstantMethods.FindUsersFrindsR(managePreferences.getString(Constants.Key_Email),Friends.this,recycleV);
         sendNotification(Constants.Key_Confirm_Not, user.email);
     }
+
+    @Override
+    public void onInboxClick(User user) {
+        Intent intent = new Intent(this, ChatScreen.class);
+        // Pass any necessary data to the CommentsLayout activity using extras
+        intent.putExtra(Constants.Key_User, user);
+        startActivity(intent);
+
+    }
+
     private void sendNotification(String type, String email){
         Map<String, Object> noti = new HashMap<>();
         noti.put(Constants.Key_Noti_Names, managePreferences.getString(Constants.Key_Name));

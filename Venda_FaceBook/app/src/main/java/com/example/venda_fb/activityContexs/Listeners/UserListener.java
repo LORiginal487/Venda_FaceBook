@@ -7,4 +7,5 @@ public interface UserListener {
     void onUserClick(User user);
     void OnAddFriendClick(User user);
     void OnConfirmFriendClick(User user);
+    void onInboxClick(User user);
 }

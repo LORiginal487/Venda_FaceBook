@@ -81,17 +81,16 @@ public static void getUserByEmail(String email, OnUserRetrievedListener listener
         void onPostRetrieved(Post post);
     }
     public static void getPostByID(String postID, OnPostRetrievedListener listener) {
+    if(postID!=null) {
         db.collection(Constants.Key_Collection_Posts)
-                .whereEqualTo(Constants.Key_Email, postID)
+                .whereEqualTo(Constants.Key_P_ID, postID)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful() && task.getResult() != null) {
                         for (QueryDocumentSnapshot document : task.getResult()) {
                             Post post = new Post();
                             post.posterNames = document.getString(Constants.Key_P_Names);
-
                             post.postTime = getRedableDate(document.getDate(Constants.Key_Post_Time));
-
                             post.postTxt = document.getString(Constants.Key_P_Text);
                             post.posterPP = document.getString(Constants.Key_Image_pp);
                             post.postedPic = document.getString(Constants.Key_Picture);
@@ -106,6 +105,7 @@ public static void getUserByEmail(String email, OnUserRetrievedListener listener
                         listener.onPostRetrieved(null); // Notify listener of failure
                     }
                 });
+    }
     }
 
 

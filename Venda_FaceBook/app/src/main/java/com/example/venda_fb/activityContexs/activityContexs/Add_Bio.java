@@ -2,9 +2,12 @@ package com.example.venda_fb.activityContexs.activityContexs;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -23,6 +26,7 @@ import java.util.Map;
 
 public class Add_Bio extends AppCompatActivity {
     EditText inBio;
+    AppCompatImageView buttonDn;
     FirebaseFirestore db;
     ManagePreferences managePreferences;
     @Override
@@ -30,14 +34,41 @@ public class Add_Bio extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_bio);
         callViews();
+        Ontyping();
     }
 
     private void callViews(){
         inBio = findViewById(R.id.inNewBio);
+        buttonDn = findViewById(R.id.addbiob);
         db = FirebaseFirestore.getInstance();
         managePreferences = new ManagePreferences(getApplicationContext());
     }
+    private void Ontyping(){
+        inBio.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(inBio.getText().toString().isEmpty()){
+                    buttonDn.setVisibility(View.GONE);
+                }else{
+                    buttonDn.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(inBio.getText().toString().isEmpty()){
+                    buttonDn.setVisibility(View.GONE);
+                }else{
+                    buttonDn.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+    }
 
     public void goHome(View view) {
         Intent intent = new Intent(getApplicationContext(), MainActivity.class);

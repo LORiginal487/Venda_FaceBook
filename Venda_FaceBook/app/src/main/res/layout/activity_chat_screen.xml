@@ -10,8 +10,7 @@
     <LinearLayout
         android:id="@+id/topBar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="0.09"
+        android:layout_height="wrap_content"
         android:gravity="start|center_vertical"
         android:orientation="horizontal">
         <androidx.appcompat.widget.AppCompatImageView
@@ -68,10 +67,9 @@
     <LinearLayout
         android:id="@+id/bottomBar"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:gravity="center|center_vertical"
         android:orientation="horizontal"
-        android:layout_weight="0.08"
 
         >
 
@@ -91,7 +89,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/sendBtn"
             android:layout_width="50dp"
-            android:layout_height="match_parent"
+            android:layout_height="50dp"
             android:padding="10dp"
             android:background="@drawable/circleback"
             android:src="@drawable/round_send_24"

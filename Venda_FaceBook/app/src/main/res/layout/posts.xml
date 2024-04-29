@@ -73,6 +73,7 @@
             android:text="@string/edit"
             android:textColor="@color/white"
             android:textSize="20sp"
+            android:visibility="gone"
             android:layout_margin="2dp"
             />
 

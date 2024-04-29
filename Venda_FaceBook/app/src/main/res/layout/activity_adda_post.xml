@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     android:background="@color/c2"
     tools:context=".activityContexs.activityContexs.AddaPost">
     <androidx.appcompat.widget.AppCompatImageView
@@ -97,7 +98,7 @@
         <EditText
             android:id="@+id/inPostText"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:gravity="top"
             android:hint="@string/what_do_you_wanna_post"
             android:inputType="text"

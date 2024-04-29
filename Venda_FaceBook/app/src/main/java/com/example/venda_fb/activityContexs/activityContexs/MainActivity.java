@@ -96,7 +96,9 @@ public class MainActivity extends AppCompatActivity implements LikesAndCommentLi
                                     post.postLikes = queryDocumentSnapshot.getString(Constants.Key_Likes);
                                     post.postComments = queryDocumentSnapshot.getString(Constants.Key_Comments);
                                     post.postID = queryDocumentSnapshot.getString(Constants.Key_P_ID);
-                                    postz.add(post);
+                                    if(!postz.contains(post)){
+                                        postz.add(post);
+                                    }
                                     Log.d("1234598urytfygfygyg","rtyuio");
                                 }
                                 if (postz.size() > 0) {
